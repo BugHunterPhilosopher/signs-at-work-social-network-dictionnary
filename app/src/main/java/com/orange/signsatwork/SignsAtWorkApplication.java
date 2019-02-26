@@ -26,7 +26,7 @@ import com.orange.signsatwork.biz.storage.StorageProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+//import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -40,17 +40,17 @@ import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-@SpringBootApplication
+//@SpringBootApplication
 @Slf4j
 @Configuration
 @EnableAutoConfiguration
-@ComponentScan
+//@ComponentScan
 @EnableConfigurationProperties(StorageProperties.class)
 public class SignsAtWorkApplication extends WebMvcConfigurerAdapter {
 
-  public static void main(String[] args) {
+  /*public static void main(String[] args) {
     SpringApplication.run(SignsAtWorkApplication.class, args);
-  }
+  }*/
 
   @Bean
   /** Use the user's browser preferred language for translation */

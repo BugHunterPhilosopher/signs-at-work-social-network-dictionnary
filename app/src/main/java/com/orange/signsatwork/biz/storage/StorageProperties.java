@@ -23,14 +23,21 @@ package com.orange.signsatwork.biz.storage;
  */
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 
+@Component
 @ConfigurationProperties("storage")
 public class StorageProperties {
+
+  @Autowired
+  private Environment environment;
 
     /**
      * Folder location for storing files
      */
-    private String location = "~/sign-data";
+    private String location = environment.getProperty("file.uploads.path");
 
     //private String location = "src/main/resources/public/video";
 

@@ -11,7 +11,7 @@ Signs@Work will provide tools to propose a sign, to make a request about a conce
 Go to the 'app' directory, then:
  - ```./mvnw clean install```
  - ```./mvnw spring-boot:run```
- - open your browser at [http://localhost:8080](http://localhost:8080)
+ - open your browser at [http://localhost:12345](http://localhost:12345)
 
 ## License
 GPLv2, Copyright (C) 2016 Orange

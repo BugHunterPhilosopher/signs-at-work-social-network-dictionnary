@@ -1,6 +1,6 @@
 # MySQL config described here:
 # https://springframework.guru/configuring-spring-boot-for-mysql
-spring.h2.console.enabled: false
+spring.h2.console.enabled: true
 
 # NOTE: If this was actually a production database, you not tell Hibernate
 # to use the create-drop option. This tells Hibernate to recreate the database on startup.
@@ -32,3 +32,5 @@ spring:
     host: mailhost.rd.francetelecom.fr
     port: 2525
 
+server:
+  port: 12345

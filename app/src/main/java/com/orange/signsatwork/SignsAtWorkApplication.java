@@ -22,7 +22,6 @@ package com.orange.signsatwork;
  * #L%
  */
 
-import com.orange.signsatwork.biz.storage.StorageProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -43,7 +42,6 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Configuration
 @EnableAutoConfiguration
-@EnableConfigurationProperties(StorageProperties.class)
 @PropertySource("classpath:dailymotion.properties")
 public class SignsAtWorkApplication extends WebMvcConfigurerAdapter {
 

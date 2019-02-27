@@ -26,10 +26,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import lombok.extern.slf4j.Slf4j;
+
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
 
 @Component
+@Slf4j
 public class AppProfile {
 
   @Autowired
@@ -38,6 +41,9 @@ public class AppProfile {
   private boolean devProfile;
   private Proxy proxy;
   private DailymotionAccess dailymotionAccess;
+
+  private String clientId;
+  private String callback;
 
 
   public boolean isDevProfile() {
@@ -63,7 +69,8 @@ public class AppProfile {
 
   private void initDailyMotion() {
     String grantType = environment.getProperty("app.dailymotion.grant_type");
-    String clientId = environment.getProperty("app.dailymotion.client_id");
+    clientId = environment.getProperty("app.dailymotion.client_id");
+    callback = environment.getProperty("app.dailymotion.callback");
     String clientSecret = environment.getProperty("app.dailymotion.client_secret");
     String username = environment.getProperty("app.dailymotion.username");
     String password = environment.getProperty("app.dailymotion.password");
@@ -82,6 +89,14 @@ public class AppProfile {
             .filter(profile -> profile.equals("dev"))
             .findAny()
             .isPresent();
+  }
+
+  public String getClientId() {
+    return clientId;
+  }
+
+  public String getCallback() {
+    return callback;
   }
 
   public boolean isHttps() {

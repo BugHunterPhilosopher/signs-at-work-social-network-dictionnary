@@ -29,6 +29,7 @@ import com.orange.signsatwork.biz.nativeinterface.NativeInterface;
 import com.orange.signsatwork.biz.persistence.service.MessageByLocaleService;
 import com.orange.signsatwork.biz.persistence.service.Services;
 import com.orange.signsatwork.biz.storage.StorageService;
+import com.orange.signsatwork.biz.storage.StorageProperties;
 import com.orange.signsatwork.biz.view.model.RequestCreationView;
 import com.orange.signsatwork.biz.view.model.SignCreationView;
 import com.orange.signsatwork.biz.webservice.model.RequestResponse;
@@ -67,6 +68,8 @@ public class FileUploadRestController {
 
   @Autowired
   private StorageService storageService;
+  @Autowired
+  private StorageProperties storageProperties;
 
   @Autowired
   Services services;
@@ -113,7 +116,7 @@ public class FileUploadRestController {
     log.info("VideoFile "+videoFile);
     log.info("VideoFile name"+videoFile.name);
     String videoUrl = null;
-    String file = "/data/" + videoFile.name;
+    String file = storageProperties.getLocation() + videoFile.name;
     String fileOutput = file.replace(".webm", ".mp4");
 
     log.info("taille fichier "+videoFile.contents.length());
@@ -133,6 +136,7 @@ public class FileUploadRestController {
     }
     catch(Exception errorUploadFile)
     {
+      log.error("error!", errorUploadFile);
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
       return messageByLocaleService.getMessage("errorUploadFile");
     }
@@ -147,6 +151,7 @@ public class FileUploadRestController {
     }
     catch(Exception errorEncondingFile)
     {
+      log.error("error!", errorEncondingFile);
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
       return messageByLocaleService.getMessage("errorEncondingFile");
     }
@@ -154,6 +159,8 @@ public class FileUploadRestController {
     try {
       String dailymotionId;
       AuthTokenInfo authTokenInfo = dalymotionToken.getAuthTokenInfo();
+      log.info("authTokenInfo: " + authTokenInfo);
+
       if (authTokenInfo.isExpired()) {
         dalymotionToken.retrieveToken();
         authTokenInfo = dalymotionToken.getAuthTokenInfo();
@@ -260,6 +267,7 @@ public class FileUploadRestController {
     }
     catch(Exception errorDailymotionUploadFile)
     {
+      log.error("error!", errorDailymotionUploadFile);
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
       return messageByLocaleService.getMessage("errorDailymotionUploadFile");
     }
@@ -577,12 +585,14 @@ public class FileUploadRestController {
 
     try {
       //This will decode the String which is encoded by using Base64 class
+      log.info("file: " + file);
       byte[] videoByte = DatatypeConverter.parseBase64Binary(videoFile.contents.substring(videoFile.contents.indexOf(",") + 1));
-
+      log.info("videoByte.length: " + videoByte.length);
       new FileOutputStream(file).write(videoByte);
     }
     catch(Exception errorUploadFile)
     {
+      log.error("error!", errorUploadFile);
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
       return messageByLocaleService.getMessage("errorUploadFile");
     }

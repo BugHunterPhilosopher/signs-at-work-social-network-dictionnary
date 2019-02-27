@@ -79,6 +79,8 @@ public class SpringRestClient {
         body.add("grant_type", appProfile.dailymotionAccess().grantType);
         body.add("client_id", appProfile.dailymotionAccess().clientId);
         body.add("client_secret", appProfile.dailymotionAccess().clientSecret);
+        body.add("redirect_uri", appProfile.dailymotionAccess().username);
+        body.add("code", "c7e5bb2c852749b1d06fd3e0d434d72f335bfc58");
         body.add("username", appProfile.dailymotionAccess().username);
         body.add("password",appProfile.dailymotionAccess().password);
 
@@ -94,7 +96,7 @@ public class SpringRestClient {
         	tokenInfo.setAccess_token((String)map.get("access_token"));
         	tokenInfo.setToken_type((String)map.get("token_type"));
         	tokenInfo.setRefresh_token((String)map.get("refresh_token"));
-        	tokenInfo.setExpires_in((int)map.get("expires_in"));
+        	//tokenInfo.setExpires_in((int)map.get("expires_in")); // No more supported by Dailymotion
         	tokenInfo.setScope((String)map.get("scope"));
         	System.out.println(tokenInfo);
         	//System.out.println("access_token ="+map.get("access_token")+", token_type="+map.get("token_type")+", refresh_token="+map.get("refresh_token")

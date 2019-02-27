@@ -91,7 +91,10 @@ public class HomeController {
     User user = AuthentModel.addAuthentModelWithUserDetails(model, principal, admin, services.user());
     StringBuffer location = req.getRequestURL();
 
+    model.addAttribute("client_id", appProfile.getClientId());
+    model.addAttribute("callback", appProfile.getCallback());
     model.addAttribute("title", messageByLocaleService.getMessage("app_name"));
+
     if(user != null) {
       model.addAttribute("mail_body", messageByLocaleService.getMessage("share_application_body", new Object[]{user.name(), location}));
     }

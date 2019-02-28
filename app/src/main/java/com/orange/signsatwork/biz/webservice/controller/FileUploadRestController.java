@@ -159,6 +159,7 @@ public class FileUploadRestController {
     try {
       String dailymotionId;
       AuthTokenInfo authTokenInfo = dalymotionToken.retrieveToken();
+      authTokenInfo.setScope("manage_videos");
       log.info("authTokenInfo: " + authTokenInfo);
 
       if (authTokenInfo.isExpired()) {

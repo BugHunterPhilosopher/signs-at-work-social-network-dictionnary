@@ -32,6 +32,6 @@ public interface DailymotionCodeRepository extends CrudRepository<DailymotionCod
   <S extends DailymotionCodeDB> S save(S s);
 
   @Query(value = "select c.id, c.code from code c order by id desc limit 1", nativeQuery = true)
-  Object findLast();
+  DailymotionCodeDB findLast();
 
 }

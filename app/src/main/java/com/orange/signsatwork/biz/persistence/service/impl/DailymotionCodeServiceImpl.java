@@ -39,7 +39,7 @@ public class DailymotionCodeServiceImpl implements DailymotionCodeService {
 
   @Override
   public DailymotionCode findLast() {
-    return (DailymotionCode)dailymotionCodeRepository.findLast();
+    return dailymotionCodeFrom(dailymotionCodeRepository.findLast());
   }
 
   @Override

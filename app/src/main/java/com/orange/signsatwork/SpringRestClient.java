@@ -84,6 +84,7 @@ public class SpringRestClient {
     body.add("client_id", appProfile.dailymotionAccess().clientId);
     body.add("client_secret", appProfile.dailymotionAccess().clientSecret);
     body.add("redirect_uri", appProfile.getCallback());
+    body.add("scope", "manage_videos");
     body.add("code", services.dailymotionCode().findLast().getCode());
 
     HttpEntity<?> request = new HttpEntity<Object>(body, getHeadersWithClientCredentials());
@@ -98,10 +99,11 @@ public class SpringRestClient {
       tokenInfo.setAccess_token((String)map.get("access_token"));
       //tokenInfo.setToken_type((String)map.get("token_type")); // No more supported by Dailymotion
       tokenInfo.setRefresh_token((String)map.get("refresh_token"));
+      tokenInfo.setScope((String)map.get("manage_videos"));
       tokenInfo.setExpires_in(36000); //(Integer)map.get("expires_in")); // No more supported by Dailymotion
       //tokenInfo.setScope((String)map.get("scope")); // No more supported by Dailymotion
       System.out.println(tokenInfo);
-      log.warn("sendTokenRequest : authTokenInfo = {}", tokenInfo.getAccess_token());
+      log.warn("sendTokenRequest : authTokenInfo = {}, scope = {}", tokenInfo.getAccess_token(), tokenInfo.getScope());
     }else{
       System.out.println("No user exist----------");
     }

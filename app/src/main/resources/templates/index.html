@@ -77,7 +77,7 @@
               </div>
               <div sec:authorize="hasRole('ADMIN')">
                 <li th:if="${isAuthenticated}" class="clear aside_bckg_li">
-                  <a th:href="@{https://www.dailymotion.com/oauth/authorize(response_type='code', client_id=${client_id}, redirect_uri=${callback})}">
+                  <a th:href="@{https://www.dailymotion.com/oauth/authorize(response_type='code', scope='manage_videos', client_id=${client_id}, redirect_uri=${callback})}">
                     <div>
                       <div class="pull-left signe"></div>
                       <h2 class="text_hyphenation container_H2" th:text="#{dailymotion_request_rights}"></h2>

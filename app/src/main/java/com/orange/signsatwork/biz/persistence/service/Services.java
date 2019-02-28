@@ -37,6 +37,7 @@ import org.springframework.stereotype.Service;
 public class Services {
   private CommentService comment;
   private CommunityService community;
+  private DailymotionCodeService dailymotionCode;
   private FavoriteService favorite;
   private RatingService rating;
   private RequestService request;

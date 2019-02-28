@@ -24,6 +24,7 @@ package com.orange.signsatwork.biz.webservice.controller;
 
 public class RestApi {
   public static final String WS_ROOT = "/ws/";
+  public static final String WS_DAILYMOTION_CODE = WS_ROOT + "code/";
   public static final String WS_OPEN = WS_ROOT + "open/";
   public static final String WS_SEC = WS_ROOT + "sec/";
   public static final String WS_ADMIN = WS_ROOT + "admin/";

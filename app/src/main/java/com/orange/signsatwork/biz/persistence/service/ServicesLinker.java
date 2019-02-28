@@ -34,6 +34,8 @@ class ServicesLinker {
   @Autowired
   private CommunityService communityService;
   @Autowired
+  private DailymotionCodeService dailymotionCodeService;
+  @Autowired
   private FavoriteService favoriteService;
   @Autowired
   private RatingService ratingService;
@@ -55,6 +57,7 @@ class ServicesLinker {
   private void init() {
     services.community(communityService);
     services.comment(commentService);
+    services.dailymotionCode(dailymotionCodeService);
     services.favorite(favoriteService);
     services.rating(ratingService);
     services.request(requestService);

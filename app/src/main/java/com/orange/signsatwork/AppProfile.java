@@ -72,9 +72,7 @@ public class AppProfile {
     clientId = environment.getProperty("app.dailymotion.client_id");
     callback = environment.getProperty("app.dailymotion.callback");
     String clientSecret = environment.getProperty("app.dailymotion.client_secret");
-    String username = environment.getProperty("app.dailymotion.username");
-    String password = environment.getProperty("app.dailymotion.password");
-    dailymotionAccess = new DailymotionAccess(grantType, clientId, clientSecret, username, password );
+    dailymotionAccess = new DailymotionAccess(grantType, clientId, clientSecret, "", "" );
   }
 
   private void initProxy() {

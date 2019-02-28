@@ -205,10 +205,10 @@ public class FileUploadRestController {
       HttpHeaders headers1 = new HttpHeaders();
       headers1.setContentType(MediaType.MULTIPART_FORM_DATA);
       headers1.set("Authorization", "Bearer " + authTokenInfo.getAccess_token());
-      headers1.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+      //headers1.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 
       HttpEntity<MultiValueMap<String, Object>> requestEntity1 = new HttpEntity<MultiValueMap<String, Object>>(body, headers1);
-      ResponseEntity<VideoDailyMotion> response1 = restTemplate1.exchange("https://api.dailymotion.com/video",
+      ResponseEntity<VideoDailyMotion> response1 = restTemplate1.exchange("https://api.dailymotion.com/me/videos",
         HttpMethod.POST, requestEntity1, VideoDailyMotion.class);
       VideoDailyMotion videoDailyMotion = response1.getBody();
 

@@ -29,6 +29,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+
 
 /**
  * Types that carry this annotation are treated as controllers where @RequestMapping
@@ -43,10 +45,14 @@ public class DailymotionCodeRestController {
   Services services;
 
   @RequestMapping(value = RestApi.WS_DAILYMOTION_CODE)
-  public void getDailymotionCode(@RequestParam("code") String code) {
-    log.info("received Dailymotion code!");
-
-    services.dailymotionCode().create(DailymotionCode.create(code));
+  public void getDailymotionCode(@RequestParam("code") String code, HttpServletResponse response) {
+    try {
+      log.info("received Dailymotion code!");
+      services.dailymotionCode().create(DailymotionCode.create(code));
+      response.sendRedirect("/");
+    } catch (Exception e) {
+      log.error("Exception while receiving Dailymotion code!", e);
+    }
   }
 
 }

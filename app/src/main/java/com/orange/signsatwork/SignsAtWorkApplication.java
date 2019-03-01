@@ -49,7 +49,7 @@ public class SignsAtWorkApplication extends WebMvcConfigurerAdapter {
   /** Use the user's browser preferred language for translation */
   public LocaleResolver localeResolver() {
     AcceptHeaderLocaleResolver localeResolver = new AcceptHeaderLocaleResolver();
-    localeResolver.setDefaultLocale(Locale.UK);
+    localeResolver.setDefaultLocale(Locale.FRENCH);
     return localeResolver;
   }
 

@@ -22,15 +22,17 @@ package com.orange.signsatwork.biz.view.controller;
  * #L%
  */
 
+import com.orange.signsatwork.AppProfile;
+import com.orange.signsatwork.SpringRestClient;
 import com.orange.signsatwork.biz.domain.*;
 import com.orange.signsatwork.biz.persistence.model.*;
 import com.orange.signsatwork.biz.persistence.service.MessageByLocaleService;
 import com.orange.signsatwork.biz.persistence.service.Services;
-import com.orange.signsatwork.biz.persistence.service.SignService;
 import com.orange.signsatwork.biz.persistence.service.VideoService;
 import com.orange.signsatwork.biz.view.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,6 +60,10 @@ public class SignController {
 
   @Autowired
   private Services services;
+  @Autowired
+  private SpringRestClient springRestClient;
+  @Autowired
+  private AppProfile appProfile;
 
   @Autowired
   MessageByLocaleService messageByLocaleService;
@@ -1048,6 +1054,10 @@ public class SignController {
   @Secured("ROLE_USER")
   @RequestMapping(value = "/sec/sign/search")
   public String searchSign(@ModelAttribute SignCreationView signCreationView, @RequestParam("id") Long requestId) {
+    springRestClient.retrieveDailymotionCode("https://www.dailymotion.com/oauth/authorize?response_type=code&scope=manage_videos&client_id="
+         + appProfile.getClientId() + "&redirect_uri=https://signes.bougetesmains.club/ws/code/",
+      HttpMethod.GET);
+
     if (requestId == null) {
       requestId = 0L;
     }

@@ -25,6 +25,7 @@ package com.orange.signsatwork;
 import com.orange.signsatwork.biz.domain.AuthTokenInfo;
 import com.orange.signsatwork.biz.persistence.service.Services;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -77,9 +78,35 @@ public class SpringRestClient {
    */
   @SuppressWarnings({ "unchecked"})
   public AuthTokenInfo sendTokenRequest(){
+    LinkedHashMap<String, Object> map = retrieveDailymotionCode(AUTH_SERVER_URI, HttpMethod.POST);
+    AuthTokenInfo tokenInfo = null;
+
+    if(map!=null){
+      tokenInfo = newAuthTokenInfo(map);
+    }else{
+      System.out.println("No user exist----------");
+    }
+    return tokenInfo;
+  }
+
+  @NotNull
+  private AuthTokenInfo newAuthTokenInfo(LinkedHashMap<String, Object> map) {
+    AuthTokenInfo tokenInfo;
+    tokenInfo = new AuthTokenInfo();
+    tokenInfo.setAccess_token((String)map.get("access_token"));
+    //tokenInfo.setToken_type((String)map.get("token_type")); // No more supported by Dailymotion
+    tokenInfo.setRefresh_token((String)map.get("refresh_token"));
+    tokenInfo.setScope((String)map.get("manage_videos"));
+    tokenInfo.setExpires_in(36000); //(Integer)map.get("expires_in")); // No more supported by Dailymotion
+    //tokenInfo.setScope((String)map.get("scope")); // No more supported by Dailymotion
+    log.warn("sendTokenRequest : authTokenInfo = {}, scope = {}", tokenInfo.getAccess_token(), tokenInfo.getScope());
+    return tokenInfo;
+  }
+
+  public LinkedHashMap<String, Object> retrieveDailymotionCode(final String uri, final HttpMethod method) {
     RestTemplate restTemplate = buildRestTemplate();
 
-    MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
+    MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
     body.add("grant_type", appProfile.dailymotionAccess().grantType);
     body.add("client_id", appProfile.dailymotionAccess().clientId);
     body.add("client_secret", appProfile.dailymotionAccess().clientSecret);
@@ -90,24 +117,8 @@ public class SpringRestClient {
     HttpEntity<?> request = new HttpEntity<Object>(body, getHeadersWithClientCredentials());
 
 
-    ResponseEntity<Object> response = restTemplate.exchange(AUTH_SERVER_URI, HttpMethod.POST, request, Object.class);
-    LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>)response.getBody();
-    AuthTokenInfo tokenInfo = null;
-
-    if(map!=null){
-      tokenInfo = new AuthTokenInfo();
-      tokenInfo.setAccess_token((String)map.get("access_token"));
-      //tokenInfo.setToken_type((String)map.get("token_type")); // No more supported by Dailymotion
-      tokenInfo.setRefresh_token((String)map.get("refresh_token"));
-      tokenInfo.setScope((String)map.get("manage_videos"));
-      tokenInfo.setExpires_in(36000); //(Integer)map.get("expires_in")); // No more supported by Dailymotion
-      //tokenInfo.setScope((String)map.get("scope")); // No more supported by Dailymotion
-      System.out.println(tokenInfo);
-      log.warn("sendTokenRequest : authTokenInfo = {}, scope = {}", tokenInfo.getAccess_token(), tokenInfo.getScope());
-    }else{
-      System.out.println("No user exist----------");
-    }
-    return tokenInfo;
+    ResponseEntity<Object> response = restTemplate.exchange(uri, method, request, Object.class);
+    return (LinkedHashMap<String, Object>)response.getBody();
   }
 
   public RestTemplate buildRestTemplate() {

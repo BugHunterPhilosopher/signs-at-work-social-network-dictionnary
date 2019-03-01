@@ -115,10 +115,8 @@ public class SpringRestClient {
     body.add("code", services.dailymotionCode().findLast().getCode());
 
     HttpEntity<?> request = new HttpEntity<Object>(body, getHeadersWithClientCredentials());
-
-
     ResponseEntity<T> response = restTemplate.exchange(uri, method, request, type);
-    return (T)response.getBody();
+    return response.getBody();
   }
 
   public RestTemplate buildRestTemplate() {

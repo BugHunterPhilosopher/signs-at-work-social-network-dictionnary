@@ -32,7 +32,6 @@ import com.orange.signsatwork.biz.persistence.service.VideoService;
 import com.orange.signsatwork.biz.view.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -348,7 +347,7 @@ public class SignController {
     return "fragments/frame-signs";
   }
 
-//fix me !!!!! kanban 473311 suite retour tests utilisateurs
+  //fix me !!!!! kanban 473311 suite retour tests utilisateurs
 //    item supprime ihm
   @RequestMapping(value = "/sec/signs/mostcommented")
   public String signsMostCommented(@RequestParam("isMostCommented") boolean isMostCommented, @RequestParam("isSearch") boolean isSearch, Principal principal, Model model) {
@@ -549,7 +548,7 @@ public class SignController {
     return "fragments/frame-signs";
   }
 
-//fix me !!!!! kanban 473311 suite retour tests utilisateurs
+  //fix me !!!!! kanban 473311 suite retour tests utilisateurs
 //    item supprime ihm
   @RequestMapping(value = "/sec/signs/mostviewed")
   public String signsMostViewed(@RequestParam("isMostViewed") boolean isMostViewed, @RequestParam("isSearch") boolean isSearch, Principal principal, Model model) {
@@ -634,7 +633,7 @@ public class SignController {
       model.addAttribute("isMostRecent", false);
       model.addAttribute("classDropdownDirection", "  direction_up pull-right");
     } else {
-     /*querySigns = services.sign().mostRecent(user.lastDeconnectionDate);*/
+      /*querySigns = services.sign().mostRecent(user.lastDeconnectionDate);*/
       querySigns = services.sign().mostRecentWithoutDate();
       model.addAttribute("isMostRecent", true);
       model.addAttribute("isLowRecent", false);
@@ -956,7 +955,7 @@ public class SignController {
     return "sign-detail";
   }
 
-//fix me !!!!! kanban 473322 suite retour test utilisateurs
+  //fix me !!!!! kanban 473322 suite retour test utilisateurs
 //  "signes proche" supprimer  de ihm
   @Secured("ROLE_USER")
   @RequestMapping(value = "/sec/sign/{signId}/{videoId}/video-associates")
@@ -1054,10 +1053,6 @@ public class SignController {
   @Secured("ROLE_USER")
   @RequestMapping(value = "/sec/sign/search")
   public String searchSign(@ModelAttribute SignCreationView signCreationView, @RequestParam("id") Long requestId) {
-    springRestClient.retrieveDailymotionCode("https://www.dailymotion.com/oauth/authorize?response_type=code&scope=manage_videos&client_id="
-         + appProfile.getClientId() + "&redirect_uri=https://signes.bougetesmains.club/ws/code/",
-      HttpMethod.GET, String.class);
-
     if (requestId == null) {
       requestId = 0L;
     }

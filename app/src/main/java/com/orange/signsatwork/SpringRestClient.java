@@ -78,7 +78,7 @@ public class SpringRestClient {
    */
   @SuppressWarnings({ "unchecked"})
   public AuthTokenInfo sendTokenRequest(){
-    LinkedHashMap<String, Object> map = retrieveDailymotionCode(AUTH_SERVER_URI, HttpMethod.POST);
+    LinkedHashMap<String, Object> map = retrieveDailymotionCode(AUTH_SERVER_URI, HttpMethod.POST, LinkedHashMap.class);
     AuthTokenInfo tokenInfo = null;
 
     if(map!=null){
@@ -103,7 +103,7 @@ public class SpringRestClient {
     return tokenInfo;
   }
 
-  public LinkedHashMap<String, Object> retrieveDailymotionCode(final String uri, final HttpMethod method) {
+  public <T> T retrieveDailymotionCode(final String uri, final HttpMethod method, final Class<T> type) {
     RestTemplate restTemplate = buildRestTemplate();
 
     MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
@@ -117,8 +117,8 @@ public class SpringRestClient {
     HttpEntity<?> request = new HttpEntity<Object>(body, getHeadersWithClientCredentials());
 
 
-    ResponseEntity<Object> response = restTemplate.exchange(uri, method, request, Object.class);
-    return (LinkedHashMap<String, Object>)response.getBody();
+    ResponseEntity<T> response = restTemplate.exchange(uri, method, request, type);
+    return (T)response.getBody();
   }
 
   public RestTemplate buildRestTemplate() {

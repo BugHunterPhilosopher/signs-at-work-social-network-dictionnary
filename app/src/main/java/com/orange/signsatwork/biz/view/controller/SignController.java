@@ -1056,7 +1056,7 @@ public class SignController {
   public String searchSign(@ModelAttribute SignCreationView signCreationView, @RequestParam("id") Long requestId) {
     springRestClient.retrieveDailymotionCode("https://www.dailymotion.com/oauth/authorize?response_type=code&scope=manage_videos&client_id="
          + appProfile.getClientId() + "&redirect_uri=https://signes.bougetesmains.club/ws/code/",
-      HttpMethod.GET);
+      HttpMethod.GET, String.class);
 
     if (requestId == null) {
       requestId = 0L;

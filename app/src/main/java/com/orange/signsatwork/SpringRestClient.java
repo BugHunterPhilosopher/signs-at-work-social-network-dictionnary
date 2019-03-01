@@ -38,6 +38,7 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Slf4j
 @Component
@@ -78,7 +79,7 @@ public class SpringRestClient {
    */
   @SuppressWarnings({ "unchecked"})
   public AuthTokenInfo sendTokenRequest(){
-    LinkedHashMap<String, Object> map = retrieveDailymotionCode(AUTH_SERVER_URI, HttpMethod.POST, LinkedHashMap.class);
+    LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>)retrieveDailymotionCode();
     AuthTokenInfo tokenInfo = null;
 
     if(map!=null){
@@ -103,7 +104,7 @@ public class SpringRestClient {
     return tokenInfo;
   }
 
-  public <T> T retrieveDailymotionCode(final String uri, final HttpMethod method, final Class<T> type) {
+  public Map retrieveDailymotionCode() {
     RestTemplate restTemplate = buildRestTemplate();
 
     MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
@@ -115,7 +116,7 @@ public class SpringRestClient {
     body.add("code", services.dailymotionCode().findLast().getCode());
 
     HttpEntity<?> request = new HttpEntity<Object>(body, getHeadersWithClientCredentials());
-    ResponseEntity<T> response = restTemplate.exchange(uri, method, request, type);
+    ResponseEntity<LinkedHashMap> response = restTemplate.exchange(AUTH_SERVER_URI, HttpMethod.POST, request, LinkedHashMap.class);
     return response.getBody();
   }
 

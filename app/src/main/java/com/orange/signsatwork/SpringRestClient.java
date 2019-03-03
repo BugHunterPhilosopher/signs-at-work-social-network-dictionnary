@@ -79,7 +79,7 @@ public class SpringRestClient {
    */
   @SuppressWarnings({ "unchecked"})
   public AuthTokenInfo sendTokenRequest(){
-    LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>)retrieveDailymotionCode();
+    LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) retrieveDailymotionTokens();
     AuthTokenInfo tokenInfo = null;
 
     if(map!=null){
@@ -97,23 +97,22 @@ public class SpringRestClient {
     tokenInfo.setAccess_token((String)map.get("access_token"));
     //tokenInfo.setToken_type((String)map.get("token_type")); // No more supported by Dailymotion
     tokenInfo.setRefresh_token((String)map.get("refresh_token"));
-    tokenInfo.setScope((String)map.get("manage_videos"));
     tokenInfo.setExpires_in(36000); //(Integer)map.get("expires_in")); // No more supported by Dailymotion
     //tokenInfo.setScope((String)map.get("scope")); // No more supported by Dailymotion
-    log.warn("sendTokenRequest : authTokenInfo = {}, scope = {}", tokenInfo.getAccess_token(), tokenInfo.getScope());
+    log.warn("sendTokenRequest : refresh_token = {}, expires_in = {}", tokenInfo.getRefresh_token(), tokenInfo.getExpires_in());
     return tokenInfo;
   }
 
-  public Map retrieveDailymotionCode() {
+  public Map retrieveDailymotionTokens() {
     RestTemplate restTemplate = buildRestTemplate();
 
     MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
     body.add("grant_type", appProfile.dailymotionAccess().grantType);
     body.add("client_id", appProfile.dailymotionAccess().clientId);
     body.add("client_secret", appProfile.dailymotionAccess().clientSecret);
-    body.add("redirect_uri", appProfile.getCallback());
-    body.add("scope", "manage_videos");
-    body.add("code", services.dailymotionCode().findLast().getCode());
+    body.add("username", appProfile.dailymotionAccess().username);
+    body.add("password", appProfile.dailymotionAccess().password);
+//    body.add("scope", "manage_videos");
 
     HttpEntity<?> request = new HttpEntity<Object>(body, getHeadersWithClientCredentials());
     ResponseEntity<LinkedHashMap> response = restTemplate.exchange(AUTH_SERVER_URI, HttpMethod.POST, request, LinkedHashMap.class);

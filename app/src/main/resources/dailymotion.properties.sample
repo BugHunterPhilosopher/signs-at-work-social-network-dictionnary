@@ -1,6 +1,7 @@
-app.dailymotion.grant_type=authorization_code
+app.dailymotion.grant_type=password
 app.dailymotion.client_id=
 app.dailymotion.client_secret=
-app.dailymotion.callback=https://mydomain/ws/code/
+app.dailymotion.username=
+app.dailymotion.password=
 
 file.uploads.path=/mypath/my-data-folder/

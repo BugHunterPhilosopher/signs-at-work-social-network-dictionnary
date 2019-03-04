@@ -23,25 +23,35 @@ package com.orange.signsatwork.biz.view.controller;
  */
 
 import com.orange.signsatwork.biz.persistence.service.MessageByLocaleService;
-import com.orange.signsatwork.biz.persistence.service.Services;
+import com.orange.signsatwork.biz.storage.StorageProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.imageio.ImageIO;
+import javax.xml.bind.DatatypeConverter;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @Slf4j
 @Controller
 public class DrawSignController {
 
-  private static final String HOME_URL = "/";
   private static final String REQUEST_URL = "/sec/draw-sign";
 
   @Autowired
-  private Services services;
+  private StorageProperties storageProperties;
 
   @Autowired
   MessageByLocaleService messageByLocaleService;
@@ -51,6 +61,29 @@ public class DrawSignController {
   public String favorite(Principal principal, Model model) {
 
     return "draw-sign";
+  }
+
+  @Secured("ROLE_USER")
+  @RequestMapping(value = REQUEST_URL + "/create", method = RequestMethod.POST)
+  @ResponseBody
+  public Map<String,Object> createDrawSign(@RequestParam(value="imageBase64", defaultValue="")String imageBase64) {
+    Map<String,Object> res = new HashMap<>();
+
+    File imageFile = new File(storageProperties.getLocation() + UUID.randomUUID() + ".png");
+    try{
+      byte[] decodedBytes = DatatypeConverter.parseBase64Binary(imageBase64.replaceAll("data:image/.+;base64,", ""));
+      BufferedImage bfi = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+      ImageIO.write(bfi , "png", imageFile);
+      bfi.flush();
+      res.put("ret", 0);
+    } catch(Exception e) {
+      res.put("ret", -1);
+      res.put("msg", "Cannot process due to the image processing error.");
+      log.error("Error in draw sign processing!", e);
+      return res;
+    }
+
+    return res;
   }
 
 }

@@ -27,6 +27,7 @@
 <header role="banner" th:replace="fragments/header-favorite :: header">&nbsp;</header>
 
 <body class="container-fluid">
+<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 <div class="row ">
   <div id="main_content">
     <h3>Sample Poses</h3>
@@ -432,9 +433,30 @@
 <script type="text/javascript">
   document.addEventListener("DOMContentLoaded", function(event) {
     document.getElementById("download-to-svg").onclick = function(){
-      var image = document.getElementById('the_canvas').toDataURL("image/png").
-        replace("image/png", "image/octet-stream");  // here is the most important part because if you dont replace you will get a DOM 18 exception.
-      window.location.href=image;
+      var imageData = document.getElementById('the_canvas').toDataURL();
+      var token = $("input[name='_csrf']").attr("value");
+
+      $.ajax({
+        url:'/sec/draw-sign/create',
+        data:{imageBase64: imageData},
+        type: 'post',
+        dataType: 'json',
+        timeout: 10000,
+        async: false,
+        beforeSend: function(xhr){
+          xhr.setRequestHeader("X-CSRF-TOKEN", token);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+          console.log(xhr.status + ": " + thrownError);
+        },
+        success: function(res){
+          if(res.ret==0){
+            console.log("SUCCESS");
+          }else{
+            console.log("FAIL : " + res.msg);
+          }
+        }
+      });
     }
   });
 </script>

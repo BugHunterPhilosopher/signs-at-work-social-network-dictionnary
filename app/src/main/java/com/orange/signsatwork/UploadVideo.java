@@ -97,7 +97,7 @@ public class UploadVideo {
       // Add the completed snippet object to the video resource.
       videoObjectDefiningMetadata.setSnippet(snippet);
 
-      InputStreamContent mediaContent = new InputStreamContent(VIDEO_FILE_FORMAT, new FileInputStream("/home/nostromo/sign-data/zus8d48axi6g1t00gns.mp4"));
+      InputStreamContent mediaContent = new InputStreamContent(VIDEO_FILE_FORMAT, new FileInputStream("/home/nostromo/sign-data/10l935k1lx1lhsj4crqe.mp4"));
 
       // Insert the video. The command sends three arguments. The first
       // specifies which information the API request is setting and which

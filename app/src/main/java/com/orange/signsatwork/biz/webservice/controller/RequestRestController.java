@@ -22,7 +22,7 @@ package com.orange.signsatwork.biz.webservice.controller;
  * #L%
  */
 
-import com.orange.signsatwork.DalymotionToken;
+import com.orange.signsatwork.DailymotionToken;
 import com.orange.signsatwork.SpringRestClient;
 import com.orange.signsatwork.biz.domain.AuthTokenInfo;
 import com.orange.signsatwork.biz.domain.Request;
@@ -38,7 +38,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -58,7 +57,7 @@ public class RequestRestController {
   @Autowired
   Services services;
   @Autowired
-  DalymotionToken dalymotionToken;
+  DailymotionToken dailymotionToken;
   @Autowired
   private SpringRestClient springRestClient;
   @Autowired
@@ -172,10 +171,10 @@ public class RequestRestController {
 
   private void DeleteVideoOnDailyMotion(String dailymotionId) {
 
-    AuthTokenInfo authTokenInfo = dalymotionToken.getAuthTokenInfo();
+    AuthTokenInfo authTokenInfo = dailymotionToken.getAuthTokenInfo();
     if (authTokenInfo.isExpired()) {
-      dalymotionToken.retrieveToken();
-      authTokenInfo = dalymotionToken.getAuthTokenInfo();
+      dailymotionToken.retrieveToken();
+      authTokenInfo = dailymotionToken.getAuthTokenInfo();
     }
 
     final String uri = "https://api.dailymotion.com/video/"+dailymotionId;

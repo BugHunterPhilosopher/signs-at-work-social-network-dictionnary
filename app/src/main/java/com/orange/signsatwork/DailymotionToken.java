@@ -30,7 +30,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Getter
-public class DalymotionToken {
+public class DailymotionToken {
 
   private AuthTokenInfo authTokenInfo;
   @Autowired

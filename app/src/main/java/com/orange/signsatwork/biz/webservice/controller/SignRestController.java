@@ -22,13 +22,11 @@ package com.orange.signsatwork.biz.webservice.controller;
  * #L%
  */
 
-import com.orange.signsatwork.DalymotionToken;
+import com.orange.signsatwork.DailymotionToken;
 import com.orange.signsatwork.SpringRestClient;
 import com.orange.signsatwork.biz.domain.*;
 import com.orange.signsatwork.biz.persistence.service.MessageByLocaleService;
 import com.orange.signsatwork.biz.persistence.service.Services;
-import com.orange.signsatwork.biz.persistence.service.SignService;
-import com.orange.signsatwork.biz.persistence.service.UserService;
 import com.orange.signsatwork.biz.view.model.SignCreationView;
 import com.orange.signsatwork.biz.webservice.model.SignId;
 import com.orange.signsatwork.biz.webservice.model.SignView;
@@ -44,7 +42,6 @@ import org.springframework.web.client.RestTemplate;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Types that carry this annotation are treated as controllers where @RequestMapping
@@ -58,7 +55,7 @@ public class SignRestController {
   @Autowired
   Services services;
   @Autowired
-  DalymotionToken dalymotionToken;
+  DailymotionToken dailymotionToken;
   @Autowired
   private SpringRestClient springRestClient;
   @Autowired
@@ -132,10 +129,10 @@ public class SignRestController {
 
   private void DeleteVideoOnDailyMotion(String dailymotionId) {
 
-      AuthTokenInfo authTokenInfo = dalymotionToken.getAuthTokenInfo();
+      AuthTokenInfo authTokenInfo = dailymotionToken.getAuthTokenInfo();
       if (authTokenInfo.isExpired()) {
-        dalymotionToken.retrieveToken();
-        authTokenInfo = dalymotionToken.getAuthTokenInfo();
+        dailymotionToken.retrieveToken();
+        authTokenInfo = dailymotionToken.getAuthTokenInfo();
       }
 
       final String uri = "https://api.dailymotion.com/video/"+dailymotionId;

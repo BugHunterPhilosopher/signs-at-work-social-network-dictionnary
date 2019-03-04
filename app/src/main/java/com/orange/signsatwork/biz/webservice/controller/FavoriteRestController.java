@@ -22,29 +22,13 @@ package com.orange.signsatwork.biz.webservice.controller;
  * #L%
  */
 
-import com.orange.signsatwork.DalymotionToken;
-import com.orange.signsatwork.SpringRestClient;
-import com.orange.signsatwork.biz.domain.AuthTokenInfo;
-import com.orange.signsatwork.biz.domain.Sign;
-import com.orange.signsatwork.biz.domain.User;
-import com.orange.signsatwork.biz.domain.Video;
-import com.orange.signsatwork.biz.persistence.service.MessageByLocaleService;
 import com.orange.signsatwork.biz.persistence.service.Services;
-import com.orange.signsatwork.biz.view.model.SignCreationView;
-import com.orange.signsatwork.biz.webservice.model.SignId;
-import com.orange.signsatwork.biz.webservice.model.SignView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletResponse;
-import java.security.Principal;
 import java.util.List;
 
 /**

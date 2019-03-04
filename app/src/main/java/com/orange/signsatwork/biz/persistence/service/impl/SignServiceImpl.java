@@ -23,7 +23,7 @@ package com.orange.signsatwork.biz.persistence.service.impl;
  */
 
 import com.orange.signsatwork.AppProfile;
-import com.orange.signsatwork.DalymotionToken;
+import com.orange.signsatwork.DailymotionToken;
 import com.orange.signsatwork.SpringRestClient;
 import com.orange.signsatwork.biz.domain.*;
 import com.orange.signsatwork.biz.persistence.model.RequestDB;
@@ -63,7 +63,7 @@ public class SignServiceImpl implements SignService {
   @Autowired
   SpringRestClient springRestClient;
   @Autowired
-  DalymotionToken dalymotionToken;
+  DailymotionToken dailymotionToken;
   @Autowired
   AppProfile appProfile;
 
@@ -224,10 +224,10 @@ public class SignServiceImpl implements SignService {
 
   private HttpHeaders getHeaders(){
 
-    AuthTokenInfo authTokenInfo = dalymotionToken.getAuthTokenInfo();
+    AuthTokenInfo authTokenInfo = dailymotionToken.getAuthTokenInfo();
     if (authTokenInfo.isExpired()) {
-      dalymotionToken.retrieveToken();
-      authTokenInfo = dalymotionToken.getAuthTokenInfo();
+      dailymotionToken.retrieveToken();
+      authTokenInfo = dailymotionToken.getAuthTokenInfo();
     }
 
     HttpHeaders headers = new HttpHeaders();

@@ -10,6 +10,7 @@ import com.google.api.services.youtube.model.Video;
 import com.google.api.services.youtube.model.VideoSnippet;
 import com.google.api.services.youtube.model.VideoStatus;
 import com.google.common.collect.Lists;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -24,14 +25,8 @@ import java.util.List;
  *
  * @author Jeremy Walker
  */
-public class UploadVideo {
-
-  /**
-   * Define a global instance of a Youtube object, which will be used
-   * to make YouTube Data API requests.
-   */
-  private static YouTube youtube;
-
+@Slf4j
+public class UploadVideoToYoutube {
   /**
    * Define a global variable that specifies the MIME type of the video
    * being uploaded.
@@ -45,9 +40,8 @@ public class UploadVideo {
    * looks for the video in the application's project folder and uses OAuth
    * 2.0 to authorize the API request.
    *
-   * @param args command line args (not used).
    */
-  public static void main(String[] args) {
+  public static void uploadToYoutube(final String videoFile) {
 
     // This OAuth 2.0 access scope allows an application to upload files
     // to the authenticated user's YouTube channel, but doesn't allow
@@ -59,10 +53,10 @@ public class UploadVideo {
       Credential credential = Auth.authorize(scopes, "uploadvideo");
 
       // This object is used to make YouTube Data API requests.
-      youtube = new YouTube.Builder(Auth.HTTP_TRANSPORT, Auth.JSON_FACTORY, credential).setApplicationName(
+      final YouTube youtube = new YouTube.Builder(Auth.HTTP_TRANSPORT, Auth.JSON_FACTORY, credential).setApplicationName(
         "bouge-tes-mains").build();
 
-      System.out.println("Uploading: " + SAMPLE_VIDEO_FILENAME);
+      log.info("Uploading: " + SAMPLE_VIDEO_FILENAME);
 
       // Add extra information to the video before uploading.
       Video videoObjectDefiningMetadata = new Video();
@@ -86,7 +80,7 @@ public class UploadVideo {
         "Video uploaded via YouTube Data API V3 using the Java library " + "on " + cal.getTime());
 
       // Set the keyword tags that you want to associate with the video.
-      List<String> tags = new ArrayList<String>();
+      List<String> tags = new ArrayList<>();
       tags.add("test");
       tags.add("example");
       tags.add("java");
@@ -97,7 +91,7 @@ public class UploadVideo {
       // Add the completed snippet object to the video resource.
       videoObjectDefiningMetadata.setSnippet(snippet);
 
-      InputStreamContent mediaContent = new InputStreamContent(VIDEO_FILE_FORMAT, new FileInputStream("/home/nostromo/sign-data/10l935k1lx1lhsj4crqe.mp4"));
+      InputStreamContent mediaContent = new InputStreamContent(VIDEO_FILE_FORMAT, new FileInputStream(videoFile));
 
       // Insert the video. The command sends three arguments. The first
       // specifies which information the API request is setting and which
@@ -120,26 +114,24 @@ public class UploadVideo {
       // time and bandwidth in the event of network failures.
       uploader.setDirectUploadEnabled(false);
 
-      MediaHttpUploaderProgressListener progressListener = new MediaHttpUploaderProgressListener() {
-        public void progressChanged(MediaHttpUploader uploader) throws IOException {
-          switch (uploader.getUploadState()) {
-            case INITIATION_STARTED:
-              System.out.println("Initiation Started");
-              break;
-            case INITIATION_COMPLETE:
-              System.out.println("Initiation Completed");
-              break;
-            case MEDIA_IN_PROGRESS:
-              System.out.println("Upload in progress");
-              System.out.println("Upload percentage: " + uploader.getProgress());
-              break;
-            case MEDIA_COMPLETE:
-              System.out.println("Upload Completed!");
-              break;
-            case NOT_STARTED:
-              System.out.println("Upload Not Started!");
-              break;
-          }
+      MediaHttpUploaderProgressListener progressListener = uploader1 -> {
+        switch (uploader1.getUploadState()) {
+          case INITIATION_STARTED:
+            log.info("Initiation Started");
+            break;
+          case INITIATION_COMPLETE:
+            log.info("Initiation Completed");
+            break;
+          case MEDIA_IN_PROGRESS:
+            log.info("Upload in progress");
+            log.info("Upload percentage: " + uploader1.getProgress());
+            break;
+          case MEDIA_COMPLETE:
+            log.info("Upload Completed!");
+            break;
+          case NOT_STARTED:
+            log.info("Upload Not Started!");
+            break;
         }
       };
       uploader.setProgressListener(progressListener);
@@ -148,23 +140,20 @@ public class UploadVideo {
       Video returnedVideo = videoInsert.execute();
 
       // Print data about the newly inserted video from the API response.
-      System.out.println("\n================== Returned Video ==================\n");
-      System.out.println("  - Id: " + returnedVideo.getId());
-      System.out.println("  - Title: " + returnedVideo.getSnippet().getTitle());
-      System.out.println("  - Tags: " + returnedVideo.getSnippet().getTags());
-      System.out.println("  - Privacy Status: " + returnedVideo.getStatus().getPrivacyStatus());
-      System.out.println("  - Video Count: " + returnedVideo.getStatistics().getViewCount());
+      log.info("\n================== Returned Video ==================\n");
+      log.info("  - Id: " + returnedVideo.getId());
+      log.info("  - Title: " + returnedVideo.getSnippet().getTitle());
+      log.info("  - Tags: " + returnedVideo.getSnippet().getTags());
+      log.info("  - Privacy Status: " + returnedVideo.getStatus().getPrivacyStatus());
+      log.info("  - Video Count: " + returnedVideo.getStatistics().getViewCount());
 
     } catch (GoogleJsonResponseException e) {
-      System.err.println("GoogleJsonResponseException code: " + e.getDetails().getCode() + " : "
-        + e.getDetails().getMessage());
-      e.printStackTrace();
+      log.error("GoogleJsonResponseException code: " + e.getDetails().getCode() + " : "
+        + e.getDetails().getMessage(), e);
     } catch (IOException e) {
-      System.err.println("IOException: " + e.getMessage());
-      e.printStackTrace();
+      log.error("IOException: " + e.getMessage(), e);
     } catch (Throwable t) {
-      System.err.println("Throwable: " + t.getMessage());
-      t.printStackTrace();
+      log.error("Throwable: " + t.getMessage(), t);
     }
   }
 

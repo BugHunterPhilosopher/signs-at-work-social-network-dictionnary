@@ -22,10 +22,7 @@ package com.orange.signsatwork.biz.webservice.controller;
  * #L%
  */
 
-import com.orange.signsatwork.biz.persistence.model.UserDB;
-import com.orange.signsatwork.biz.persistence.repository.UserRepository;
 import com.orange.signsatwork.biz.persistence.service.Services;
-import com.orange.signsatwork.biz.persistence.service.UserService;
 import com.orange.signsatwork.biz.view.model.UserCreationView;
 import com.orange.signsatwork.biz.view.model.UserView;
 import lombok.extern.slf4j.Slf4j;

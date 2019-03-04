@@ -5,6 +5,7 @@ import com.orange.signsatwork.SpringRestClient;
 import com.orange.signsatwork.biz.domain.*;
 import com.orange.signsatwork.biz.persistence.service.Services;
 import com.orange.signsatwork.biz.webservice.controller.FileUploadRestController;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -22,6 +23,7 @@ import java.util.OptionalLong;
 
 @Slf4j
 @Service
+@NoArgsConstructor
 public class UploadToDailymotionService {
   @Autowired
   Services services;

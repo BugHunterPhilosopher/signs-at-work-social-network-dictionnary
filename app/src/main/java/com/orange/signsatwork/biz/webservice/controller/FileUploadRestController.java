@@ -117,7 +117,6 @@ public class FileUploadRestController {
   private String handleRecordedVideoFile(VideoFile videoFile, OptionalLong requestId,OptionalLong signId, OptionalLong videoId, Principal principal, HttpServletResponse response) {
     log.info("VideoFile "+videoFile);
     log.info("VideoFile name"+videoFile.name);
-    String videoUrl = null;
     String file = storageProperties.getLocation() + videoFile.name;
     String fileOutput = file.replace(".webm", ".mp4");
 

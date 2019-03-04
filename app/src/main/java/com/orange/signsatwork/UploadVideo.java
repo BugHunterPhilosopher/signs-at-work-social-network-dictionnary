@@ -11,6 +11,7 @@ import com.google.api.services.youtube.model.VideoSnippet;
 import com.google.api.services.youtube.model.VideoStatus;
 import com.google.common.collect.Lists;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -96,8 +97,7 @@ public class UploadVideo {
       // Add the completed snippet object to the video resource.
       videoObjectDefiningMetadata.setSnippet(snippet);
 
-      InputStreamContent mediaContent = new InputStreamContent(VIDEO_FILE_FORMAT,
-        UploadVideo.class.getResourceAsStream("/home/nostromo/sign-data/zus8d48axi6g1t00gns.mp4"));
+      InputStreamContent mediaContent = new InputStreamContent(VIDEO_FILE_FORMAT, new FileInputStream("/home/nostromo/sign-data/zus8d48axi6g1t00gns.mp4"));
 
       // Insert the video. The command sends three arguments. The first
       // specifies which information the API request is setting and which

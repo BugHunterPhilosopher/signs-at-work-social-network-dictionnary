@@ -22,6 +22,7 @@ package com.orange.signsatwork;
  * #L%
  */
 
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -33,6 +34,7 @@ import java.util.Arrays;
 
 @Component
 @Slf4j
+@Getter
 public class AppProfile {
 
   @Autowired
@@ -42,10 +44,10 @@ public class AppProfile {
   private Proxy proxy;
   private DailymotionAccess dailymotionAccess;
 
-  private String clientId;
-  private String clientSecret;
-  private String username;
-  private String password;
+  private String dailymotionClientId;
+  private String dailymotionClientSecret;
+  private String dailymotionUsername;
+  private String dailymotionPassword;
   private String callback;
 
 
@@ -72,11 +74,11 @@ public class AppProfile {
 
   private void initDailyMotion() {
     String grantType = environment.getProperty("app.dailymotion.grant_type");
-    clientId = environment.getProperty("app.dailymotion.client_id");
-    clientSecret = environment.getProperty("app.dailymotion.client_secret");
-    username = environment.getProperty("app.dailymotion.username");
-    password = environment.getProperty("app.dailymotion.password");
-    dailymotionAccess = new DailymotionAccess(grantType, clientId, clientSecret, username, password);
+    dailymotionClientId = environment.getProperty("app.dailymotion.client_id");
+    dailymotionClientSecret = environment.getProperty("app.dailymotion.client_secret");
+    dailymotionUsername = environment.getProperty("app.dailymotion.username");
+    dailymotionPassword = environment.getProperty("app.dailymotion.password");
+    dailymotionAccess = new DailymotionAccess(grantType, dailymotionClientId, dailymotionClientSecret, dailymotionUsername, dailymotionPassword);
   }
 
   private void initProxy() {
@@ -91,14 +93,6 @@ public class AppProfile {
             .filter(profile -> profile.equals("dev"))
             .findAny()
             .isPresent();
-  }
-
-  public String getClientId() {
-    return clientId;
-  }
-
-  public String getCallback() {
-    return callback;
   }
 
   public boolean isHttps() {

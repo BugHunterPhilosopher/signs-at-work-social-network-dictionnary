@@ -35,13 +35,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -91,8 +89,8 @@ public class HomeController {
     User user = AuthentModel.addAuthentModelWithUserDetails(model, principal, admin, services.user());
     StringBuffer location = req.getRequestURL();
 
-    model.addAttribute("client_id", appProfile.getClientId());
-    model.addAttribute("callback", appProfile.getCallback());
+    model.addAttribute("dailymotion_client_id", appProfile.getDailymotionClientId());
+    model.addAttribute("dailymotion_callback", appProfile.getCallback());
     model.addAttribute("title", messageByLocaleService.getMessage("app_name"));
 
     if(user != null) {

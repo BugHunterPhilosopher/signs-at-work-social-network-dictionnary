@@ -72,6 +72,7 @@ public class UploadToDailymotionService {
       authTokenInfo = dailymotionToken.getAuthTokenInfo();
     }
 
+    log.info("Dailymotion info: services: {}, user: {}, principal: {}, name: {}", services, services.user(), principal, principal.getName());
     User user = services.user().withUserName(principal.getName());
 
     UrlFileUploadDailymotion urlfileUploadDailymotion = services.sign().getUrlFileUpload();

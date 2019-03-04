@@ -103,7 +103,7 @@ public class UploadToDailymotionService {
     }else{
       body.add("title", videoFile.signNameRecording);
     }
-    body.add("channel", "LSF");
+    body.add("channel", "tech");
     body.add("published", false);
     body.add("private", true);
 

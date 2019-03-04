@@ -10,7 +10,6 @@ import com.google.api.services.youtube.model.Video;
 import com.google.api.services.youtube.model.VideoSnippet;
 import com.google.api.services.youtube.model.VideoStatus;
 import com.google.common.collect.Lists;
-import com.orange.signsatwork.Auth;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.FileInputStream;
@@ -34,8 +33,6 @@ public class UploadVideoToYoutubeService {
    */
   private static final String VIDEO_FILE_FORMAT = "video/*";
 
-  private static final String SAMPLE_VIDEO_FILENAME = "sample-video.mp4";
-
   /**
    * Upload the user-selected video to the user's YouTube channel. The code
    * looks for the video in the application's project folder and uses OAuth
@@ -51,13 +48,11 @@ public class UploadVideoToYoutubeService {
 
     try {
       // Authorize the request.
-      Credential credential = Auth.authorize(scopes, "uploadvideo");
+      Credential credential = YoutubeAuthService.authorize(scopes, "uploadvideo");
 
       // This object is used to make YouTube Data API requests.
-      final YouTube youtube = new YouTube.Builder(Auth.HTTP_TRANSPORT, Auth.JSON_FACTORY, credential).setApplicationName(
+      final YouTube youtube = new YouTube.Builder(YoutubeAuthService.HTTP_TRANSPORT, YoutubeAuthService.JSON_FACTORY, credential).setApplicationName(
         "bouge-tes-mains").build();
-
-      log.info("Uploading: " + SAMPLE_VIDEO_FILENAME);
 
       // Add extra information to the video before uploading.
       Video videoObjectDefiningMetadata = new Video();
@@ -65,7 +60,7 @@ public class UploadVideoToYoutubeService {
       // Set the video to be publicly visible. This is the default
       // setting. Other supporting settings are "unlisted" and "private."
       VideoStatus status = new VideoStatus();
-      status.setPrivacyStatus("public");
+      status.setPrivacyStatus("private");
       videoObjectDefiningMetadata.setStatus(status);
 
       // Most of the video's metadata is set on the VideoSnippet object.
@@ -82,11 +77,8 @@ public class UploadVideoToYoutubeService {
 
       // Set the keyword tags that you want to associate with the video.
       List<String> tags = new ArrayList<>();
-      tags.add("test");
-      tags.add("example");
-      tags.add("java");
-      tags.add("YouTube Data API V3");
-      tags.add("erase me");
+      tags.add("Bouge Tes Mains");
+      tags.add("LSF");
       snippet.setTags(tags);
 
       // Add the completed snippet object to the video resource.

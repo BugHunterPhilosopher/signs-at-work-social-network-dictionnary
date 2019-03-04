@@ -1,4 +1,4 @@
-package com.orange.signsatwork;
+package com.orange.signsatwork.biz.storage;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.auth.oauth2.StoredCredential;
@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * Shared class used by every sample. Contains methods for authorizing a user and caching credentials.
  */
-public class Auth {
+public class YoutubeAuthService {
 
   /**
    * Define a global instance of the HTTP transport.
@@ -48,7 +48,7 @@ public class Auth {
   public static Credential authorize(List<String> scopes, String credentialDatastore) throws IOException {
 
     // Load client secrets.
-    Reader clientSecretReader = new InputStreamReader(Auth.class.getResourceAsStream("/client_secrets.json"));
+    Reader clientSecretReader = new InputStreamReader(YoutubeAuthService.class.getResourceAsStream("/client_secrets.json"));
     GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, clientSecretReader);
 
     // Checks that the defaults have been replaced (Default = "Enter X here").

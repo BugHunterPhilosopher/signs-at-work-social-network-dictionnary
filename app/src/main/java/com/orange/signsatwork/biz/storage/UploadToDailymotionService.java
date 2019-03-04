@@ -5,13 +5,11 @@ import com.orange.signsatwork.SpringRestClient;
 import com.orange.signsatwork.biz.domain.*;
 import com.orange.signsatwork.biz.persistence.service.Services;
 import com.orange.signsatwork.biz.webservice.controller.FileUploadRestController;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
-import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -105,8 +103,8 @@ public class UploadToDailymotionService {
     }else{
       body.add("title", videoFile.signNameRecording);
     }
-    body.add("channel", "tech");
-    body.add("published", true);
+    body.add("channel", "LSF");
+    body.add("published", false);
     body.add("private", true);
 
 
@@ -114,7 +112,6 @@ public class UploadToDailymotionService {
     HttpHeaders headers1 = new HttpHeaders();
     headers1.setContentType(MediaType.MULTIPART_FORM_DATA);
     headers1.set("Authorization", "Bearer " + authTokenInfo.getAccess_token());
-    //headers1.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 
     HttpEntity<MultiValueMap<String, Object>> requestEntity1 = new HttpEntity<>(body, headers1);
     ResponseEntity<VideoDailyMotion> response1 = restTemplate1.exchange("https://api.dailymotion.com/me/videos",

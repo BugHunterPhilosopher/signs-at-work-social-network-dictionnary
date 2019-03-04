@@ -1,4 +1,4 @@
-package com.orange.signsatwork.biz;
+package com.orange.signsatwork.biz.storage;
 
 import com.orange.signsatwork.DailymotionToken;
 import com.orange.signsatwork.SpringRestClient;
@@ -22,14 +22,9 @@ import java.security.Principal;
 import java.util.OptionalLong;
 
 @Slf4j
-@Service
-@NoArgsConstructor
 public class UploadToDailymotionService {
-  @Autowired
-  Services services;
-  @Autowired
+  private Services services;
   private SpringRestClient springRestClient;
-
   private boolean myResult;
   private FileUploadRestController fileUploadRestController;
   private DailymotionToken dailymotionToken;
@@ -41,9 +36,13 @@ public class UploadToDailymotionService {
   private String fileOutput;
   private Sign sign;
 
-  public UploadToDailymotionService(FileUploadRestController fileUploadRestController, DailymotionToken dailymotionToken,
+  @Autowired
+  public UploadToDailymotionService(Services services, SpringRestClient springRestClient,
+                                    FileUploadRestController fileUploadRestController, DailymotionToken dailymotionToken,
                                     VideoFile videoFile, OptionalLong signId, OptionalLong videoId, Principal principal,
                                     HttpServletResponse response, String fileOutput) {
+    this.services = services;
+    this.springRestClient = springRestClient;
     this.fileUploadRestController = fileUploadRestController;
     this.dailymotionToken = dailymotionToken;
     this.videoFile = videoFile;
@@ -72,7 +71,10 @@ public class UploadToDailymotionService {
       authTokenInfo = dailymotionToken.getAuthTokenInfo();
     }
 
-    log.info("Dailymotion info: services: {}, user: {}, principal: {}, name: {}", services, services.user(), principal, principal.getName());
+    log.info("Dailymotion info: services: {}, ", services);
+    log.info("Dailymotion info: user: {},", services.user());
+    log.info("Dailymotion info: principal: {}", principal);
+    log.info("Dailymotion info: name: {}", principal.getName());
     User user = services.user().withUserName(principal.getName());
 
     UrlFileUploadDailymotion urlfileUploadDailymotion = services.sign().getUrlFileUpload();

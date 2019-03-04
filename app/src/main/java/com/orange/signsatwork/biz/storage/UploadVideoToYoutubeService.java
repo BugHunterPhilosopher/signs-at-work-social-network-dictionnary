@@ -1,4 +1,4 @@
-package com.orange.signsatwork;
+package com.orange.signsatwork.biz.storage;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
@@ -10,6 +10,7 @@ import com.google.api.services.youtube.model.Video;
 import com.google.api.services.youtube.model.VideoSnippet;
 import com.google.api.services.youtube.model.VideoStatus;
 import com.google.common.collect.Lists;
+import com.orange.signsatwork.Auth;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.FileInputStream;
@@ -26,7 +27,7 @@ import java.util.List;
  * @author Jeremy Walker
  */
 @Slf4j
-public class UploadVideoToYoutube {
+public class UploadVideoToYoutubeService {
   /**
    * Define a global variable that specifies the MIME type of the video
    * being uploaded.

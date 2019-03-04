@@ -24,8 +24,8 @@ package com.orange.signsatwork.biz.webservice.controller;
 
 import com.orange.signsatwork.DailymotionToken;
 import com.orange.signsatwork.SpringRestClient;
-import com.orange.signsatwork.UploadVideoToYoutube;
-import com.orange.signsatwork.biz.UploadToDailymotionService;
+import com.orange.signsatwork.biz.storage.UploadVideoToYoutubeService;
+import com.orange.signsatwork.biz.storage.UploadToDailymotionService;
 import com.orange.signsatwork.biz.domain.*;
 import com.orange.signsatwork.biz.nativeinterface.NativeInterface;
 import com.orange.signsatwork.biz.persistence.service.MessageByLocaleService;
@@ -159,10 +159,10 @@ public class FileUploadRestController {
 
     try {
       // Youtube
-      UploadVideoToYoutube.uploadToYoutube(fileOutput);
+      UploadVideoToYoutubeService.uploadToYoutube(fileOutput);
 
       // Dailymotion
-      UploadToDailymotionService uploadToDailymotion = new UploadToDailymotionService(this,
+      UploadToDailymotionService uploadToDailymotion = new UploadToDailymotionService(services, springRestClient, this,
         dailymotionToken, videoFile, signId, videoId, principal, response, fileOutput).upload();
       if (uploadToDailymotion.hasError()) {
         return messageByLocaleService.getMessage("errorDailymotionDeleteVideo");

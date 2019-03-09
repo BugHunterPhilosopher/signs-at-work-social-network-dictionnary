@@ -64,7 +64,7 @@
           </li>
 
           <li th:if="${isAuthenticated}" class="aside_bckg_li">
-            <a th:href="@{/sec/draw-sign/}">
+            <a th:href="@{/sec/draw-sign/} + ${signName} + '/' + ${requestId}">
               <div>
                 <div class="pull-left add_video"></div>
                 <h4 class="container_H2" th:text="#{graphical_signs}"/>

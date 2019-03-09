@@ -29,12 +29,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.DatatypeConverter;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -48,7 +46,7 @@ import java.util.UUID;
 @Controller
 public class DrawSignController {
 
-  private static final String REQUEST_URL = "/sec/draw-sign";
+  private static final String REQUEST_URL = "/sec/draw-sign/{signName}/{signId}";
 
   @Autowired
   private StorageProperties storageProperties;
@@ -58,8 +56,10 @@ public class DrawSignController {
 
   @Secured("ROLE_USER")
   @RequestMapping(value = REQUEST_URL)
-  public String favorite(Principal principal, Model model) {
+  public String favorite(HttpServletRequest req, @PathVariable String signName, @PathVariable long signId, Principal principal, Model model) {
 
+    model.addAttribute("signName", signName);
+    model.addAttribute("signId", signId);
     return "draw-sign";
   }
 

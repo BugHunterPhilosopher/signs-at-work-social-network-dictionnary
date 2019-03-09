@@ -24,55 +24,55 @@
 <head>
   <th:block th:include="fragments/header-head-draw :: head"></th:block>
 </head>
-<header role="banner" th:replace="fragments/header-favorite :: header">&nbsp;</header>
+<header role="banner" th:replace="fragments/header-favorite-draw :: header">&nbsp;</header>
 
 <body class="container-fluid">
 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 <div class="row ">
   <div id="main_content">
-    <h3>Sample Poses</h3>
+    <h3>Échantillons de poses :</h3>
     <dl class='clearfix'>
-      <dt>Body:</dt>
+      <dt>Corps :</dt>
       <dd>
         <ul id="poses" class="inline">
-          <li><a href="#forward">Forward</a></li>
-          <li><a href="#out">Out</a></li>
-          <li><a href="#down">Down</a></li>
-          <li><a href="#in_pose">In</a></li>
-          <li><a href="#default_pose">Default</a></li>
+          <li><a href="#forward">En avant</a></li>
+          <li><a href="#out">Extérieur</a></li>
+          <li><a href="#down">En bas</a></li>
+          <li><a href="#in_pose">Intérieur</a></li>
+          <li><a href="#default_pose">Par défaut</a></li>
         </ul>
       </dd>
-      <dt>Hand:</dt>
+      <dt>Main :</dt>
       <dd>
         <ul id="hand_poses" class="inline">
-          <li><a href="#s">Fist</a></li>
-          <li><a href="#5">Five</a></li>
-          <li><a href="#A">Thumb</a></li>
-          <li><a href="#1">Point</a></li>
-          <li><a href="#B">Palm</a></li>
+          <li><a href="#s">Poing serré</a></li>
+          <li><a href="#5">Cinq</a></li>
+          <li><a href="#A">Pouce</a></li>
+          <li><a href="#1">Index</a></li>
+          <li><a href="#B">Paume</a></li>
         </ul>
       </dd>
-      <dt>Face:</dt>
+      <dt>Visage :</dt>
       <dd>
         <ul id="face_poses" class="inline">
-          <li><a href="#wide">Up extreme</a></li>
-          <li><a href="#narrow">Down extreme</a></li>
-          <li><a href="#teeth">Teeth</a></li>
-          <li><a href="#tongue">Tongue</a></li>
-          <li><a href="#default_face">Default</a></li>
+          <li><a href="#wide">Tout en haut</a></li>
+          <li><a href="#narrow">tout en bas</a></li>
+          <li><a href="#teeth">Dents</a></li>
+          <li><a href="#tongue">Langue</a></li>
+          <li><a href="#default_face">Par défaut</a></li>
         </ul>
       </dd>
     </dl>
     <br style="clear:both"/>
     <canvas id="the_canvas" width="600" height="400" style="margin:auto;display:block"></canvas>
-    <button id="download-to-svg">DOWNLOAD</button>
-    <h3>Customize pose:</h3>
+    <button id="download-to-svg">Valider</button>
+    <h3>Personnalisez votre pose :</h3>
     <ul id="customize" class="inline">
-      <li><a href="#left_hand_position">Left Hand</a></li>
-      <li><a href="#left_hand_pose">Left Hand Fingers</a></li>
-      <li><a href="#right_hand_position">Right Hand</a></li>
-      <li><a href="#right_hand_pose">Right Hand Fingers</a></li>
-      <li><a href="#head_and_body">Head and Body</a></li>
+      <li><a href="#left_hand_position">Main gauche</a></li>
+      <li><a href="#left_hand_pose">Doigts de la main gauche</a></li>
+      <li><a href="#right_hand_position">Main droite</a></li>
+      <li><a href="#right_hand_pose">Doigts de la main droite</a></li>
+      <li><a href="#head_and_body">Tête et corps</a></li>
     </ul>
     <div>
       <fieldset id="right_hand_position">

@@ -27,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class YoutubeAccess {
   public final String accountId;
+  public final String username;
   public final String privateKey;
 
 }

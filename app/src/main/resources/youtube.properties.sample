@@ -1,2 +1,3 @@
+app.youtube.account.id=me@me.iam.gserviceaccount.com
 app.youtube.username=
-app.youtube.private.key=/home/moi/mykey.p12
+app.youtube.private.key=/home/me/mykey.p12

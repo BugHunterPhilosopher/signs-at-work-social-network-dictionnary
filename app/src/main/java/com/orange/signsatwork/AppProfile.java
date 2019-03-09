@@ -51,6 +51,7 @@ public class AppProfile {
   private String dailymotionPassword;
 
   private String youtubeAccountId;
+  private String youtubeUsername;
   private String youtubePrivateKey;
 
 
@@ -90,10 +91,11 @@ public class AppProfile {
   }
 
   private void initYoutube() {
-    youtubeAccountId = environment.getProperty("app.youtube.username");
+    youtubeAccountId = environment.getProperty("app.youtube.account.id");
+    youtubeUsername = environment.getProperty("app.youtube.username");
     youtubePrivateKey = environment.getProperty("app.youtube.private.key");
 
-    youtubeAccess = new YoutubeAccess(youtubeAccountId, youtubePrivateKey);
+    youtubeAccess = new YoutubeAccess(youtubeAccountId, youtubeUsername, youtubePrivateKey);
   }
 
   private void initProxy() {

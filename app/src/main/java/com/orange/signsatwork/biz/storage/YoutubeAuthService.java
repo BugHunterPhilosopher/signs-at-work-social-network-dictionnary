@@ -27,7 +27,7 @@ public class YoutubeAuthService {
       .setServiceAccountId(youtubeAccess.accountId)
       .setServiceAccountPrivateKeyFromP12File(new File(youtubeAccess.privateKey))
       .setServiceAccountScopes(Collections.singleton(SQLAdminScopes.SQLSERVICE_ADMIN))
-      .setServiceAccountUser(youtubeAccess.accountId)
+      .setServiceAccountUser(youtubeAccess.username)
       .build();
 
     return credential;

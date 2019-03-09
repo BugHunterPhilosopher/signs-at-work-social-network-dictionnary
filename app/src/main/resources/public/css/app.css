@@ -2,6 +2,10 @@
   background: url("/img/my_request.png"), url("/img/favoris.png"), url("/img/positif.png"), url("/img/request.jpg"), url("/img/checked.png"), url("/img/checked_down.png"), url("/img/checked_up.png"), url("/img/PlusVues2_Blanc.png"), url("/img/ajourRecent2_Blanc.png"), url("/img/Commentaire_Blanc.png"), url("/img/sprite_picto_400X400.png"), url("/img/new_sprite_picto_400X400.png"), url("/img/sprite_picto_solaris.png") no-repeat;
 }
 
+#sidebar {
+  background-color: white;
+}
+
 .navigationbar-toggle {
   -moz-border-bottom-colors: none;
   -moz-border-left-colors: none;
@@ -21,7 +25,7 @@
   padding: 1rem;
   position:absolute;
   right:8%;
-  top: 4%;
+  top: 2%;
   height: 30px;
   width: 30px;
   background-position: -100px;

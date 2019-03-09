@@ -3,4 +3,5 @@ app/application.yml
 **/*.iml
 **/target
 **/dailymotion.properties
+**/youtube.properties
 **/client_secrets.json

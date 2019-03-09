@@ -43,12 +43,15 @@ public class AppProfile {
   private boolean devProfile;
   private Proxy proxy;
   private DailymotionAccess dailymotionAccess;
+  private YoutubeAccess youtubeAccess;
 
   private String dailymotionClientId;
   private String dailymotionClientSecret;
   private String dailymotionUsername;
   private String dailymotionPassword;
-  private String callback;
+
+  private String youtubeAccountId;
+  private String youtubePrivateKey;
 
 
   public boolean isDevProfile() {
@@ -63,12 +66,17 @@ public class AppProfile {
     return dailymotionAccess;
   }
 
+  public YoutubeAccess youtubeAccess() {
+    return youtubeAccess;
+  }
+
 
   @PostConstruct
   private void init() {
     initDevProfile();
     initProxy();
     initDailyMotion();
+    initYoutube();
   }
 
 
@@ -79,6 +87,13 @@ public class AppProfile {
     dailymotionUsername = environment.getProperty("app.dailymotion.username");
     dailymotionPassword = environment.getProperty("app.dailymotion.password");
     dailymotionAccess = new DailymotionAccess(grantType, dailymotionClientId, dailymotionClientSecret, dailymotionUsername, dailymotionPassword);
+  }
+
+  private void initYoutube() {
+    youtubeAccountId = environment.getProperty("app.youtube.username");
+    youtubePrivateKey = environment.getProperty("app.youtube.private.key");
+
+    youtubeAccess = new YoutubeAccess(youtubeAccountId, youtubePrivateKey);
   }
 
   private void initProxy() {

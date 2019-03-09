@@ -90,7 +90,6 @@ public class HomeController {
     StringBuffer location = req.getRequestURL();
 
     model.addAttribute("dailymotion_client_id", appProfile.getDailymotionClientId());
-    model.addAttribute("dailymotion_callback", appProfile.getCallback());
     model.addAttribute("title", messageByLocaleService.getMessage("app_name"));
 
     if(user != null) {

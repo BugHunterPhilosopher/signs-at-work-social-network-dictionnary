@@ -22,6 +22,7 @@ package com.orange.signsatwork.biz.webservice.controller;
  * #L%
  */
 
+import com.orange.signsatwork.AppProfile;
 import com.orange.signsatwork.DailymotionToken;
 import com.orange.signsatwork.SpringRestClient;
 import com.orange.signsatwork.biz.storage.UploadVideoToYoutubeService;
@@ -83,6 +84,8 @@ public class FileUploadRestController {
   MessageByLocaleService messageByLocaleService;
   @Autowired
   private Environment environment;
+  @Autowired
+  private AppProfile appProfile;
 
 
   public static final String REST_SERVICE_URI = "https://api.dailymotion.com";
@@ -159,7 +162,7 @@ public class FileUploadRestController {
 
     try {
       // Youtube
-      UploadVideoToYoutubeService.uploadToYoutube(fileOutput);
+      UploadVideoToYoutubeService.uploadToYoutube(fileOutput, appProfile.youtubeAccess());
 
       // Dailymotion
       UploadToDailymotionService uploadToDailymotion = new UploadToDailymotionService(services, springRestClient, this,

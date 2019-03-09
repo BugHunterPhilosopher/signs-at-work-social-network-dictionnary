@@ -77,11 +77,11 @@ public class RequestRestController {
         log.info("createRequest: username = {} / request name = {}", user.username, requestCreationView.getRequestName(), requestCreationView.getRequestTextDescription());
         emails = services.user().findEmailForUserHaveSameCommunityAndCouldCreateSign(user.id);
         title = messageByLocaleService.getMessage("request_created_by_user_title", new Object[]{user.name()});
-        bodyMail = messageByLocaleService.getMessage("request_created_by_user_body", new Object[]{user.name(), request.name, "https://signsatwork.orange-labs.fr"});
+        bodyMail = messageByLocaleService.getMessage("request_created_by_user_body", new Object[]{user.name(), request.name, "https://signes.bougetesmains.club"});
 
         Runnable task = () -> {
           log.info("send mail email = {} / title = {} / body = {}", emails.toString(), title, bodyMail);
-          services.emailService().sendRequestMessage(emails.toArray(new String[emails.size()]), title, user.name(), request.name, "https://signsatwork.orange-labs.fr" );
+          services.emailService().sendRequestMessage(emails.toArray(new String[emails.size()]), title, user.name(), request.name, "https://signes.bougetesmains.club" );
         };
 
         new Thread(task).start();

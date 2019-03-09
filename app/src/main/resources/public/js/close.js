@@ -100,7 +100,7 @@ $(document).ready(function()
 
   $('#sidebarCollapse').on('click', function () {
     $('#sidebar').addClass('active');
-    $('.overlay').fadeIn();
+    $('.overlay').fadeTo(500, 0.5);
     $('.collapse.in').toggleClass('in');
     $('a[aria-expanded=true]').attr('aria-expanded', 'false');
   });

@@ -2,6 +2,33 @@
   background: url("/img/my_request.png"), url("/img/favoris.png"), url("/img/positif.png"), url("/img/request.jpg"), url("/img/checked.png"), url("/img/checked_down.png"), url("/img/checked_up.png"), url("/img/PlusVues2_Blanc.png"), url("/img/ajourRecent2_Blanc.png"), url("/img/Commentaire_Blanc.png"), url("/img/sprite_picto_400X400.png"), url("/img/new_sprite_picto_400X400.png"), url("/img/sprite_picto_solaris.png") no-repeat;
 }
 
+.navigationbar-toggle {
+  -moz-border-bottom-colors: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-top-colors: none;
+  background-image: url('/img/menu-black.png');
+  border-image-outset: 0 0 0 0;
+  border-image-repeat: stretch stretch;
+  border-image-slice: 100% 100% 100% 100%;
+  border-image-source: none;
+  border-image-width: 1 1 1 1;
+  border-radius: 0;
+  border: 1px none;
+  margin-bottom: 1rem;
+  margin-right: 0rem;
+  margin-top: 0rem;
+  padding: 1rem;
+  position:fixed;
+  right:5%;
+  top: 2%;
+  height: 30px;
+  width: 30px;
+  background-position: -100px;
+  background-size: 150%;
+  background-color: #4866f7;
+}
+
 /* New Design Altran*/
 /*#definition{
   margin-left: 0px;
@@ -1582,14 +1609,6 @@ text-decoration-line: none;
 	background-size: auto 40px;
 	height: 40px;
 	width: 60px;
-}
-.menu_detail {
-	background-image: url("/img/sprite_picto_400X400.png");
-	background-position: -360px center;
-	background-repeat: no-repeat;
-	background-size: auto 40px;
-	height: 40px;
-	width: 40px;
 }
 .menu_detail_with_chevron {
 	background-image: url("/img/sprite_picto_400X400.png");

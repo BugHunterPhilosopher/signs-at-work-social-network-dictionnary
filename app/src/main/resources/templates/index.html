@@ -64,7 +64,7 @@
               </li>
               <div sec:authorize="hasRole('USER')">
                 <li th:if="${isAuthenticated}" class="clear aside_bckg_li">
-                    <a  data-target="#new-suggest" data-toggle="modal" href="#" >
+                    <a data-target="#new-suggest" data-toggle="modal" href="#" >
                         <div>
                         <div class="pull-left suggest_black"></div>
                         <h2  class="text_hyphenation container_H2" th:text="#{sign.suggest}"></h2>
@@ -73,6 +73,19 @@
                             </div>
                         </div>
                     </a>
+                </li>
+              </div>
+              <div sec:authorize="hasRole('ADMIN')">
+                <li th:if="${isAuthenticated}" class="clear aside_bckg_li">
+                  <a th:href="@{/sec/admin}">
+                    <div>
+                      <div class="pull-left signe"></div>
+                      <h2 class="text_hyphenation container_H2" th:text="#{admin_page_name}"></h2>
+                      <div >
+                        <div class="pull-right chevron_right"></div>
+                      </div>
+                    </div>
+                  </a>
                 </li>
               </div>
             </ul>

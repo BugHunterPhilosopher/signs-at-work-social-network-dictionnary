@@ -29,15 +29,14 @@
 <header role="banner" th:fragment="header">
     <nav role="navigation" class="navbar navbar-inverse" id="main_nav">
         <div class="container-fluid">
-            <div class="navbar-header">
-                <a th:href="@{/sec/admin}" class="text-center" style="color: #FFFFFF" th:text="#{home}"/>
-            </div>
-            <a class="pull-left" th:if="${isAuthenticated}" href="">
+            <a th:href="@{/}" class="pull-left text-center" style="color: #FFFFFF; margin-top:28px;" th:text="#{home}"/>
+            <a th:href="@{/sec/admin}" class="pull-left text-center" style="color: #FFFFFF;padding-top: 28px; padding-left: 10px;" th:text="#{admin_page_name}"/>
+            <a class="pull-right" th:if="${isAuthenticated}" href="">
                 <form th:action="@{/logout}" method = "post">
-                    <button style="background-color: red;display: none" class="btn btn-secondary" type="submit" th:text="#{logout}"></button>
+                    <button style="background-color: #4866f7; margin-top:17%; color: black;" class="btn btn-secondary" type="submit" th:text="#{logout}"></button>
                 </form>
             </a>
-        </div>
+          </div>
     </nav>
 </header>
 

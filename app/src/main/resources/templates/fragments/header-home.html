@@ -58,12 +58,12 @@
                 <a href="/" class="text-center">
                     <div class="logo_app pull-left"></div>
                 </a>
-                <a class="hidden-xs pull-left" th:if="${isAuthenticated and isDevProfile}" href="">
-                    <form th:action="@{/logout}" method = "post">
-                    <button style="background-color: red" class="btn btn-secondary" type="submit" th:text="#{logout}"></button>
-                    </form>
-                </a>
             </div>
+            <a class="pull-right" th:if="${isAuthenticated}" href="">
+                <form th:action="@{/logout}" method = "post">
+                <button style="background-color: #4866f7; margin-top:17%; color: black;" class="btn btn-secondary" type="submit" th:text="#{logout}"></button>
+                </form>
+            </a>
 
        <!--   <div class="navbar-header">
             <button type="button" id="sidebarCollapse" class="btn btn-info navbar-btn">

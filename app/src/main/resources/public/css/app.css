@@ -19,9 +19,9 @@
   margin-right: 0rem;
   margin-top: 0rem;
   padding: 1rem;
-  position:fixed;
-  right:5%;
-  top: 2%;
+  position:absolute;
+  right:8%;
+  top: 4%;
   height: 30px;
   width: 30px;
   background-position: -100px;

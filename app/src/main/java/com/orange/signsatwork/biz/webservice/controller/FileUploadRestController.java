@@ -166,7 +166,7 @@ public class FileUploadRestController {
 
       // Dailymotion
       UploadToDailymotionService uploadToDailymotion = new UploadToDailymotionService(services, springRestClient, this,
-        dailymotionToken, videoFile, signId, videoId, principal, response, fileOutput).upload();
+        dailymotionToken, videoFile, signId, videoId, principal, response, fileOutput, null).upload();
       if (uploadToDailymotion.hasError()) {
         return messageByLocaleService.getMessage("errorDailymotionDeleteVideo");
       }
@@ -231,7 +231,7 @@ public class FileUploadRestController {
       storageService.store(file);
       File inputFile = storageService.load(file.getOriginalFilename()).toFile();
       UploadToDailymotionService uploadToDailymotion = new UploadToDailymotionService(services, springRestClient, this,
-        dailymotionToken, null, signId, videoId, principal, response, inputFile.getAbsolutePath()).upload();
+        dailymotionToken, null, signId, videoId, principal, response, inputFile.getAbsolutePath(), signCreationView.getSignName()).upload();
       if (uploadToDailymotion.hasError()) {
         return messageByLocaleService.getMessage("errorDailymotionDeleteVideo");
       }

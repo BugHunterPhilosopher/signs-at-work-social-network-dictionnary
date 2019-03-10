@@ -236,7 +236,6 @@ public class FileUploadRestController {
 
       UrlFileUploadDailymotion urlfileUploadDailymotion = services.sign().getUrlFileUpload();
 
-
       Resource resource = new FileSystemResource(inputFile.getAbsolutePath());
       MultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
       parts.add("file", resource);
@@ -246,7 +245,6 @@ public class FileUploadRestController {
       HttpHeaders headers = new HttpHeaders();
       headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
-
       HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(parts, headers);
       ResponseEntity<FileUploadDailymotion> responseDailyMotion = restTemplate.exchange(urlfileUploadDailymotion.upload_url,
         HttpMethod.POST, requestEntity, FileUploadDailymotion.class);
@@ -254,6 +252,8 @@ public class FileUploadRestController {
 
       MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
       body.add("url", fileUploadDailyMotion.url);
+      log.info("URL to upload to: {}", fileUploadDailyMotion.url);
+
       if (signId.isPresent()) {
         body.add("title", services.sign().withId(signId.getAsLong()).name);
       } else {
@@ -270,7 +270,7 @@ public class FileUploadRestController {
       headers1.set("Authorization", "Bearer " + authTokenInfo.getAccess_token());
 
       HttpEntity<MultiValueMap<String, Object>> requestEntity1 = new HttpEntity<>(body, headers1);
-      ResponseEntity<VideoDailyMotion> response1 = restTemplate1.exchange("https://api.dailymotion.com/me/videos",
+      ResponseEntity<VideoDailyMotion> response1 = restTemplate1.exchange("https://api.dailymotion.com/me/videos&url=" + fileUploadDailyMotion.url,
         HttpMethod.POST, requestEntity1, VideoDailyMotion.class);
       VideoDailyMotion videoDailyMotion = response1.getBody();
 

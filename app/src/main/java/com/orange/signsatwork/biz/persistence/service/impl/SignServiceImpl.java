@@ -72,7 +72,7 @@ public class SignServiceImpl implements SignService {
   @Override
   public UrlFileUploadDailymotion getUrlFileUpload() {
     RestTemplate restTemplate = springRestClient.buildRestTemplate();
-    HttpEntity<String> request = new HttpEntity<String>(getHeaders());
+    HttpEntity<String> request = new HttpEntity<>(getHeaders());
     ResponseEntity<UrlFileUploadDailymotion> response = restTemplate.exchange(REST_SERVICE_URI + "/file/upload", HttpMethod.GET, request, UrlFileUploadDailymotion.class);
     UrlFileUploadDailymotion urlfileUploadDailyMotion = response.getBody();
     return urlfileUploadDailyMotion;

@@ -229,7 +229,7 @@ public class FileUploadRestController {
     try {
       String dailymotionId;
 
-      AuthTokenInfo authTokenInfo = dailymotionToken.getAuthTokenInfo();
+      AuthTokenInfo authTokenInfo = dailymotionToken.retrieveToken();
       if (authTokenInfo.isExpired()) {
         dailymotionToken.retrieveToken();
         authTokenInfo = dailymotionToken.getAuthTokenInfo();
@@ -335,6 +335,7 @@ public class FileUploadRestController {
 
       return "/sec/sign/" + Long.toString(sign.id) + "/" + Long.toString(sign.lastVideoId) + "/detail";
     } catch (Exception errorDailymotionUploadFile) {
+      log.error("error while uploading!", errorDailymotionUploadFile);
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
       return messageByLocaleService.getMessage("errorDailymotionUploadFile");
     }

@@ -267,7 +267,7 @@ public class FileUploadRestController {
         body.add("title", signCreationView.getSignName());
       }
       body.add("channel", "tech");
-      body.add("published", true);
+      body.add("published", false);
       body.add("private", true);
 
 
@@ -275,7 +275,6 @@ public class FileUploadRestController {
       HttpHeaders headers1 = new HttpHeaders();
       headers1.setContentType(MediaType.MULTIPART_FORM_DATA);
       headers1.set("Authorization", "Bearer " + authTokenInfo.getAccess_token());
-      headers1.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 
       HttpEntity<MultiValueMap<String, Object>> requestEntity1 = new HttpEntity<>(body, headers1);
       ResponseEntity<VideoDailyMotion> response1 = restTemplate1.exchange("https://api.dailymotion.com/me/videos",

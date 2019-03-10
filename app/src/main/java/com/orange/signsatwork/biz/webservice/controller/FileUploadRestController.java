@@ -229,6 +229,12 @@ public class FileUploadRestController {
     try {
       String dailymotionId;
       AuthTokenInfo authTokenInfo = dailymotionToken.retrieveToken();
+      log.info("authTokenInfo: " + authTokenInfo);
+
+      if (authTokenInfo.isExpired()) {
+        dailymotionToken.retrieveToken();
+        authTokenInfo = dailymotionToken.getAuthTokenInfo();
+      }
 
       User user = services.user().withUserName(principal.getName());
       storageService.store(file);
@@ -271,7 +277,7 @@ public class FileUploadRestController {
       headers1.set("Authorization", "Bearer " + authTokenInfo.getAccess_token());
 
       HttpEntity<MultiValueMap<String, Object>> requestEntity1 = new HttpEntity<>(body, headers1);
-      ResponseEntity<VideoDailyMotion> response1 = restTemplate1.exchange("https://api.dailymotion.com/me/videos&url=" + fileUploadDailyMotion.url,
+      ResponseEntity<VideoDailyMotion> response1 = restTemplate1.exchange("https://api.dailymotion.com/me/videos",
         HttpMethod.POST, requestEntity1, VideoDailyMotion.class);
       VideoDailyMotion videoDailyMotion = response1.getBody();
 

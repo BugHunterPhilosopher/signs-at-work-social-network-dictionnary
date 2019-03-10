@@ -32,6 +32,8 @@ public class AuthTokenInfo {
 	private String refresh_token;
 	private int expires_in;
 	private String scope;
+	private String uid;
+
 	public String getAccess_token() {
 		return access_token;
 	}
@@ -62,10 +64,17 @@ public class AuthTokenInfo {
 	public void setScope(String scope) {
 		this.scope = scope;
 	}
+  public String getUid() {
+    return uid;
+  }
+  public void setUid(String uid) {
+    this.uid = uid;
+  }
+
 	@Override
 	public String toString() {
 		return "AuthTokenInfo [access_token=" + access_token + ", token_type=" + token_type + ", refresh_token="
-				+ refresh_token + ", expires_in=" + expires_in + ", scope=" + scope + "]";
+				+ refresh_token + ", expires_in=" + expires_in + ", scope=" + scope + ", uid=" + uid + "]";
 	}
 
 	public boolean isExpired() {

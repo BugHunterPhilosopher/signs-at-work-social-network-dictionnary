@@ -95,11 +95,14 @@ public class SpringRestClient {
     AuthTokenInfo tokenInfo;
     tokenInfo = new AuthTokenInfo();
     tokenInfo.setAccess_token((String)map.get("access_token"));
-    //tokenInfo.setToken_type((String)map.get("token_type")); // No more supported by Dailymotion
+    tokenInfo.setToken_type((String)map.get("token_type"));
     tokenInfo.setRefresh_token((String)map.get("refresh_token"));
-    tokenInfo.setExpires_in(36000); //(Integer)map.get("expires_in")); // No more supported by Dailymotion
-    //tokenInfo.setScope((String)map.get("scope")); // No more supported by Dailymotion
-    log.warn("sendTokenRequest : refresh_token = {}, expires_in = {}", tokenInfo.getRefresh_token(), tokenInfo.getExpires_in());
+    tokenInfo.setExpires_in((Integer)map.get("expires_in"));
+    tokenInfo.setScope((String)map.get("scope"));
+    tokenInfo.setUid((String)map.get("uid"));
+
+    log.warn("sendTokenRequest : refresh_token = {}, expires_in = {}, scope = {}, uid = {}",
+      tokenInfo.getRefresh_token(), tokenInfo.getExpires_in(), tokenInfo.getScope(), tokenInfo.getUid());
     return tokenInfo;
   }
 

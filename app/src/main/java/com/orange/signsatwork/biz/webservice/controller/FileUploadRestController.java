@@ -228,12 +228,7 @@ public class FileUploadRestController {
 
     try {
       String dailymotionId;
-
       AuthTokenInfo authTokenInfo = dailymotionToken.retrieveToken();
-      if (authTokenInfo.isExpired()) {
-        dailymotionToken.retrieveToken();
-        authTokenInfo = dailymotionToken.getAuthTokenInfo();
-      }
 
       User user = services.user().withUserName(principal.getName());
       storageService.store(file);
@@ -243,7 +238,7 @@ public class FileUploadRestController {
 
 
       Resource resource = new FileSystemResource(inputFile.getAbsolutePath());
-      MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
+      MultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
       parts.add("file", resource);
 
       RestTemplate restTemplate = springRestClient.buildRestTemplate();
@@ -252,14 +247,12 @@ public class FileUploadRestController {
       headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
 
-      HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(parts, headers);
-
+      HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(parts, headers);
       ResponseEntity<FileUploadDailymotion> responseDailyMotion = restTemplate.exchange(urlfileUploadDailymotion.upload_url,
         HttpMethod.POST, requestEntity, FileUploadDailymotion.class);
       FileUploadDailymotion fileUploadDailyMotion = responseDailyMotion.getBody();
 
-
-      MultiValueMap<String, Object> body = new LinkedMultiValueMap<String, Object>();
+      MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
       body.add("url", fileUploadDailyMotion.url);
       if (signId.isPresent()) {
         body.add("title", services.sign().withId(signId.getAsLong()).name);
@@ -281,7 +274,6 @@ public class FileUploadRestController {
         HttpMethod.POST, requestEntity1, VideoDailyMotion.class);
       VideoDailyMotion videoDailyMotion = response1.getBody();
 
-
       String url = REST_SERVICE_URI + "/video/" + videoDailyMotion.id + "?thumbnail_ratio=square&ssl_assets=true&fields=" + VIDEO_THUMBNAIL_FIELDS + VIDEO_EMBED_FIELD;
       int i=0;
       do {
@@ -293,7 +285,6 @@ public class FileUploadRestController {
         i++;
       }
       while ((videoDailyMotion.thumbnail_360_url == null) || (videoDailyMotion.embed_url == null) || (videoDailyMotion.thumbnail_360_url.contains("no-such-asset")));
-
 
       String pictureUri = null;
       if (!videoDailyMotion.thumbnail_360_url.isEmpty()) {

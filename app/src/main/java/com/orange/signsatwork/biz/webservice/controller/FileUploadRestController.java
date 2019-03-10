@@ -238,6 +238,7 @@ public class FileUploadRestController {
 
       Resource resource = new FileSystemResource(inputFile.getAbsolutePath());
       MultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
+      log.info("file: {}", inputFile.getAbsolutePath());
       parts.add("file", resource);
 
       RestTemplate restTemplate = springRestClient.buildRestTemplate();

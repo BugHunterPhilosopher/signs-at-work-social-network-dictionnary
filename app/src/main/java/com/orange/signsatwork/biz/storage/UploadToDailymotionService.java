@@ -80,6 +80,7 @@ public class UploadToDailymotionService {
 
     File fileMp4 = new File(fileOutput);
     Resource resource = new FileSystemResource(fileMp4.getAbsolutePath());
+    log.info("file path: {}", fileMp4.getAbsolutePath());
     MultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
     parts.add("file", resource);
 
@@ -101,7 +102,7 @@ public class UploadToDailymotionService {
     if (signId.isPresent()){
       body.add("title",services.sign().withId(signId.getAsLong()).name);
     }else{
-      body.add("title", videoFile.signNameRecording);
+      body.add("title", videoFile == null ? sign.name : videoFile.signNameRecording);
     }
     body.add("channel", "tech");
     body.add("published", false);
@@ -157,8 +158,8 @@ public class UploadToDailymotionService {
     } else if (signId.isPresent() && !(videoId.isPresent())) {
       sign = services.sign().addNewVideo(user.id, signId.getAsLong(), videoDailyMotion.embed_url, pictureUri);
     } else {
-      sign = services.sign().create(user.id, videoFile.signNameRecording, videoDailyMotion.embed_url, pictureUri);
-      log.info("handleFileUpload : username = {} / sign name = {} / video url = {}", user.username, videoFile.signNameRecording, videoDailyMotion.embed_url);
+      sign = services.sign().create(user.id, videoFile == null ? sign.name : videoFile.signNameRecording, videoDailyMotion.embed_url, pictureUri);
+      log.info("handleFileUpload : username = {} / sign name = {} / video url = {}", user.username, videoFile == null ? sign.name : videoFile.signNameRecording, videoDailyMotion.embed_url);
     }
     myResult = false;
     return this;

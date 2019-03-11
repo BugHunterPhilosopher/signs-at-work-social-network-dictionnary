@@ -789,8 +789,9 @@ public class SignController {
 
   @RequestMapping(value = "/sign/{signId}/{videoId}")
   public String video(HttpServletRequest req, @PathVariable long signId, @PathVariable long videoId, Principal principal, Model model) {
-
     Boolean isVideoCreatedByMe = false;
+    model.addAttribute("isVideoCreatedByMe", isVideoCreatedByMe);
+
     String referer = req.getHeader("Referer");
     String backUrl;
     model.addAttribute("videoBelowToFavorite", false);

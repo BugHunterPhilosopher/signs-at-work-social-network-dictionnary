@@ -789,7 +789,7 @@ public class SignController {
 
   @RequestMapping(value = "/sign/{signId}/{videoId}")
   public String video(HttpServletRequest req, @PathVariable long signId, @PathVariable long videoId, Principal principal, Model model) {
-    Boolean isVideoCreatedByMe = false;
+    boolean isVideoCreatedByMe = false;
     model.addAttribute("isVideoCreatedByMe", isVideoCreatedByMe);
 
     String referer = req.getHeader("Referer");
@@ -847,6 +847,7 @@ public class SignController {
       fillModelWithFavorites(model, user);
       if (video.user.id == user.id) {
         isVideoCreatedByMe = true;
+        model.addAttribute("isVideoCreatedByMe", isVideoCreatedByMe);
       }
       Long nbFavorite = services.video().NbFavoriteBelowVideoForUser(videoId, user.id);
       if (nbFavorite >= 1) {
@@ -893,7 +894,7 @@ public class SignController {
   @Secured("ROLE_USER")
   @RequestMapping(value = "/sec/sign/{signId}/{videoId}/detail")
   public String videoDetail(@PathVariable long signId, @PathVariable long videoId, Principal principal, Model model)  {
-    Boolean isVideoCreatedByMe = false;
+    boolean isVideoCreatedByMe = false;
     model.addAttribute("isVideoCreatedByMe", isVideoCreatedByMe);
 
     model.addAttribute("backUrl", videoUrl(signId, videoId));
@@ -923,6 +924,8 @@ public class SignController {
       fillModelWithFavorites(model, user);
       if (video.user.id == user.id) {
         isVideoCreatedByMe = true;
+        model.addAttribute("isVideoCreatedByMe", isVideoCreatedByMe);
+
       }
       Long nbFavorite = services.video().NbFavoriteBelowVideoForUser(videoId, user.id);
       if (nbFavorite >= 1) {
@@ -951,7 +954,6 @@ public class SignController {
     model.addAttribute("signView", sign);
     model.addAttribute("signCreationView", new SignCreationView());
     model.addAttribute("videoView", video);
-    model.addAttribute("isVideoCreatedByMe", isVideoCreatedByMe);
 
     return "sign-detail";
   }

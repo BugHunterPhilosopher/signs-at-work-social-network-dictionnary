@@ -35,6 +35,7 @@ import javax.annotation.PostConstruct;
 import java.security.Principal;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -74,7 +75,8 @@ public class AppSecurityAdmin {
   }
 
   public boolean isAdmin(String username) {
-    return username.equals(adminUsername);
+    return !userRepository.findByUsername(username).stream().filter(user ->
+      user.getUserRoles().contains(AppSecurityRoles.Role.ROLE_ADMIN.toString())).collect(Collectors.toList()).isEmpty();
   }
 
   public boolean isAdmin(Principal principal) {

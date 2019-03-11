@@ -204,7 +204,7 @@ public class FileUploadRestController {
       }else{
         body.add("title", videoFile.signNameRecording);
       }
-      body.add("channel", "tech");
+      body.add("channel", messageByLocaleService.getMessage("video_category"));
       body.add("published", true);
       body.add("private", true);
 
@@ -359,7 +359,7 @@ public class FileUploadRestController {
       } else {
         body.add("title", signCreationView.getSignName());
       }
-      body.add("channel", "tech");
+      body.add("channel", messageByLocaleService.getMessage("video_category"));
       body.add("published", true);
       body.add("private", true);
 
@@ -488,7 +488,7 @@ public class FileUploadRestController {
         } else {
           body.add("title", user.name());
         }
-        body.add("channel", "tech");
+        body.add("channel", messageByLocaleService.getMessage("video_category"));
         body.add("published", true);
         body.add("private", true);
 
@@ -656,7 +656,7 @@ public class FileUploadRestController {
         body.add("title", user.name());
       }
 
-      body.add("channel", "tech");
+      body.add("channel", messageByLocaleService.getMessage("video_category"));
       body.add("published", true);
       body.add("private", true);
 
@@ -796,7 +796,7 @@ public class FileUploadRestController {
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<String, Object>();
         body.add("url", fileUploadDailyMotion.url);
         body.add("title", "Description LSF de la demande " + requestCreationView.getRequestName());
-        body.add("channel", "tech");
+        body.add("channel", messageByLocaleService.getMessage("video_category"));
         body.add("published", true);
         body.add("private", true);
 
@@ -977,7 +977,7 @@ public class FileUploadRestController {
       MultiValueMap<String, Object> body = new LinkedMultiValueMap<String, Object>();
       body.add("url", fileUploadDailyMotion.url);
       body.add("title", "Description LSF de la demande " + videoFile.requestNameRecording);
-      body.add("channel", "tech");
+      body.add("channel", messageByLocaleService.getMessage("video_category"));
       body.add("published", true);
       body.add("private", true);
 
@@ -1156,7 +1156,7 @@ public class FileUploadRestController {
       MultiValueMap<String, Object> body = new LinkedMultiValueMap<String, Object>();
       body.add("url", fileUploadDailyMotion.url);
       body.add("title", "Définition LSF du signe " + sign.name);
-      body.add("channel", "tech");
+      body.add("channel", messageByLocaleService.getMessage("video_category"));
       body.add("published", true);
       body.add("private", true);
 
@@ -1257,7 +1257,7 @@ public class FileUploadRestController {
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<String, Object>();
         body.add("url", fileUploadDailyMotion.url);
         body.add("title", "Définition LSF du signe " + sign.name);
-        body.add("channel", "tech");
+        body.add("channel", messageByLocaleService.getMessage("video_category"));
         body.add("published", true);
         body.add("private", true);
 

@@ -31,6 +31,7 @@ import com.orange.signsatwork.biz.persistence.service.MessageByLocaleService;
 import com.orange.signsatwork.biz.persistence.service.Services;
 import com.orange.signsatwork.biz.storage.StorageService;
 import com.orange.signsatwork.biz.storage.StorageProperties;
+import com.orange.signsatwork.biz.storage.UploadVideoToYoutubeService;
 import com.orange.signsatwork.biz.view.model.RequestCreationView;
 import com.orange.signsatwork.biz.view.model.SignCreationView;
 import com.orange.signsatwork.biz.webservice.model.RequestResponse;
@@ -160,6 +161,10 @@ public class FileUploadRestController {
     }
 
     try {
+      // Youtube
+      UploadVideoToYoutubeService.uploadToYoutube(fileOutput, appProfile.youtubeAccess());
+
+      // Dailymotion
       String dailymotionId;
       AuthTokenInfo authTokenInfo = dailymotionToken.retrieveToken();
       log.info("authTokenInfo: " + authTokenInfo);

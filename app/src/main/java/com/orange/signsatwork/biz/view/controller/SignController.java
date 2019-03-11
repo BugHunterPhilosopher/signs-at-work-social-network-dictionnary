@@ -880,7 +880,6 @@ public class SignController {
     }
     model.addAttribute("signView", sign);
     model.addAttribute("videoView", video);
-    model.addAttribute("isVideoCreatedByMe", isVideoCreatedByMe);
 
     Long nbRating = services.sign().NbRatingForSign(signId);
     model.addAttribute("nbRating", nbRating);
@@ -894,6 +893,7 @@ public class SignController {
   @RequestMapping(value = "/sec/sign/{signId}/{videoId}/detail")
   public String videoDetail(@PathVariable long signId, @PathVariable long videoId, Principal principal, Model model)  {
     Boolean isVideoCreatedByMe = false;
+    model.addAttribute("isVideoCreatedByMe", isVideoCreatedByMe);
 
     model.addAttribute("backUrl", videoUrl(signId, videoId));
     AuthentModel.addAuthenticatedModel(model, AuthentModel.isAuthenticated(principal));

@@ -99,7 +99,7 @@
                             </a>
                         </li>
                     </div>
-                    <div sec:authorize="hasRole('ADMIN') || isVideoCreatedByMe">
+                    <div th:if="${isAdmin || isVideoCreatedByMe}">
                       <li class="aside_bckg_li">
                         <a href="#" data-toggle="modal" data-target="#video_delete_modal">
                           <div class="pull-left delete_picto_detail"></div>

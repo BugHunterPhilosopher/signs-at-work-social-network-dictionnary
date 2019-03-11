@@ -29,6 +29,7 @@ import com.orange.signsatwork.biz.persistence.model.*;
 import com.orange.signsatwork.biz.persistence.service.MessageByLocaleService;
 import com.orange.signsatwork.biz.persistence.service.Services;
 import com.orange.signsatwork.biz.persistence.service.VideoService;
+import com.orange.signsatwork.biz.security.AppSecurityAdmin;
 import com.orange.signsatwork.biz.view.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +64,8 @@ public class SignController {
   private SpringRestClient springRestClient;
   @Autowired
   private AppProfile appProfile;
+  @Autowired
+  private AppSecurityAdmin appSecurityAdmin;
 
   @Autowired
   MessageByLocaleService messageByLocaleService;
@@ -891,11 +894,12 @@ public class SignController {
 
 
 
-  @Secured("ROLE_USER")
+  @Secured({"ROLE_USER", "ROLE_ADMIN"})
   @RequestMapping(value = "/sec/sign/{signId}/{videoId}/detail")
   public String videoDetail(@PathVariable long signId, @PathVariable long videoId, Principal principal, Model model)  {
-    boolean isVideoCreatedByMe = false;
-    model.addAttribute("isVideoCreatedByMe", isVideoCreatedByMe);
+    boolean isAdmin = appSecurityAdmin.isAdmin(principal);
+    model.addAttribute("isVideoCreatedByMe", false);
+    model.addAttribute("isAdmin", isAdmin);
 
     model.addAttribute("backUrl", videoUrl(signId, videoId));
     AuthentModel.addAuthenticatedModel(model, AuthentModel.isAuthenticated(principal));
@@ -923,8 +927,7 @@ public class SignController {
       model.addAttribute("commentDatas", commentDatas);
       fillModelWithFavorites(model, user);
       if (video.user.id == user.id) {
-        isVideoCreatedByMe = true;
-        model.addAttribute("isVideoCreatedByMe", isVideoCreatedByMe);
+        model.addAttribute("isVideoCreatedByMe", true);
 
       }
       Long nbFavorite = services.video().NbFavoriteBelowVideoForUser(videoId, user.id);

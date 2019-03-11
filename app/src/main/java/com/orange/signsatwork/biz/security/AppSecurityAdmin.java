@@ -75,8 +75,13 @@ public class AppSecurityAdmin {
   }
 
   public boolean isAdmin(String username) {
-    return !userRepository.findByUsername(username).stream().filter(user ->
-      user.getUserRoles().contains(AppSecurityRoles.Role.ROLE_ADMIN.toString())).collect(Collectors.toList()).isEmpty();
+    return !(userRepository.findByUsername(username).stream().filter(user -> {
+      log.info("user : {} / ADMIN: {}", user.getUsername(), AppSecurityRoles.Role.ROLE_ADMIN.toString());
+      for (UserRoleDB role : user.getUserRoles()) {
+        log.info("role: {}", role.getRole());
+      }
+      return !user.getUserRoles().stream().filter(role -> role.getRole().equals(AppSecurityRoles.Role.ROLE_ADMIN.toString())).collect(Collectors.toList()).isEmpty(); })
+      .collect(Collectors.toList())).isEmpty();
   }
 
   public boolean isAdmin(Principal principal) {

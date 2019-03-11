@@ -33,13 +33,12 @@ public class UploadToDailymotionService {
   private HttpServletResponse response;
   private String fileOutput;
   private Sign sign;
-  private String signName;
 
   @Autowired
   public UploadToDailymotionService(Services services, SpringRestClient springRestClient,
                                     FileUploadRestController fileUploadRestController, DailymotionToken dailymotionToken,
                                     VideoFile videoFile, OptionalLong signId, OptionalLong videoId, Principal principal,
-                                    HttpServletResponse response, String fileOutput, String signName) {
+                                    HttpServletResponse response, String fileOutput) {
     this.services = services;
     this.springRestClient = springRestClient;
     this.fileUploadRestController = fileUploadRestController;
@@ -50,7 +49,6 @@ public class UploadToDailymotionService {
     this.principal = principal;
     this.response = response;
     this.fileOutput = fileOutput;
-    this.signName = signName;
   }
 
   public boolean hasError() {
@@ -104,7 +102,7 @@ public class UploadToDailymotionService {
     if (signId.isPresent()){
       body.add("title",services.sign().withId(signId.getAsLong()).name);
     }else{
-      body.add("title", videoFile == null ? signName : videoFile.signNameRecording);
+      body.add("title", videoFile.signNameRecording);
     }
     body.add("channel", "tech");
     body.add("published", false);
@@ -160,8 +158,8 @@ public class UploadToDailymotionService {
     } else if (signId.isPresent() && !(videoId.isPresent())) {
       sign = services.sign().addNewVideo(user.id, signId.getAsLong(), videoDailyMotion.embed_url, pictureUri);
     } else {
-      sign = services.sign().create(user.id, videoFile == null ? signName : videoFile.signNameRecording, videoDailyMotion.embed_url, pictureUri);
-      log.info("handleFileUpload : username = {} / sign name = {} / video url = {}", user.username, videoFile == null ? signName : videoFile.signNameRecording, videoDailyMotion.embed_url);
+      sign = services.sign().create(user.id, videoFile.signNameRecording, videoDailyMotion.embed_url, pictureUri);
+      log.info("handleFileUpload : username = {} / sign name = {} / video url = {}", user.username, videoFile.signNameRecording, videoDailyMotion.embed_url);
     }
     myResult = false;
     return this;

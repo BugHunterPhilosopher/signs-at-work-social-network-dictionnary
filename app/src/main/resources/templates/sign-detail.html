@@ -20,7 +20,7 @@
   #L%
   -->
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
 <head>
     <link href="../public/css/player.css" th:href="@{/css/player.css}" rel="stylesheet" type="text/css"/>
     <th:block th:include="fragments/header-head :: head"></th:block>
@@ -99,7 +99,7 @@
                             </a>
                         </li>
                     </div>
-                    <div th:if="${hasRole('ADMIN') || isVideoCreatedByMe}">
+                    <div sec:authorize="${hasRole('ADMIN') || isVideoCreatedByMe}">
                       <li class="aside_bckg_li">
                         <a href="#" data-toggle="modal" data-target="#video_delete_modal">
                           <div class="pull-left delete_picto_detail"></div>

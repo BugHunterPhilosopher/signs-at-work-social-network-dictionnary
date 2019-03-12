@@ -88,6 +88,19 @@
                   </a>
                 </li>
               </div>
+              <div sec:authorize="hasRole('ADMIN')">
+                <li th:if="${isAuthenticated}" class="clear aside_bckg_li">
+                  <a th:href="@{https://www.youtube.com}">
+                    <div>
+                      <div class="pull-left signe"></div>
+                      <h2 class="text_hyphenation container_H2" th:text="#{youtube_request_rights}"></h2>
+                      <div >
+                        <div class="pull-right chevron_right"></div>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              </div>
             </ul>
         </aside>
       <div id="display_url" class="embed-responsive embed-responsive-16by9">

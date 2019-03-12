@@ -5,14 +5,11 @@ import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.googleapis.media.MediaHttpUploader;
 import com.google.api.client.googleapis.media.MediaHttpUploaderProgressListener;
 import com.google.api.client.http.InputStreamContent;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.Video;
 import com.google.api.services.youtube.model.VideoSnippet;
 import com.google.api.services.youtube.model.VideoStatus;
 import com.google.common.collect.Lists;
-import com.orange.signsatwork.YoutubeAccess;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.FileInputStream;
@@ -42,7 +39,7 @@ public class UploadVideoToYoutubeService {
    * 2.0 to authorize the API request.
    *
    */
-  public static void uploadToYoutube(final String videoFile, final YoutubeAccess youtubeAccess) {
+  public static void uploadToYoutube(final String videoFile) {
 
     // This OAuth 2.0 access scope allows an application to upload files
     // to the authenticated user's YouTube channel, but doesn't allow
@@ -51,10 +48,10 @@ public class UploadVideoToYoutubeService {
 
     try {
       // Authorize the request.
-      Credential credential = YoutubeAuthService.authorize(youtubeAccess);
+      Credential credential = YoutubeAuthService.authorize(scopes, "uploadvideo");
 
       // This object is used to make YouTube Data API requests.
-      final YouTube youtube = new YouTube.Builder(new NetHttpTransport(), new JacksonFactory(), credential).setApplicationName(
+      final YouTube youtube = new YouTube.Builder(YoutubeAuthService.HTTP_TRANSPORT, YoutubeAuthService.JSON_FACTORY, credential).setApplicationName(
         "bouge-tes-mains").build();
 
       // Add extra information to the video before uploading.

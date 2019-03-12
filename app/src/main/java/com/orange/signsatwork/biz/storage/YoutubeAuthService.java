@@ -68,8 +68,8 @@ public class YoutubeAuthService {
       HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, scopes).setCredentialDataStore(datastore)
       .build();
 
-    // Build the local server and bind it to port 8980
-    LocalServerReceiver localReceiver = new LocalServerReceiver.Builder().setPort(8980).setHost("signes.bougetesmains.club").build();
+    // Build the local server and bind it to port 11234
+    LocalServerReceiver localReceiver = new LocalServerReceiver.Builder().setPort(11234).setHost("signes.bougetesmains.club").build();
 
     // Authorize.
     return new AuthorizationCodeInstalledApp(flow, localReceiver).authorize("user");

@@ -115,6 +115,7 @@ public class SpringRestClient {
     body.add("client_secret", appProfile.dailymotionAccess().clientSecret);
     body.add("username", appProfile.dailymotionAccess().username);
     body.add("password", appProfile.dailymotionAccess().password);
+    body.add("scope", "manage_videos");
 
     HttpEntity<?> request = new HttpEntity<Object>(body, getHeadersWithClientCredentials());
     ResponseEntity<LinkedHashMap> response = restTemplate.exchange(AUTH_SERVER_URI, HttpMethod.POST, request, LinkedHashMap.class);

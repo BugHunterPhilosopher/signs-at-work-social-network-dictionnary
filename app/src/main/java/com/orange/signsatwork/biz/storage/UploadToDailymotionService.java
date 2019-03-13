@@ -20,7 +20,7 @@ import java.security.Principal;
 import java.util.OptionalLong;
 
 @Slf4j
-public class UploadVideoToDailymotionService {
+public class UploadToDailymotionService {
   private Services services;
   private SpringRestClient springRestClient;
   private boolean myResult;
@@ -35,7 +35,7 @@ public class UploadVideoToDailymotionService {
   private Sign sign;
 
   @Autowired
-  public UploadVideoToDailymotionService(Services services, SpringRestClient springRestClient,
+  public UploadToDailymotionService(Services services, SpringRestClient springRestClient,
                                     FileUploadRestController fileUploadRestController, DailymotionToken dailymotionToken,
                                     VideoFile videoFile, OptionalLong signId, OptionalLong videoId, Principal principal,
                                     HttpServletResponse response, String fileOutput) {
@@ -59,7 +59,7 @@ public class UploadVideoToDailymotionService {
     return sign;
   }
 
-  public UploadVideoToDailymotionService upload() throws InterruptedException {
+  public UploadToDailymotionService upload() throws InterruptedException {
     String dailymotionId;
     AuthTokenInfo authTokenInfo = dailymotionToken.retrieveToken();
     log.info("authTokenInfo: " + authTokenInfo);

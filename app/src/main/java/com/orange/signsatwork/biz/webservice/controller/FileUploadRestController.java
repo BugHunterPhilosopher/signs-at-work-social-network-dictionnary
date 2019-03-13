@@ -212,7 +212,7 @@ public class FileUploadRestController {
       RestTemplate restTemplate1 = springRestClient.buildRestTemplate();
       HttpHeaders headers1 = new HttpHeaders();
       headers1.setContentType(MediaType.MULTIPART_FORM_DATA);
-      headers1.set("Authorization", "Bearer " + authTokenInfo.getAccess_token());
+      headers1.set("Authorization", "Bearer " + dailymotionToken.getAuthTokenInfo().getAccess_token());
       //headers1.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 
       HttpEntity<MultiValueMap<String, Object>> requestEntity1 = new HttpEntity<MultiValueMap<String, Object>>(body, headers1);

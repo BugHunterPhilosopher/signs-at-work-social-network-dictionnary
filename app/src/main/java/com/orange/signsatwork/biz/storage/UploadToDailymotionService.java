@@ -98,7 +98,7 @@ public class UploadToDailymotionService {
 
 
     MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-    body.add("url", fileUploadDailyMotion.url);
+    body.add("url", fileUploadDailyMotion.upload_url);
     if (signId.isPresent()){
       body.add("title",services.sign().withId(signId.getAsLong()).name);
     }else{
@@ -106,7 +106,7 @@ public class UploadToDailymotionService {
     }
     body.add("channel", "tech");
     body.add("published", false);
-    body.add("private", true);
+//    body.add("private", true);
 
 
     RestTemplate restTemplate1 = springRestClient.buildRestTemplate();

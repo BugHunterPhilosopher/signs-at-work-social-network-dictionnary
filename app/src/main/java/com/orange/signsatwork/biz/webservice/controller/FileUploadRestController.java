@@ -25,8 +25,6 @@ package com.orange.signsatwork.biz.webservice.controller;
 import com.orange.signsatwork.AppProfile;
 import com.orange.signsatwork.DailymotionToken;
 import com.orange.signsatwork.SpringRestClient;
-import com.orange.signsatwork.biz.storage.UploadVideoToYoutubeService;
-import com.orange.signsatwork.biz.storage.UploadToDailymotionService;
 import com.orange.signsatwork.biz.domain.*;
 import com.orange.signsatwork.biz.nativeinterface.NativeInterface;
 import com.orange.signsatwork.biz.persistence.service.MessageByLocaleService;
@@ -120,6 +118,7 @@ public class FileUploadRestController {
   private String handleRecordedVideoFile(VideoFile videoFile, OptionalLong requestId,OptionalLong signId, OptionalLong videoId, Principal principal, HttpServletResponse response) {
     log.info("VideoFile "+videoFile);
     log.info("VideoFile name"+videoFile.name);
+    String videoUrl = null;
     String file = storageProperties.getLocation() + videoFile.name;
     String fileOutput = file.replace(".webm", ".mp4");
 
@@ -165,12 +164,105 @@ public class FileUploadRestController {
       //UploadVideoToYoutubeService.uploadToYoutube(fileOutput);
 
       // Dailymotion
-      UploadToDailymotionService uploadToDailymotion = new UploadToDailymotionService(services, springRestClient, this,
-        dailymotionToken, videoFile, signId, videoId, principal, response, fileOutput).upload();
-      if (uploadToDailymotion.hasError()) {
-        return messageByLocaleService.getMessage("errorDailymotionDeleteVideo");
+      String dailymotionId;
+      AuthTokenInfo authTokenInfo = dailymotionToken.retrieveToken();
+      log.info("authTokenInfo: " + authTokenInfo);
+
+      if (authTokenInfo.isExpired()) {
+        dailymotionToken.retrieveToken();
+        authTokenInfo = dailymotionToken.getAuthTokenInfo();
       }
-      Sign sign = uploadToDailymotion.getSign();
+
+      User user = services.user().withUserName(principal.getName());
+
+      UrlFileUploadDailymotion urlfileUploadDailymotion = services.sign().getUrlFileUpload();
+
+
+      File fileMp4 = new File(fileOutput);
+      Resource resource = new FileSystemResource(fileMp4.getAbsolutePath());
+      MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
+      parts.add("file", resource);
+
+      RestTemplate restTemplate = springRestClient.buildRestTemplate();
+
+      HttpHeaders headers = new HttpHeaders();
+      headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+
+      HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(parts, headers);
+
+      ResponseEntity<FileUploadDailymotion> responseDailymmotion = restTemplate.exchange(urlfileUploadDailymotion.upload_url,
+        HttpMethod.POST, requestEntity, FileUploadDailymotion.class);
+      FileUploadDailymotion fileUploadDailyMotion = responseDailymmotion.getBody();
+
+
+      MultiValueMap<String, Object> body = new LinkedMultiValueMap<String, Object>();
+      body.add("url", fileUploadDailyMotion.url);
+      if (signId.isPresent()){
+        body.add("title",services.sign().withId(signId.getAsLong()).name);
+      }else{
+        body.add("title", videoFile.signNameRecording);
+      }
+      body.add("channel", messageByLocaleService.getMessage("video_category"));
+      body.add("published", true);
+      body.add("private", true);
+
+
+      RestTemplate restTemplate1 = springRestClient.buildRestTemplate();
+      HttpHeaders headers1 = new HttpHeaders();
+      headers1.setContentType(MediaType.MULTIPART_FORM_DATA);
+      headers1.set("Authorization", "Bearer " + authTokenInfo.getAccess_token());
+      //headers1.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+
+      HttpEntity<MultiValueMap<String, Object>> requestEntity1 = new HttpEntity<MultiValueMap<String, Object>>(body, headers1);
+      ResponseEntity<VideoDailyMotion> response1 = restTemplate1.exchange("https://api.dailymotion.com/me/videos",
+        HttpMethod.POST, requestEntity1, VideoDailyMotion.class);
+      VideoDailyMotion videoDailyMotion = response1.getBody();
+
+
+      String url = REST_SERVICE_URI + "/video/" + videoDailyMotion.id + "?thumbnail_ratio=square&ssl_assets=true&fields=" + VIDEO_THUMBNAIL_FIELDS + VIDEO_EMBED_FIELD;
+      int i=0;
+      do {
+        videoDailyMotion = services.sign().getVideoDailyMotionDetails(videoDailyMotion.id, url);
+        Thread.sleep(2 * 1000);
+        if (i > 30) {
+          break;
+        }
+        i++;
+
+      }
+      while ((videoDailyMotion.thumbnail_360_url == null) || (videoDailyMotion.embed_url == null) || (videoDailyMotion.thumbnail_360_url.contains("no-such-asset")));
+
+
+      String pictureUri = null;
+      if (!videoDailyMotion.thumbnail_360_url.isEmpty()) {
+        pictureUri = videoDailyMotion.thumbnail_360_url;
+        log.warn("handleFileUpload : thumbnail_360_url = {}", videoDailyMotion.thumbnail_360_url);
+      }
+
+      if (!videoDailyMotion.embed_url.isEmpty()) {
+        videoUrl = videoDailyMotion.embed_url;
+        log.warn("handleFileUpload : embed_url = {}", videoDailyMotion.embed_url);
+      }
+      Sign sign;
+      if (signId.isPresent() && (videoId.isPresent())) {
+          sign = services.sign().withId(signId.getAsLong());
+          dailymotionId = sign.url.substring(sign.url.lastIndexOf('/') + 1);
+          try {
+            DeleteVideoOnDailyMotion(dailymotionId);
+          }
+          catch (Exception errorDailymotionDeleteVideo) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return messageByLocaleService.getMessage("errorDailymotionDeleteVideo");
+          }
+          sign = services.sign().replace(signId.getAsLong(), videoId.getAsLong(), videoUrl, pictureUri);
+      } else if (signId.isPresent() && !(videoId.isPresent())) {
+        sign = services.sign().addNewVideo(user.id, signId.getAsLong(), videoUrl, pictureUri);
+      } else {
+         sign = services.sign().create(user.id, videoFile.signNameRecording, videoUrl, pictureUri);
+        log.info("handleFileUpload : username = {} / sign name = {} / video url = {}", user.username, videoFile.signNameRecording, videoUrl);
+          }
+
 
       if (requestId.isPresent()) {
         services.request().changeSignRequest(requestId.getAsLong(), sign.id);

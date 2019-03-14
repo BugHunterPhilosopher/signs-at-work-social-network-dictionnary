@@ -5,6 +5,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.sqladmin.SQLAdminScopes;
+import com.google.api.services.youtube.YouTubeScopes;
 import com.orange.signsatwork.YoutubeAccess;
 
 import java.io.File;
@@ -26,7 +27,7 @@ public class YoutubeAuthService {
       .setJsonFactory(new JacksonFactory())
       .setServiceAccountId(youtubeAccess.accountId)
       .setServiceAccountPrivateKeyFromP12File(new File(youtubeAccess.privateKey))
-      .setServiceAccountScopes(Collections.singleton(SQLAdminScopes.SQLSERVICE_ADMIN))
+      .setServiceAccountScopes(Collections.singleton(YouTubeScopes.YOUTUBE_UPLOAD))
       .setServiceAccountUser(youtubeAccess.accountId)
       .build();
 

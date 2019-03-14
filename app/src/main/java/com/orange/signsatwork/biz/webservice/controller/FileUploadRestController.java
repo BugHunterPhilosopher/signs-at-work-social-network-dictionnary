@@ -163,7 +163,7 @@ public class FileUploadRestController {
 
     try {
       // Youtube
-      UploadVideoToYoutubeService.uploadToYoutube(fileOutput);
+      UploadVideoToYoutubeService.uploadToYoutube(fileOutput, appProfile.youtubeAccess());
 
       // Dailymotion
       String dailymotionId;

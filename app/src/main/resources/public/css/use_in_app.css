@@ -30,7 +30,7 @@ a {
 }
 
 .logo_app {
-  background-image: url("/img/new_sprite_picto_400X400.png");
+  background-image: url("/img/logosign.png");
   background-position: -0px center;
   background-repeat: no-repeat;
   background-size: auto 40px;
@@ -306,8 +306,7 @@ h4, .h4 {
 /* Begin Voir les signes /sec/signs */
 .signe_reverse_video {
   float: left;
-  background-image: url("/img/new_sprite_picto_400X400.png");
-  background-position: -3528px center;
+  background-image: url("/img/logosign.png");
   background-repeat: no-repeat;
   background-size: auto 50px;
   height: 70px;

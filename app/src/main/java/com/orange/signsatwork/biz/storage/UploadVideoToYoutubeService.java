@@ -80,7 +80,7 @@ public class UploadVideoToYoutubeService {
 
       // Set the keyword tags that you want to associate with the video.
       List<String> tags = new ArrayList<>();
-      tags.add("Bouge Tes Mains");
+      tags.add("BougeTesMains");
       tags.add("LSF");
       snippet.setTags(tags);
 

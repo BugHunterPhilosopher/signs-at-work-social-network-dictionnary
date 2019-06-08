@@ -459,7 +459,7 @@ a:hover, a:focus {
 
 
 .logo_app {
-    background-image: url("/img/sprite_picto_400X400.png");
+    background-image: url("/img/logosign.png");
     background-position: -1200px center;
     background-repeat: no-repeat;
     background-size: auto 40px;

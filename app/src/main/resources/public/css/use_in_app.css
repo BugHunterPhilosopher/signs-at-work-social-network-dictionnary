@@ -82,6 +82,11 @@ input[type="text"],[type="email"],[type="password"] {
   line-height: 42px;
 }
 
+input[name="firstName"],
+input[name="lastName"]{
+  width: 90%;
+}
+
 .form-control {
   color:#4866F7;
   height:42px;
@@ -93,6 +98,16 @@ input[type="text"],[type="email"],[type="password"] {
   box-shadow: 0 4px 6px 0 rgba(0,0,0,0.1);
   color:#FFFFFF;
   width: 50%;
+  margin-top:20px;
+  padding: 12px 12px;
+}
+
+.btn_signup{
+  border-radius: 30px;
+  background-color: #000000;
+  box-shadow: 0 4px 6px 0 rgba(0,0,0,0.1);
+  color:#FFFFFF;
+  width: 25%;
   margin-top:20px;
   padding: 12px 12px;
 }

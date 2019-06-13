@@ -27,9 +27,16 @@ import com.orange.signsatwork.biz.domain.User;
 import com.orange.signsatwork.biz.persistence.model.SignViewData;
 import com.orange.signsatwork.biz.persistence.service.MessageByLocaleService;
 import com.orange.signsatwork.biz.persistence.service.Services;
+import com.orange.signsatwork.biz.persistence.service.UserService;
 import com.orange.signsatwork.biz.persistence.service.impl.EmailServiceImpl;
 import com.orange.signsatwork.biz.security.AppSecurityAdmin;
-import com.orange.signsatwork.biz.view.model.*;
+import com.orange.signsatwork.biz.view.model.AuthentModel;
+import com.orange.signsatwork.biz.view.model.FavoriteCreationView;
+import com.orange.signsatwork.biz.view.model.FavoriteModalView;
+import com.orange.signsatwork.biz.view.model.SignCreationView;
+import com.orange.signsatwork.biz.view.model.SignView2;
+import com.orange.signsatwork.biz.view.model.SignsViewSort2;
+import com.orange.signsatwork.biz.view.model.UserCreationView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,11 +44,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Controller
@@ -54,6 +64,8 @@ public class HomeController {
   private AppProfile appProfile;
   @Autowired
   private Services services;
+  @Autowired
+  private UserService userService;
   @Autowired
   MessageByLocaleService messageByLocaleService;
 
@@ -82,6 +94,25 @@ public class HomeController {
     long dt = System.currentTimeMillis() - t0;
     log.info("[PERF] took " + dt + " ms to process root page request");
     return pageName;
+  }
+
+  @RequestMapping(value = "/register", method = RequestMethod.GET)
+  public String register(HttpServletRequest req, Principal principal, Model model) {
+    model.addAttribute("title", messageByLocaleService.getMessage("label.form.title"));
+    model.addAttribute("backUrl", HOME_URL);
+    User blankUser = new User();
+    blankUser.setFirstName("test");
+    blankUser.setLastName("test");
+    blankUser.setEmail("test@test.ui");
+    blankUser.setUsername("user_" + UUID.randomUUID().toString());
+    User u = userService.create(blankUser, "test", "user");
+    model.addAttribute("user", u);
+    model.addAttribute("firstName", u.getFirstName());
+    model.addAttribute("lastName", u.getLastName());
+    model.addAttribute("email", u.getEmail());
+    model.addAttribute("password", u.getPassword());
+    model.addAttribute("matchingPassword", u.getMatchingPassword());
+    return "register";
   }
 
   private String doIndex(HttpServletRequest req, Principal principal, Model model) {

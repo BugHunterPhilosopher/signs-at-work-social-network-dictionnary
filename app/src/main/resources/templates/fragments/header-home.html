@@ -41,7 +41,7 @@
                     </li></ul>
 
                 <button id="sidebarCollapse" th:if="${isAuthenticated}" class="navigationbar-toggle"
-                        type="button">
+                        type="button" style="top:17px;right: 300px;">
                     <span class="sr-only">Toggle navigation (FIXME: pas traduit !)</span>
                 </button>
               <div th:if="${isAuthenticated}" class="hidden-sm hidden-lg hidden-md navbar-toggle-complement">
@@ -59,10 +59,13 @@
                     <div class="logo_app pull-left"></div>
                 </a>
             </div>
-            <a class="pull-right" th:if="${isAuthenticated}" href="">
+            <a class="pull-right" th:if="${isAuthenticated}" href="" style="right:170px; position: absolute;">
                 <form th:action="@{/logout}" method = "post">
                 <button style="background-color: #4866f7; margin-top:17%; color: black;" class="btn btn-secondary" type="submit" th:text="#{logout}"></button>
                 </form>
+            </a>
+            <a href="https://bougetesmains.club" style="top: 25px;right: 30px;color: white; position:absolute;">
+              <span>Retour à BTM</span>
             </a>
 
        <!--   <div class="navbar-header">

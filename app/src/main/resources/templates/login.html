@@ -61,10 +61,14 @@
            required=""/>
     <div class="form-group">
     </div>
-    <div class=" text-center">
+    <div class="text-center">
         <button type="submit" class="btn_signin btn btn-default" th:text="#{signin}"></button>
     </div>
 </form>
+
+    <div class=" text-center">
+        <a th:href="@{/register.html}" class="btn_signup btn btn-default" th:text="#{label.form.register}"></a>
+    </div>
 
 <!--fix me!!!! en attente de savoir si les gcu sont embarquees et il faudra enlever le display none -->
 <div class="row " style="display:none;">

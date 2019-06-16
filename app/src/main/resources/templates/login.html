@@ -44,7 +44,10 @@
     </div>
   </div>
 </div>
-
+<br/>
+<p class="container">
+  Un compte de démonstration ouvert à tous est disponible avec le login / mot de passe suivant : demo / demo
+</p>
 <form class="col-xs-12 login-form" role="form" th:action="@{/login}" method="post" autocomplete="off">
     <span class="form-signin-heading text-center" th:text="#{signin_invite}"></span>
     <div th:if="${param.error}" class="alert alert-danger text-center" role="alert" th:text="#{invalid_connexion}">
@@ -69,6 +72,22 @@
     <div class=" text-center">
         <a th:href="@{/register.html}" class="btn_signup btn btn-default" th:text="#{label.form.register}"></a>
     </div>
+    <br/><br/><br/><br/>
+    <p class="container">
+      La signothèque de BTM est un catalogue collaboratif de signes en Langue des Signes Française (L.S.F.) avec leur signification en français. Vous les trouverez sous forme de vidéos de gens qui signent ou sous la forme de dessins d'un bonhomme signant.<br/><br/>
+
+      L'aspect collaboratif vient du fait que n'importe qui peut publier des signes ou demander aux autres membres du site la vidéo ou le dessin qui indique comment on signe un certain mot de la langue française.<br/><br/>
+
+      Tout le contenu publié ici est Open Source (c'est-à-dire qu'il peut être repris ailleurs sous certaines conditions), y compris celui que vous pourrez être amené à produire.<br/><br/>
+
+      Si vous voulez proposer un signe facilement, vous pouvez vous filmer en direct avec une Webcam. Si vous ne voulez pas que l'on vous voie, vous avez un mode de dessin vectoriel avec un bonhomme que vous pouvez faire signer. Enfin, vous pouvez également proposer un fichier vidéo depuis votre ordinateur.<br/><br/>
+
+      Cette signothèque a donc vocation à répertorier le plus grand nombre possible de signes en L.S.F., dans tous les domaines sémantiques et avec des aspects de réseau social.<br/><br/>
+
+      Nous avons également un site frère disponible ici : <a href="https://wiki.bougetesmains.club" style="color: #4866f7;">Wiki de BTM</a> qui est, lui, une base de connaissances sur laquelle vous pouvez publier des tutoriaux vidéos, en L.S.F. également. Il faut voir la présente signothèque comme un dictionnaire et le wiki comme une encyclopédie.<br/><br/>
+
+      Tout ceci à destination des signants : sourds, malentendants ou entendants !
+    </p>
 
 <!--fix me!!!! en attente de savoir si les gcu sont embarquees et il faudra enlever le display none -->
 <div class="row " style="display:none;">

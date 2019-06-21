@@ -68,6 +68,9 @@ public class HomeController {
   @Autowired
   MessageByLocaleService messageByLocaleService;
 
+  @Autowired
+  public EmailServiceImpl emailService;
+
 
   private static final String HOME_URL = "/";
 
@@ -76,9 +79,6 @@ public class HomeController {
 
   @Value("${display-url}")
   private String display_url;
-
-  @Autowired
-  public EmailServiceImpl emailService;
 
   @RequestMapping("/")
   public String index(HttpServletRequest req, Principal principal, Model model) {
@@ -106,6 +106,7 @@ public class HomeController {
     model.addAttribute("email", u.getEmail());
     model.addAttribute("password", "");
     model.addAttribute("matchingPassword", "");
+    model.addAttribute("site", appProfile.googleAccess().site);
     return "register";
   }
 

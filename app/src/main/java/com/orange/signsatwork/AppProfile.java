@@ -44,6 +44,7 @@ public class AppProfile {
   private Proxy proxy;
   private DailymotionAccess dailymotionAccess;
   private YoutubeAccess youtubeAccess;
+  private GoogleAccess googleAccess;
 
   private String dailymotionClientId;
   private String dailymotionClientSecret;
@@ -54,6 +55,8 @@ public class AppProfile {
   private String youtubeUsername;
   private String youtubePrivateKey;
 
+  private String googleClientSite;
+  private String googleClientSecret;
 
   public boolean isDevProfile() {
     return devProfile;
@@ -71,6 +74,10 @@ public class AppProfile {
     return youtubeAccess;
   }
 
+  public GoogleAccess googleAccess() {
+    return googleAccess;
+  }
+
 
   @PostConstruct
   private void init() {
@@ -78,6 +85,7 @@ public class AppProfile {
     initProxy();
     initDailyMotion();
     initYoutube();
+    initGoogle();
   }
 
 
@@ -96,6 +104,13 @@ public class AppProfile {
     youtubePrivateKey = environment.getProperty("app.youtube.private.key");
 
     youtubeAccess = new YoutubeAccess(youtubeAccountId, youtubeUsername, youtubePrivateKey);
+  }
+
+  private void initGoogle() {
+    googleClientSite = environment.getProperty("app.google.recaptcha.key.site");
+    googleClientSecret = environment.getProperty("app.google.recaptcha.key.secret");
+
+    googleAccess = new GoogleAccess(googleClientSite, googleClientSecret);
   }
 
   private void initProxy() {

@@ -44,6 +44,7 @@ import java.util.concurrent.TimeUnit;
 @EnableAutoConfiguration
 @PropertySource("classpath:dailymotion.properties")
 @PropertySource("classpath:youtube.properties")
+@PropertySource("classpath:google.properties")
 public class SignsAtWorkApplication extends WebMvcConfigurerAdapter {
 
   @Bean

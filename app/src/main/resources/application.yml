@@ -34,3 +34,6 @@ spring:
 
 server:
   port: 12345
+
+google.recaptcha.key.site: ""
+google.recaptcha.key.secret: ""

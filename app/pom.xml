@@ -34,8 +34,8 @@
     <fest-assert.version>1.4</fest-assert.version>
 
     <project.youtube.version>v3-rev182-1.22.0</project.youtube.version>
-    <project.youtube.analytics.version>v1-rev63-1.22.0</project.youtube.analytics.version>
-    <project.youtube.reporting.version>v1-rev10-1.22.0</project.youtube.reporting.version>
+    <project.youtube.analytics.version>v2-rev20190531-1.28.0</project.youtube.analytics.version>
+    <project.youtube.reporting.version>v1-rev20190406-1.28.0</project.youtube.reporting.version>
     <project.http.version>1.20.0</project.http.version>
     <project.oauth.version>1.20.0</project.oauth.version>
   </properties>

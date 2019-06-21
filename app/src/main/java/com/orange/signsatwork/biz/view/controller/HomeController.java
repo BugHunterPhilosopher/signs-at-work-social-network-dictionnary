@@ -29,6 +29,7 @@ import com.orange.signsatwork.biz.persistence.model.UserDB;
 import com.orange.signsatwork.biz.persistence.service.MessageByLocaleService;
 import com.orange.signsatwork.biz.persistence.service.Services;
 import com.orange.signsatwork.biz.persistence.service.UserService;
+import com.orange.signsatwork.biz.persistence.service.impl.CaptchaServiceImpl;
 import com.orange.signsatwork.biz.persistence.service.impl.EmailServiceImpl;
 import com.orange.signsatwork.biz.security.AppSecurityAdmin;
 import com.orange.signsatwork.biz.view.model.AuthentModel;
@@ -67,9 +68,10 @@ public class HomeController {
   private UserService userService;
   @Autowired
   MessageByLocaleService messageByLocaleService;
-
   @Autowired
   public EmailServiceImpl emailService;
+  @Autowired
+  public CaptchaServiceImpl captchaService;
 
 
   private static final String HOME_URL = "/";
@@ -111,7 +113,7 @@ public class HomeController {
   }
 
   @RequestMapping(value = "/createUser", method = RequestMethod.POST)
-  public String createUser(@ModelAttribute UserCreationView userCreationView, Model model) {
+  public String createUser(HttpServletRequest req, @ModelAttribute UserCreationView userCreationView, Model model) {
     try {
       if ((userCreationView.getUsername() == null) || (services.user().withUserName(userCreationView.getUsername()) != null)) {
         return "redirect:/register";
@@ -126,6 +128,9 @@ public class HomeController {
       (!userCreationView.getPassword().equals(userCreationView.getMatchingPassword()))) {
       return "redirect:/register";
     }
+
+    String response = req.getParameter("g-recaptcha-response");
+    captchaService.processResponse(response);
 
     User user= services.user().create(userCreationView.toUser(), userCreationView.getPassword(), "user");
     model.addAttribute("user", user);

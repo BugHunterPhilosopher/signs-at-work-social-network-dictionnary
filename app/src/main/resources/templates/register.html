@@ -16,25 +16,25 @@
   <br/>
   <div class="form-group">
     <label th:text="#{label.user.username}">username</label>
-    <input type="text" class="form-control" name="username" th:field="*{username}"/>
+    <input id="username" type="text" class="form-control" name="username" th:field="*{username}"/>
     <p th:each="error: ${#fields.errors('username')}"
        th:text="${error}">Validation error</p>
   </div>
   <div class="form-group">
     <label th:text="#{label.user.firstName}">first</label>
-    <input type="text" class="form-control" name="first" th:field="*{firstName}"/>
+    <input id="firstName" type="text" class="form-control" name="first" th:field="*{firstName}"/>
     <p th:each="error: ${#fields.errors('firstName')}"
        th:text="${error}">Validation error</p>
   </div>
   <div class="form-group">
     <label th:text="#{label.user.lastName}">last</label>
-    <input type="text" class="form-control" name="last" th:field="*{lastName}"/>
+    <input id="lastName" type="text" class="form-control" name="last" th:field="*{lastName}"/>
     <p th:each="error : ${#fields.errors('lastName')}"
        th:text="${error}">Validation error</p>
   </div>
   <div class="form-group">
     <label th:text="#{label.user.email}">email</label>
-    <input type="email" class="form-control" name="email" th:field="*{email}"/>
+    <input id="mail" type="email" class="form-control" name="email" th:field="*{email}"/>
     <p th:each="error : ${#fields.errors('email')}"
        th:text="${error}">Validation error</p>
   </div>
@@ -50,6 +50,13 @@
   </div>
   <div class="text-center">
     <button type="submit" class="btn_signin btn btn-default" th:text="#{label.form.submit}">submit</button>
+  </div>
+  <div class="divider"></div>
+  <!--end input entity-->
+  <br/>
+  <div class="text-center"><div class="blink_me errorSubmit alert alert-warning hidden" th:text="#{errorAllInputsBlanks}"/>
+    <a href="#privacySettings" id="buttonOnNext"  class=" btn btn-default  btn-sm" th:text="#{continue}">
+    </a>
   </div>
 </form>
 

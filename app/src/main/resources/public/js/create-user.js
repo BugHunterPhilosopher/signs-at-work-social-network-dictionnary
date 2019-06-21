@@ -18,9 +18,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-console.log("Cool, create_user.js is loaded :)");
 
-
+var token = $("input[name='_csrf']").attr("value");
+var alertClass = "alert alert-danger";
 
 function onAccepted() {
   $('#cguAccepted').css('display', 'none');
@@ -28,46 +28,48 @@ function onAccepted() {
   $('#accountRequest #accountProfile ').removeClass("hidden");
 };
 
-var inputLastName =document.getElementById('lastName');
-var inputFirstName =document.getElementById('firstName');
-var inputEntity =document.getElementById('entity');
-var inputEmail =document.getElementById('mail');
-var buttonOnNext =document.getElementById('buttonOnNext');
+$(function() {
+  console.log("Cool, create_user.js is loaded :)");
 
-var lastName = new Boolean(false);
-var firstName = new Boolean(false);
-var entity = new Boolean(false);
-var mail = new Boolean(false);
+  window.inputLastName = document.getElementById('lastName');
+  window.inputFirstName = document.getElementById('firstName');
+// var inputEntity =document.getElementById('entity');
+  window.inputEmail = document.getElementById('mail');
+  window.buttonOnNext = document.getElementById('buttonOnNext');
+
+  window.lastName = new Boolean(false);
+  window.firstName = new Boolean(false);
+// var entity = new Boolean(false);
+  window.mail = new Boolean(false);
 
 
-var regexName = new RegExp('[A-Za-z]');
-var regexEntity = new RegExp('[\\sA-Za-z_:-\\\\/\\\\]');
-var regexEmail = new RegExp('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}');
+  window.regexName = new RegExp('[A-Za-z]');
+  window.regexEntity = new RegExp('[\\sA-Za-z_:-\\\\/\\\\]');
+  window.regexEmail = new RegExp('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}');
 
-inputLastName.addEventListener('keyup',checkLastName);
-inputFirstName.addEventListener('keyup',checkFirstName);
-inputEntity.addEventListener('keyup',checkEntity);
-inputEmail.addEventListener('keyup',checkEmail);
-buttonOnNext.addEventListener('click',onNext);
+  window.inputLastName.addEventListener('keyup', checkLastName);
+  window.inputFirstName.addEventListener('keyup', checkFirstName);
+// inputEntity.addEventListener('keyup',checkEntity);
+  window.inputEmail.addEventListener('keyup', checkEmail);
+  window.buttonOnNext.addEventListener('click', onNext);
 
-$('html').bind('keypress', function(e)
-{
-  if(e.keyCode == 13)
-  {
-    return false;
-  }
+  $('html').bind('keypress', function (e) {
+    if (e.keyCode == 13) {
+      return false;
+    }
+  });
 });
 
 function checkLastName() {
   var valueLastName = inputLastName.value;
 
   if (!regexName.test(valueLastName)) {
-    $('#lastName').addClass("alert alert-warning");
+    $('#lastName').addClass(alertClass);
     $('.blink_me.errorRegexLastName').removeClass("hidden");
     lastName = false;
   }else {
     lastName = true;
-    $('#lastName').removeClass("alert alert-warning");
+    $('#lastName').removeClass(alertClass);
     $('.errorRegexLastName').addClass("hidden");
   }
 }
@@ -76,12 +78,12 @@ function checkFirstName() {
   var valueFirstName = inputFirstName.value;
 
   if (!regexName.test(valueFirstName)) {
-    $('#firstName').addClass("alert alert-warning");
+    $('#firstName').addClass(alertClass);
     $('.errorRegexFirstName').removeClass("hidden");
     firstName = false;
   } else {
     firstName = true;
-    $('#firstName').removeClass("alert alert-warning");
+    $('#firstName').removeClass(alertClass);
     $('.errorRegexFirstName').addClass("hidden");
   }
 }
@@ -90,12 +92,12 @@ function checkEntity() {
   var valueEntity = inputEntity.value;
 
   if(!regexEntity.test(valueEntity)) {
-    $('#entity').addClass("alert alert-warning");
+    $('#entity').addClass(alertClass);
     $('.errorRegexEntity').removeClass("hidden");
     entity = false;
   }else {
     entity = true;
-    $('#entity').removeClass("alert alert-warning");
+    $('#entity').removeClass(alertClass);
     $('.errorRegexEntity').addClass("hidden");
   }
 }
@@ -104,12 +106,12 @@ function checkEmail() {
   var valueEmail = inputEmail.value;
 
   if(!regexEmail.test(valueEmail)) {
-    $('#mail').addClass("alert alert-warning");
+    $('#mail').addClass(alertClass);
     $('.errorRegexEmail').removeClass("hidden");
     mail = false;
   }else {
     mail = true;
-    $('#mail').removeClass("alert alert-warning");
+    $('#mail').removeClass(alertClass);
     $('.errorRegexEmail').addClass("hidden");
   }
 }
@@ -118,19 +120,18 @@ function onNext(){
 
   if( (lastName !=false) &&
     (firstName !=false) &&
-    (entity !=false) &&
+    // (entity !=false) &&
     (mail !=false)) {
     $('#accountRequest #accountProfile').addClass("hidden");
     $('#privacySettings').removeClass("hidden");
     $('.btn').removeClass("hidden");
   }else{
     $('.errorSubmit').removeClass("hidden");
-    $('#mail').addClass("alert alert-warning");
-    $('#entity').addClass("alert alert-warning");
-    $('#firstName').addClass("alert alert-warning");
-    $('#lastName').addClass("alert alert-warning");
+    $('#mail').addClass(alertClass);
+    // $('#entity').addClass("alert alert-warning");
+    $('#firstName').addClass(alertClass);
+    $('#lastName').addClass(alertClass);
 
   }
-
 
 };

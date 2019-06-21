@@ -37,6 +37,7 @@ public class UserCreationView {
 
   private String username;
   private String password;
+  private String matchingPassword;
   private String role;
   private String firstName;
   private String lastName;

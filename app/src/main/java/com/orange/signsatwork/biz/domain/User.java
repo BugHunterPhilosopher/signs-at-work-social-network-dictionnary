@@ -25,55 +25,30 @@ package com.orange.signsatwork.biz.domain;
 import com.orange.signsatwork.biz.persistence.service.Services;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
 import java.util.Date;
 import java.util.List;
 
 @RequiredArgsConstructor
 @Getter
-@Setter
 public class User {
-  public long id;
-  public String username;
-  public String firstName;
-  public String lastName;
-  public String nameVideo;
-  public String email;
-  public String entity;
-  public String job;
-  public String jobTextDescription;
-  public String jobVideoDescription;
-  public Date lastDeconnectionDate;
-  public Communities communities;
-  public Requests requests;
-  public Favorites favorites;
-  public Videos videos;
-  public String password;
-  public String matchingPassword;
+  public final long id;
+  public final String username;
+  public final String firstName;
+  public final String lastName;
+  public final String nameVideo;
+  public final String email;
+  public final String entity;
+  public final String job;
+  public final String jobTextDescription;
+  public final String jobVideoDescription;
+  public final Date lastDeconnectionDate;
+  public final Communities communities;
+  public final Requests requests;
+  public final Favorites favorites;
+  public final Videos videos;
 
-  private Services services;
-
-  public User(long id, String username, String firstName, String lastName, String nameVideo, String email, String entity, String job, String jobTextDescription, String jobVideoDescription, Date lastDeconnectionDate, Communities forUser, Requests requestsforUser, Favorites favoritesforUser, Videos videos, Services services, String password, String matchingPassword) {
-    this.id = id;
-    this.username = username;
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.nameVideo = nameVideo;
-    this.email = email;
-    this.entity = entity;
-    this.job = job;
-    this.jobTextDescription = jobTextDescription;
-    this.jobVideoDescription = jobVideoDescription;
-    this.lastDeconnectionDate = lastDeconnectionDate;
-    communities = forUser;
-    requests = requestsforUser;
-    favorites = favoritesforUser;
-    this.videos = videos;
-    this.services = services;
-    this.password = password;
-    this.matchingPassword = matchingPassword;
-  }
+  private final Services services;
 
   public String name() {
     if ((lastName == null || lastName.length() == 0) && (firstName == null || firstName.length() == 0)) {
@@ -103,7 +78,7 @@ public class User {
             new User(
                     id, username, firstName, lastName, nameVideo, email, entity, job, jobTextDescription, jobVideoDescription, lastDeconnectionDate,
                     services.community().forUser(id),  services.request().requestsforUser(id), services.favorite().favoritesforUser(id), videos,
-                    services, password, matchingPassword);
+                    services);
   }
 
   public User loadVideos() {
@@ -111,7 +86,7 @@ public class User {
             new User(
                     id, username, firstName, lastName, nameVideo, email, entity, job, jobTextDescription, jobVideoDescription, lastDeconnectionDate,
                     communities, requests, favorites, services.video().forUser(id),
-                    services, password, matchingPassword);
+                    services);
   }
 
   public List<Long> communitiesIds() {
@@ -137,6 +112,6 @@ public class User {
                             Services services) {
     return new User(
             id, username, firstName, lastName, nameVideo, email, entity, job, jobTextDescription, jobVideoDescription, lastDeconnectionDate,
-            null, null, null, null, services, "", "");
+            null, null, null, null, services);
   }
 }

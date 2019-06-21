@@ -26,6 +26,7 @@ import com.orange.signsatwork.biz.domain.Favorite;
 import com.orange.signsatwork.biz.domain.Request;
 import com.orange.signsatwork.biz.domain.User;
 import com.orange.signsatwork.biz.domain.Users;
+import com.orange.signsatwork.biz.persistence.model.UserDB;
 
 import java.util.List;
 
@@ -43,6 +44,8 @@ public interface UserService {
   User withUserName(String userName);
 
   User create(User user, String password, String role);
+
+  UserDB register(User user, String role);
 
   void changeUserPassword(User user, String password);
 

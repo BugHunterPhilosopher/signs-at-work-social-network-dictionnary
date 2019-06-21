@@ -96,6 +96,13 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  public UserDB register(User user, String role) {
+    UserDB userDB = userDBFrom(user, role);
+    userDB.setId(-1L);
+    return userDB;
+  }
+
+  @Override
   public void changeUserPassword(User user, String password) {
     UserDB userDB = userRepository.findOne(user.id);
     userDB.setPasswordHash(passwordEncoder.encode(password));
@@ -298,6 +305,17 @@ public class UserServiceImpl implements UserService {
    */
   private UserDB userDBFrom(User user, String password, String role) {
     UserDB userDB = new UserDB(user.username, passwordEncoder.encode(password), user.firstName, user.lastName, user.nameVideo, user.email, user.entity, user.job, user.jobTextDescription, user.jobVideoDescription);
+    addUserRole(userDB, role);
+    return userDB;
+  }
+
+  /**
+   * Create a transient UserDB with an empty password and a ROLE_USER as default
+   * @param user user domain object
+   * @return the UserDB object to persist
+   */
+  private UserDB userDBFrom(User user, String role) {
+    UserDB userDB = new UserDB(user.username, "", user.firstName, user.lastName, user.nameVideo, user.email, user.entity, user.job, user.jobTextDescription, user.jobVideoDescription);
     addUserRole(userDB, role);
     return userDB;
   }

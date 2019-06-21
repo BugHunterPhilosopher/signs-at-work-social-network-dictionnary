@@ -100,6 +100,11 @@ public class UserDB {
   @NotNull
   private String passwordHash;
 
+  @Transient
+  private String password;
+  @Transient
+  private String matchingPassword;
+
   public UserDB(String username, String passwordHash, String firstName, String lastName, String nameVideo, String email, String entity, String job, String jobTextDescription, String jobVideoDescription) {
     this.username = username;
     this.passwordHash = passwordHash;

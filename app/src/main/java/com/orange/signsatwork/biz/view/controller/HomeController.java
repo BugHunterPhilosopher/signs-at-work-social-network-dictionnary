@@ -25,6 +25,7 @@ package com.orange.signsatwork.biz.view.controller;
 import com.orange.signsatwork.AppProfile;
 import com.orange.signsatwork.biz.domain.User;
 import com.orange.signsatwork.biz.persistence.model.SignViewData;
+import com.orange.signsatwork.biz.persistence.model.UserDB;
 import com.orange.signsatwork.biz.persistence.service.MessageByLocaleService;
 import com.orange.signsatwork.biz.persistence.service.Services;
 import com.orange.signsatwork.biz.persistence.service.UserService;
@@ -45,13 +46,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Controller
@@ -97,22 +96,40 @@ public class HomeController {
   }
 
   @RequestMapping(value = "/register", method = RequestMethod.GET)
-  public String register(HttpServletRequest req, Principal principal, Model model) {
+  public String register(@ModelAttribute UserCreationView userCreationView, Model model) {
     model.addAttribute("title", messageByLocaleService.getMessage("label.form.title"));
-    model.addAttribute("backUrl", HOME_URL);
-    User blankUser = new User();
-    blankUser.setFirstName("test");
-    blankUser.setLastName("test");
-    blankUser.setEmail("test@test.ui");
-    blankUser.setUsername("user_" + UUID.randomUUID().toString());
-    User u = userService.create(blankUser, "test", "user");
+    User blankUser = User.create("", "", "", "", "", "", "", "", "");
+    UserDB u = userService.register(blankUser, "user");
     model.addAttribute("user", u);
     model.addAttribute("firstName", u.getFirstName());
     model.addAttribute("lastName", u.getLastName());
     model.addAttribute("email", u.getEmail());
-    model.addAttribute("password", u.getPassword());
-    model.addAttribute("matchingPassword", u.getMatchingPassword());
+    model.addAttribute("password", "");
+    model.addAttribute("matchingPassword", "");
     return "register";
+  }
+
+  @RequestMapping(value = "/createUser", method = RequestMethod.POST)
+  public String createUser(@ModelAttribute UserCreationView userCreationView, Model model) {
+    try {
+      if ((userCreationView.getUsername() == null) || (services.user().withUserName(userCreationView.getUsername()) != null)) {
+        return "redirect:/register";
+      }
+    }
+    catch (IllegalStateException e) {
+      log.error("Error (mostly expected) retrieving user by username!", e);
+    }
+
+    if ((userCreationView.getPassword() == null) || ("".equals(userCreationView.getPassword().trim())) ||
+    (userCreationView.getMatchingPassword() == null) || ("".equals(userCreationView.getMatchingPassword().trim())) ||
+      (!userCreationView.getPassword().equals(userCreationView.getMatchingPassword()))) {
+      return "redirect:/register";
+    }
+
+    User user= services.user().create(userCreationView.toUser(), userCreationView.getPassword(), "user");
+    model.addAttribute("user", user);
+
+    return "login";
   }
 
   private String doIndex(HttpServletRequest req, Principal principal, Model model) {

@@ -413,14 +413,14 @@ public class FileUploadRestController {
 //        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 //        return messageByLocaleService.getMessage("errorDailymotionDeleteVideo");
       }
-      sign = services.sign().replace(signId.getAsLong(), videoId.getAsLong(), signCreationView.getVideoUrl(), pictureUri);
+      sign = services.sign().replace(signId.getAsLong(), videoId.getAsLong(), signCreationView.getVideoUrl() == null ? "" : signCreationView.getVideoUrl(), pictureUri);
     } else if (signId.isPresent() && !(videoId.isPresent())) {
-      sign = services.sign().addNewVideo(user.id, signId.getAsLong(), signCreationView.getVideoUrl(), pictureUri);
+      sign = services.sign().addNewVideo(user.id, signId.getAsLong(), signCreationView.getVideoUrl() == null ? "" : signCreationView.getVideoUrl(), pictureUri);
     } else {
-      sign = services.sign().create(user.id, signCreationView.getSignName(), signCreationView.getVideoUrl(), pictureUri);
+      sign = services.sign().create(user.id, signCreationView.getSignName(), signCreationView.getVideoUrl() == null ? "" : signCreationView.getVideoUrl(), pictureUri);
     }
 
-    log.info("handleSelectedVideoFileUpload : username = {} / sign name = {} / video url = {}", user.username, signCreationView.getSignName(), signCreationView.getVideoUrl());
+    log.info("handleSelectedVideoFileUpload : username = {} / sign name = {} / video url = {}", user.username, signCreationView.getSignName(), signCreationView.getVideoUrl() == null ? "" : signCreationView.getVideoUrl());
 
     if (requestId.isPresent()) {
       services.request().changeSignRequest(requestId.getAsLong(), sign.id);

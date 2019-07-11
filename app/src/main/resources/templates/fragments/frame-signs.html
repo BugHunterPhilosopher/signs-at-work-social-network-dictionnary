@@ -214,7 +214,7 @@
                   <div th:if="${videoView.videoHasView}" class="tooltip_eye"></div>
                   <div th:if="${!videoView.videoHasView}" style="visibility: hidden" class="tooltip_eye"></div>
                 </div>
-                  <img th:attr="data-src=${videoView.pictureUri}">
+                  <img th:src="@{/files/} + ${videoView.pictureUri}">
                 </img>
               </a>
             </div>

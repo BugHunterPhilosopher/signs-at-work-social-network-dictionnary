@@ -472,6 +472,10 @@ input[type=search].form-control,input[type=search].form-control:focus{
   margin-top: 15px;
 }
 
+.separated{
+  margin-bottom: 2%;
+}
+
 #sign_available {
   color: #4866F7;
 }

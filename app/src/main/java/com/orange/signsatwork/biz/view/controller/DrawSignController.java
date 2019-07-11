@@ -22,6 +22,7 @@ package com.orange.signsatwork.biz.view.controller;
  * #L%
  */
 
+import com.orange.signsatwork.biz.domain.Sign;
 import com.orange.signsatwork.biz.domain.User;
 import com.orange.signsatwork.biz.persistence.service.MessageByLocaleService;
 import com.orange.signsatwork.biz.persistence.service.Services;
@@ -88,8 +89,8 @@ public class DrawSignController {
       log.error("Error in draw sign processing!", e);
     }
 
-    services.sign().create(user.id, signName, filename, filename);
-    return "";
+    Sign s = services.sign().create(user.id, signName, filename, filename);
+    return "{ \"signId\": " + s.id + ", \"videoId\": " + s.lastVideoId + " }";
   }
 
 }

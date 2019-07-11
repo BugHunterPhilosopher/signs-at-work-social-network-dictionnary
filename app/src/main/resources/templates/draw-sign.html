@@ -448,20 +448,10 @@
           async: false,
           beforeSend: function(xhr){
             xhr.setRequestHeader("X-CSRF-TOKEN", token);
-          },
-          error: function (xhr, ajaxOptions, thrownError) {
-            console.log(xhr.status + ": " + thrownError);
-            $(location).attr('href', '/sec/signs/mostrecent?isMostRecent=true&isSearch=false');
-          },
-          success: function(res){
-            if(res.ret==0){
-              console.log("SUCCESS");
-              $(location).attr('href', '/sec/signs/mostrecent?isMostRecent=true&isSearch=false');
-            }else{
-              console.log("FAIL : " + res.msg);
-            }
-          }
-        });
+          }})
+          .done(function(data) {
+            $(location).attr('href', '/sec/sign/' + data.signId + '/' + data.videoId + '/detail');
+          })
       }
     });
   /*]]>*/

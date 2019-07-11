@@ -88,7 +88,7 @@ public class DrawSignController {
       log.error("Error in draw sign processing!", e);
     }
 
-    services.sign().create(user.id, signName, filename, "");
+    services.sign().create(user.id, signName, filename, filename);
     return "";
   }
 

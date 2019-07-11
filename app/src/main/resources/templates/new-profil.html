@@ -90,7 +90,12 @@
                 <div th:if="${videoView.videoHasView}" class="tooltip_eye"></div>
                 <div th:if="${!videoView.videoHasView}" style="visibility: hidden" class="tooltip_eye"></div>
               </div>
-                <img th:src="@{/files/} + ${videoView.url}"/>
+                <div th:if="${not #strings.endsWith(videoView.url, 'mp4')}">
+                  <img th:src="@{/files/} + ${videoView.url}"/>
+                </div>
+                <div th:if="${#strings.endsWith(videoView.url, 'mp4')}">
+                  <img th:src="/img/video_thumbnail.png"/>
+                </div>
             </a>
           </div>
         </div>

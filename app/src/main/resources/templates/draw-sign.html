@@ -431,35 +431,40 @@
     });
   });
 </script>
-<script type="text/javascript">
-  document.addEventListener("DOMContentLoaded", function(event) {
-    document.getElementById("download-to-svg").onclick = function(){
-      var imageData = document.getElementById('the_canvas').toDataURL();
-      var token = $("input[name='_csrf']").attr("value");
-
-      $.ajax({
-        url:'/sec/draw-sign/create',
-        data:{imageBase64: imageData},
-        type: 'post',
-        dataType: 'json',
-        timeout: 10000,
-        async: false,
-        beforeSend: function(xhr){
-          xhr.setRequestHeader("X-CSRF-TOKEN", token);
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-          console.log(xhr.status + ": " + thrownError);
-        },
-        success: function(res){
-          if(res.ret==0){
-            console.log("SUCCESS");
-          }else{
-            console.log("FAIL : " + res.msg);
+<script th:inline="javascript">
+  /*<![CDATA[*/
+    document.addEventListener("DOMContentLoaded", function(event) {
+      document.getElementById("download-to-svg").onclick = function(){
+        var imageData = document.getElementById('the_canvas').toDataURL();
+        var token = $("input[name='_csrf']").attr("value");
+        var signName = /*[[${signName}]]*/ '';
+        var signId = /*[[${signId}]]*/ '';
+        $.ajax({
+          url:'/sec/draw-sign/' + signName + '/'+ signId + '/create',
+          data:{imageBase64: imageData},
+          type: 'post',
+          dataType: 'json',
+          timeout: 10000,
+          async: false,
+          beforeSend: function(xhr){
+            xhr.setRequestHeader("X-CSRF-TOKEN", token);
+          },
+          error: function (xhr, ajaxOptions, thrownError) {
+            console.log(xhr.status + ": " + thrownError);
+            $(location).attr('href', '/sec/signs/mostrecent?isMostRecent=true&isSearch=false');
+          },
+          success: function(res){
+            if(res.ret==0){
+              console.log("SUCCESS");
+              $(location).attr('href', '/sec/signs/mostrecent?isMostRecent=true&isSearch=false');
+            }else{
+              console.log("FAIL : " + res.msg);
+            }
           }
-        }
-      });
-    }
-  });
+        });
+      }
+    });
+  /*]]>*/
 </script>
 
 </body>

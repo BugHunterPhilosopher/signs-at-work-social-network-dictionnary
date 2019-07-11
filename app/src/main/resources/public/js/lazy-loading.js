@@ -86,10 +86,8 @@ function showSignView(signView) {
   signView.style.opacity = "0";
   signView.className = signView.className.replace(SIGN_HIDDEN_CLASS, '');
   var img = signView.getElementsByTagName('img')[0];
-  console.log('### ' + img.src);
 
   if ((typeof img.src == 'undefined') || (img.src.endsWith("null"))) {
-    console.log('##### ' + img.dataset.src);
     if (typeof img.dataset.src == 'undefined') {
       img.src = '/img/video_thumbnail.png';
     } else {
@@ -98,6 +96,7 @@ function showSignView(signView) {
     }
   }
 
+  img.src += '?anticache=' + Math.random();
   $(signView).fadeTo(REVEAL_DURATION_MS, 100);
 }
 

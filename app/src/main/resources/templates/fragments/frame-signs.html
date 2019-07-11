@@ -172,7 +172,9 @@
                 <div th:if="${signView.videoHasComment}" class="tooltip_comment"></div>
                 <div th:if="${!signView.videoHasComment}" style="visibility: hidden" class="tooltip_comment"></div>
               </div>
-              <img th:src="@{/files/} + ${signView.pictureUri}"></img>
+              <div th:if="${signView.pictureUri != null and signView.pictureUri != 'undefined'}">
+                <img th:src="@{/files/} + ${signView.pictureUri}"></img>
+              </div>
             </a>
             <a th:if="${signView.id == 0}" th:href="@{${signView.url} + ${signView.lastVideoId}}" >
               <img th:src="@{/files/} + ${signView.pictureUri}"></img>
@@ -212,7 +214,9 @@
                   <div th:if="${videoView.videoHasView}" class="tooltip_eye"></div>
                   <div th:if="${!videoView.videoHasView}" style="visibility: hidden" class="tooltip_eye"></div>
                 </div>
-                  <img th:src="@{/files/} + ${videoView.pictureUri}"></img>
+                  <div th:if="${videoView.url != null and videoView.url != 'undefined'}">
+                    <img th:src="@{/files/} + ${videoView.url}"></img>
+                  </div>
               </a>
             </div>
           </div>

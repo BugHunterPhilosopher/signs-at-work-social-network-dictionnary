@@ -86,11 +86,19 @@ function showSignView(signView) {
   signView.style.opacity = "0";
   signView.className = signView.className.replace(SIGN_HIDDEN_CLASS, '');
   var img = signView.getElementsByTagName('img')[0];
-  if (typeof img.src == 'undefined') {
-    var thumbnailUrl = img.dataset.src;
-    img.src = thumbnailUrl;
+  console.log('### ' + img.src);
+
+  if ((typeof img.src == 'undefined') || (img.src.endsWith("null"))) {
+    console.log('##### ' + img.dataset.src);
+    if (typeof img.dataset.src == 'undefined') {
+      img.src = '/img/video_thumbnail.png';
+    } else {
+      var thumbnailUrl = img.dataset.src;
+      img.src = thumbnailUrl;
+    }
   }
-  $(signView).fadeTo(REVEAL_DURATION_MS, 1);
+
+  $(signView).fadeTo(REVEAL_DURATION_MS, 100);
 }
 
 function showVideoView(videoView) {

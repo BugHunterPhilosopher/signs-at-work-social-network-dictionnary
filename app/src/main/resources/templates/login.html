@@ -49,6 +49,14 @@
 <p class="container">
   Un compte de démonstration ouvert à tous est disponible avec le login / mot de passe suivant : demo / demo
 </p>
+<div th:switch="${message}">
+  <div th:case="'Success'" class="alert alert-success">
+    <strong>Succès !</strong> Compte créé.
+  </div>
+  <div th:case="'Failed'" class="alert alert-danger">
+    <strong>Échec !</strong> Création de compte échouée.
+  </div>
+</div>
 <form class="col-xs-12 login-form" role="form" th:action="@{/login}" method="post" autocomplete="off">
   <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
   <span class="form-signin-heading text-center" th:text="#{signin_invite}"></span>

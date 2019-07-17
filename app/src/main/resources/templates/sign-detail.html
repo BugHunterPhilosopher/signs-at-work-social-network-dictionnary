@@ -50,6 +50,7 @@
           <div th:if="${#strings.endsWith(videoView.url, 'png')}">
             <img th:src="@{/files/} + ${videoView.url}"/>
           </div>
+
           <div th:if="${not #strings.startsWith(videoView.url, 'http') and not #strings.endsWith(videoView.url, 'png')}">
             <video controls="controls" muted="muted">
               <source th:src="@{/files/} + ${videoView.url}"
@@ -58,6 +59,7 @@
               Sorry, your browser doesn't support embedded videos.
             </video>
           </div>
+
           <div th:if="${#strings.startsWith(videoView.url, 'http') and not #strings.endsWith(videoView.url, 'png')}">
             <iframe class="embed-responsive-item" th:src="${videoView.url} + '?endscreen-enable=false&amp;autoplay=1&amp;sharing-enable=false&amp;wmode=transparent'" frameborder="0" allowfullscreen=""/>
           </div>

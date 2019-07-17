@@ -47,6 +47,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -113,7 +114,10 @@ public class HomeController {
   }
 
   @RequestMapping(value = "/createUser", method = RequestMethod.POST)
-  public String createUser(HttpServletRequest req, @ModelAttribute UserCreationView userCreationView, Model model) {
+  public String createUser(HttpServletRequest req, @ModelAttribute UserCreationView userCreationView, Model model, RedirectAttributes redirectAttributes) {
+    redirectAttributes.addFlashAttribute("message", "Failed");
+    redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
+
     try {
       if ((userCreationView.getUsername() == null) || (services.user().withUserName(userCreationView.getUsername()) != null)) {
         return "redirect:/register";
@@ -135,7 +139,9 @@ public class HomeController {
     User user= services.user().create(userCreationView.toUser(), userCreationView.getPassword(), "user");
     model.addAttribute("user", user);
 
-    return "login";
+    redirectAttributes.addFlashAttribute("message", "Success");
+    redirectAttributes.addFlashAttribute("alertClass", "alert-success");
+    return "redirect:/login";
   }
 
   private String doIndex(HttpServletRequest req, Principal principal, Model model) {

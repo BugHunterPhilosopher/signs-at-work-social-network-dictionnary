@@ -18,6 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
+/*
 console.log("Cool, sign.js is loaded :)");
 
 var errorSelectedSpan = document.getElementById('errorSelectedSpan');
@@ -26,10 +27,11 @@ var errorSelectedSpan = document.getElementById('errorSelectedSpan');
 var $formUploadSelectedVideoFile = $('#uploadSelectedVideoFile');
 $formUploadSelectedVideoFile.on('submit', function(event) {
   //document.getElementById('submitButtonFileDailymotion').disabled = true;
-  if (document.getElementById("InputFile").value) {
+  if (document.getElementById("InputFileVideo").value) {
     $(".spinner").removeClass("spinner_hidden").addClass("spinner_show");
     $(".spinner").css("z-index", "1500").visibility = "visible";
     $("#submitButtonFileDailymotion").css("color", "black");
+    $("#submitButtonGifFile").css("color", "black");
     var $form = $(this);
     var formdata = new FormData($form[0]);
     var data = (formdata !== null) ? formdata : $form.serialize();
@@ -43,9 +45,7 @@ $formUploadSelectedVideoFile.on('submit', function(event) {
       processData: false,
       //dataType: 'json',
       success: function (response) {
-        //var url = "/sign/"+response;
-        var url = response;
-        window.location = url;
+        window.location.href = response.redirect;
         errorSelectedSpan.style.visibility = "hidden";
         $(".spinner").visibility = "hidden";
         console.log("Success " + response);
@@ -79,5 +79,4 @@ $add_video_file_dailymotion.on('hidden.bs.modal', function() {
     $('#signNameSelected').val("");
   }
 });
-
-
+*/

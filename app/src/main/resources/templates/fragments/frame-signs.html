@@ -172,7 +172,15 @@
                 <div th:if="${signView.videoHasComment}" class="tooltip_comment"></div>
                 <div th:if="${!signView.videoHasComment}" style="visibility: hidden" class="tooltip_comment"></div>
               </div>
-              <img th:src="@{/files/} + ${signView.pictureUri}"/>
+              <div th:if="${signView.pictureUri != null and not #strings.startsWith(signView.pictureUri, 'http:')}">
+                <img th:src="@{/files/} + ${signView.pictureUri}"/>
+              </div>
+              <div th:if="${signView.pictureUri != null and #strings.startsWith(signView.pictureUri, 'http:')}">
+                <img th:src="${signView.pictureUri}"/>
+              </div>
+              <div th:if="${signView.pictureUri == null}">
+                <img src="/img/video_thumbnail.png"/>
+              </div>
             </a>
             <a th:if="${signView.id == 0}" th:href="@{${signView.url} + ${signView.lastVideoId}}" >
               <img th:src="@{/files/} + ${signView.pictureUri}"/>
@@ -212,7 +220,12 @@
                   <div th:if="${videoView.videoHasView}" class="tooltip_eye"></div>
                   <div th:if="${!videoView.videoHasView}" style="visibility: hidden" class="tooltip_eye"></div>
                 </div>
-                <img th:src="@{/files/} + ${videoView.url}"/>
+                <div th:if="${not #strings.startsWith(videoView.url, 'http:')}">
+                  <img th:src="@{/files/} + ${videoView.url}"/>
+                </div>
+                <div th:if="${#strings.startsWith(videoView.url, 'http:')}">
+                  <img th:src="${videoView.url}"/>
+                </div>
               </a>
             </div>
           </div>

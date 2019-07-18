@@ -87,16 +87,23 @@ function showSignView(signView) {
   signView.className = signView.className.replace(SIGN_HIDDEN_CLASS, '');
   var img = signView.getElementsByTagName('img')[0];
 
-  if ((typeof img.src == 'undefined') || (img.src.endsWith("null"))) {
-    if (typeof img.dataset.src == 'undefined') {
-      img.src = '/img/video_thumbnail.png';
-    } else {
-      var thumbnailUrl = img.dataset.src;
-      img.src = thumbnailUrl;
+  if (typeof img != 'undefined') {
+    if ((typeof img.src == 'undefined') || (img.src.endsWith("null"))) {
+      if (typeof img.dataset.src == 'undefined') {
+        img.src = '/img/video_thumbnail.png';
+      } else {
+        var thumbnailUrl = img.dataset.src;
+        img.src = thumbnailUrl;
+      }
+    } else if ((typeof img.src != 'undefined') && (img.src.endsWith('.gif') || img.src.endsWith('.png'))) {
+      // Nothing special to do here
+    } else if ((typeof img.src != 'undefined') && (img.src.indexOf('/files/') != -1)) {
+      img.src = img.src.substring(img.src.indexOf("/files/") + 7); // 7 = (length of "/files/")
     }
+
+    img.src += '?anticache=' + Math.random();
   }
 
-  img.src += '?anticache=' + Math.random();
   $(signView).fadeTo(REVEAL_DURATION_MS, 100);
 }
 

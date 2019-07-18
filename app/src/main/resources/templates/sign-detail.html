@@ -47,11 +47,11 @@
       </div>
 
         <div class="embed-responsive embed-responsive-16by9">
-          <div th:if="${#strings.endsWith(videoView.url, 'png')}">
+          <div th:if="${#strings.endsWith(videoView.url, 'png') or #strings.endsWith(videoView.url, 'gif')}">
             <img th:src="@{/files/} + ${videoView.url}"/>
           </div>
 
-          <div th:if="${not #strings.startsWith(videoView.url, 'http') and not #strings.endsWith(videoView.url, 'png')}">
+          <div th:if="${not #strings.startsWith(videoView.url, 'http') and not #strings.endsWith(videoView.url, 'png') and not #strings.endsWith(videoView.url, 'gif')}">
             <video controls="controls" muted="muted">
               <source th:src="@{/files/} + ${videoView.url}"
                       type="video/mp4"></source>
@@ -60,7 +60,7 @@
             </video>
           </div>
 
-          <div th:if="${#strings.startsWith(videoView.url, 'http') and not #strings.endsWith(videoView.url, 'png')}">
+          <div th:if="${#strings.startsWith(videoView.url, 'http') and not #strings.endsWith(videoView.url, 'png') and not #strings.endsWith(videoView.url, 'gif')}">
             <iframe class="embed-responsive-item" th:src="${videoView.url} + '?endscreen-enable=false&amp;autoplay=1&amp;sharing-enable=false&amp;wmode=transparent'" frameborder="0" allowfullscreen=""/>
           </div>
         </div>

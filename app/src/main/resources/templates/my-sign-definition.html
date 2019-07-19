@@ -51,6 +51,13 @@
     <aside class="sidebar">
       <ul class="nav nav-list primary left-menu">
         <li class="aside_bckg_li">
+          <a th:href="@{/sec/sign/} + ${signView.id} + '/automatic-definition'">
+            <div class="pull-left definition_text_blue"></div>
+            <h4 class="container_H2 text_hyphenation" th:text="#{automatic_definition_description}"/>
+            <div class="pull-right  add"/>
+          </a>
+        </li>
+        <li class="aside_bckg_li">
           <a data-target="#add_sign_definition_text" data-toggle="modal" href="#">
             <div th:if="${signView.textDefinition == null or #strings.isEmpty(signView.textDefinition)}">
               <div class="pull-left definition_text_blue"></div>

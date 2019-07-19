@@ -22,21 +22,51 @@ package com.orange.signsatwork.biz.view.controller;
  * #L%
  */
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.orange.signsatwork.AppProfile;
 import com.orange.signsatwork.SpringRestClient;
-import com.orange.signsatwork.biz.domain.*;
-import com.orange.signsatwork.biz.persistence.model.*;
+import com.orange.signsatwork.biz.domain.Favorite;
+import com.orange.signsatwork.biz.domain.FavoriteType;
+import com.orange.signsatwork.biz.domain.Sign;
+import com.orange.signsatwork.biz.domain.Signs;
+import com.orange.signsatwork.biz.domain.User;
+import com.orange.signsatwork.biz.domain.Video;
+import com.orange.signsatwork.biz.domain.WiktionaryDefinition;
+import com.orange.signsatwork.biz.domain.WiktionaryPage;
+import com.orange.signsatwork.biz.persistence.model.CommentData;
+import com.orange.signsatwork.biz.persistence.model.RatingData;
+import com.orange.signsatwork.biz.persistence.model.SignViewData;
+import com.orange.signsatwork.biz.persistence.model.VideoHistoryData;
+import com.orange.signsatwork.biz.persistence.model.VideoViewData;
 import com.orange.signsatwork.biz.persistence.service.MessageByLocaleService;
 import com.orange.signsatwork.biz.persistence.service.Services;
 import com.orange.signsatwork.biz.persistence.service.VideoService;
 import com.orange.signsatwork.biz.security.AppSecurityAdmin;
-import com.orange.signsatwork.biz.view.model.*;
+import com.orange.signsatwork.biz.view.model.AuthentModel;
+import com.orange.signsatwork.biz.view.model.CommentCreationView;
+import com.orange.signsatwork.biz.view.model.FavoriteCreationView;
+import com.orange.signsatwork.biz.view.model.FavoriteModalView;
+import com.orange.signsatwork.biz.view.model.RequestCreationView;
+import com.orange.signsatwork.biz.view.model.SignCreationView;
+import com.orange.signsatwork.biz.view.model.SignDefinitionCreationView;
+import com.orange.signsatwork.biz.view.model.SignView2;
+import com.orange.signsatwork.biz.view.model.SignsViewSort2;
+import com.orange.signsatwork.biz.view.model.VideoProfileView;
+import com.orange.signsatwork.biz.view.model.VideoView2;
+import com.orange.signsatwork.biz.view.model.VideosViewSort;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URLDecoder;
@@ -1099,7 +1129,6 @@ public class SignController {
     return "signs-suggest";
   }
 
-
   @Secured("ROLE_USER")
   @RequestMapping(value = "/sec/sign/{signId}/definition")
   public String definition(@PathVariable long signId, Principal principal, Model model)  {
@@ -1115,6 +1144,44 @@ public class SignController {
     model.addAttribute("signDefinitionCreationView", new SignDefinitionCreationView());
 
     return "my-sign-definition";
+  }
+
+  @Secured("ROLE_USER")
+  @RequestMapping(value = "/sec/sign/{signId}/automatic-definition")
+  public String automaticDefinition(@PathVariable long signId, Principal principal, Model model) throws JsonProcessingException {
+    Sign sign = services.sign().withId(signId);
+
+    /*model.addAttribute("title", messageByLocaleService.getMessage("sign.definition", new Object[]{sign.name}));*/
+    model.addAttribute("title", sign.name);
+    model.addAttribute("backUrl", signUrl(signId));
+    AuthentModel.addAuthenticatedModel(model, AuthentModel.isAuthenticated(principal));
+    model.addAttribute("showAddFavorite", HIDE_ADD_FAVORITE);
+
+    model.addAttribute("signView", sign);
+    model.addAttribute("signDefinitionCreationView", new SignDefinitionCreationView());
+
+    RestTemplate restTemplate = new RestTemplate();
+    String fooResourceUrl
+      = "https://fr.wikipedia.org/w/api.php?action=query&formatversion=2&generator=prefixsearch&gpssearch=" + sign.name
+      + "&gpslimit=10&prop=pageimages|pageterms&piprop=thumbnail&pithumbsize=50&pilimit=10&redirects=&wbptterms=description&utf8=&format=json";
+    ResponseEntity<WiktionaryDefinition> response
+      = restTemplate.getForEntity(fooResourceUrl, WiktionaryDefinition.class);
+
+    ObjectMapper mapper = new ObjectMapper();
+    WiktionaryDefinition body = response.getBody();
+    log.info("### " + mapper.writeValueAsString(body));
+
+    WiktionaryPage[] pages = body.getQuery().getPages();
+    List<String> allSnippets = new ArrayList<>();
+
+    for (WiktionaryPage page : pages) {
+      if (null != page.getTerms()) {
+        allSnippets.addAll(Arrays.asList(page.getTerms().getDescription()).stream().map(desc -> page.getTitle() + " : " + desc).collect(Collectors.toList()));
+      }
+    }
+    model.addAttribute("snippets", allSnippets);
+
+    return "my-sign-automatic-definition";
   }
 
   @Secured("ROLE_USER")

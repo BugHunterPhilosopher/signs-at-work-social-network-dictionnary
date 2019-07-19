@@ -70,7 +70,6 @@ import java.util.OptionalLong;
  */
 @Slf4j
 @Controller
-/** Rest controller: returns a json body */
 public class FileUploadNonRestController {
 
   @Autowired

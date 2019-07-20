@@ -41,6 +41,7 @@ public class Services {
   private RatingService rating;
   private RequestService request;
   private SignService sign;
+  private TagService tag;
   private UserService user;
   private VideoService video;
   private EmailService emailService;
@@ -54,6 +55,7 @@ public class Services {
     favorite.all().stream().forEach(f -> favorite.delete(f));
     rating.deleteAll();
     video.all().stream().forEach(v -> video.delete(v));
+    tag.all().stream().forEach(t -> tag.delete(t));
     request.all().stream().forEach(r -> request.delete(r));
     sign.all().stream().forEach(s -> sign.delete(s));
     user.all().stream().filter(u -> !appSecurityAdmin.isAdmin(u.username)).forEach(u -> user.delete(u));

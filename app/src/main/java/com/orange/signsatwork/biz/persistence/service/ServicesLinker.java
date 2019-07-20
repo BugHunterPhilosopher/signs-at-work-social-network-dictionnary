@@ -42,6 +42,8 @@ class ServicesLinker {
   @Autowired
   private SignService signService;
   @Autowired
+  private TagService tagService;
+  @Autowired
   private UserService userService;
   @Autowired
   private VideoService videoService;
@@ -59,6 +61,7 @@ class ServicesLinker {
     services.rating(ratingService);
     services.request(requestService);
     services.sign(signService);
+    services.tag(tagService);
     services.user(userService);
     services.video(videoService);
     services.emailService(emailService);

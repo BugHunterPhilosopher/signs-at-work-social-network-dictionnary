@@ -139,7 +139,7 @@ public class SignRestControllerIntegrationTest {
   private String bodyForSignCreation() throws JsonProcessingException {
     ObjectMapper mapper = new ObjectMapper();
     return mapper.writeValueAsString(
-            new SignCreationView(signName, videoUrl));
+            new SignCreationView(signName, videoUrl, ""));
   }
 
   private SignView bodyToSignCreationView(String content) throws IOException {

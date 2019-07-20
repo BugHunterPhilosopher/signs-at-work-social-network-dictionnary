@@ -24,24 +24,39 @@ package com.orange.signsatwork.biz.webservice.controller;
 
 import com.orange.signsatwork.DailymotionToken;
 import com.orange.signsatwork.SpringRestClient;
-import com.orange.signsatwork.biz.domain.*;
+import com.orange.signsatwork.biz.domain.AuthTokenInfo;
+import com.orange.signsatwork.biz.domain.Request;
+import com.orange.signsatwork.biz.domain.Sign;
+import com.orange.signsatwork.biz.domain.User;
+import com.orange.signsatwork.biz.domain.Video;
+import com.orange.signsatwork.biz.persistence.model.SignDB;
+import com.orange.signsatwork.biz.persistence.model.TagDB;
 import com.orange.signsatwork.biz.persistence.service.MessageByLocaleService;
 import com.orange.signsatwork.biz.persistence.service.Services;
+import com.orange.signsatwork.biz.persistence.service.impl.SignServiceImpl;
 import com.orange.signsatwork.biz.view.model.SignCreationView;
 import com.orange.signsatwork.biz.webservice.model.SignId;
 import com.orange.signsatwork.biz.webservice.model.SignView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Types that carry this annotation are treated as controllers where @RequestMapping
@@ -61,11 +76,42 @@ public class SignRestController {
   @Autowired
   MessageByLocaleService messageByLocaleService;
 
-
   @RequestMapping(value = RestApi.WS_OPEN_SIGN + "/{id}")
   public SignView sign(@PathVariable long id) {
     Sign sign = services.sign().withId(id);
     return new SignView(sign);
+  }
+
+  @Secured({"ROLE_USER", "ROLE_ADMIN"})
+  @RequestMapping(value = "/sec/sign/{signId}/tags", method = RequestMethod.POST)
+  public String signTags(@PathVariable long signId, @ModelAttribute SignCreationView signCreationView)  {
+    String[] tagNames = signCreationView.getTags().split(",");
+    log.info("### " + Arrays.toString(tagNames));
+
+    List<String> allTagNames = Arrays.asList(tagNames);
+    Sign sign = services.sign().withId(signId);
+    SignDB signDB = SignServiceImpl.signDBFrom(sign);
+    signDB.setId(sign.id);
+
+    List<TagDB> allTags = new ArrayList<>();
+
+    // Add tags provided in Ajax
+    for (String tagName : allTagNames) {
+      TagDB aTag = services.tag().withName(tagName);
+      if (null == aTag) {
+        aTag = services.tag().create(tagName, signDB);
+      }
+      allTags.add(aTag);
+    }
+
+    // Remove tags not provided in Ajax but present on the sign (as Tagmanager is set up to always send all tags)
+    for (TagDB tag : signDB.getTags()) {
+      if (!allTags.contains(tag)) {
+        services.tag().delete(tag);
+      }
+    }
+
+    return "";
   }
 
   @Secured("ROLE_USER")

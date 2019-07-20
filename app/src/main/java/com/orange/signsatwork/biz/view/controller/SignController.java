@@ -36,12 +36,15 @@ import com.orange.signsatwork.biz.domain.WiktionaryDefinition;
 import com.orange.signsatwork.biz.domain.WiktionaryPage;
 import com.orange.signsatwork.biz.persistence.model.CommentData;
 import com.orange.signsatwork.biz.persistence.model.RatingData;
+import com.orange.signsatwork.biz.persistence.model.SignDB;
 import com.orange.signsatwork.biz.persistence.model.SignViewData;
+import com.orange.signsatwork.biz.persistence.model.TagDB;
 import com.orange.signsatwork.biz.persistence.model.VideoHistoryData;
 import com.orange.signsatwork.biz.persistence.model.VideoViewData;
 import com.orange.signsatwork.biz.persistence.service.MessageByLocaleService;
 import com.orange.signsatwork.biz.persistence.service.Services;
 import com.orange.signsatwork.biz.persistence.service.VideoService;
+import com.orange.signsatwork.biz.persistence.service.impl.SignServiceImpl;
 import com.orange.signsatwork.biz.security.AppSecurityAdmin;
 import com.orange.signsatwork.biz.view.model.AuthentModel;
 import com.orange.signsatwork.biz.view.model.CommentCreationView;
@@ -923,8 +926,6 @@ public class SignController {
     return "sign";
   }
 
-
-
   @Secured({"ROLE_USER", "ROLE_ADMIN"})
   @RequestMapping(value = "/sec/sign/{signId}/{videoId}/detail")
   public String videoDetail(@PathVariable long signId, @PathVariable long videoId, Principal principal, Model model)  {
@@ -988,6 +989,12 @@ public class SignController {
     model.addAttribute("signView", sign);
     model.addAttribute("signCreationView", new SignCreationView());
     model.addAttribute("videoView", video);
+
+    SignDB signDB = SignServiceImpl.signDBFrom(services.sign().withId(signId));
+    List<TagDB> tags = signDB.getTags();
+    model.addAttribute("tags",
+      null != tags ? tags.stream().map(TagDB::getName).collect(Collectors.joining(",")) : "");
+    model.addAttribute("signId", signId);
 
     return "sign-detail";
   }

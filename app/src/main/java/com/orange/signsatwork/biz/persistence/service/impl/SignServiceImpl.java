@@ -25,18 +25,32 @@ package com.orange.signsatwork.biz.persistence.service.impl;
 import com.orange.signsatwork.AppProfile;
 import com.orange.signsatwork.DailymotionToken;
 import com.orange.signsatwork.SpringRestClient;
-import com.orange.signsatwork.biz.domain.*;
+import com.orange.signsatwork.biz.domain.AuthTokenInfo;
+import com.orange.signsatwork.biz.domain.Request;
+import com.orange.signsatwork.biz.domain.Sign;
+import com.orange.signsatwork.biz.domain.Signs;
+import com.orange.signsatwork.biz.domain.UrlFileUploadDailymotion;
+import com.orange.signsatwork.biz.domain.VideoDailyMotion;
 import com.orange.signsatwork.biz.persistence.model.RequestDB;
 import com.orange.signsatwork.biz.persistence.model.SignDB;
 import com.orange.signsatwork.biz.persistence.model.UserDB;
 import com.orange.signsatwork.biz.persistence.model.VideoDB;
-import com.orange.signsatwork.biz.persistence.repository.*;
+import com.orange.signsatwork.biz.persistence.repository.CommentRepository;
+import com.orange.signsatwork.biz.persistence.repository.FavoriteRepository;
+import com.orange.signsatwork.biz.persistence.repository.RequestRepository;
+import com.orange.signsatwork.biz.persistence.repository.SignRepository;
+import com.orange.signsatwork.biz.persistence.repository.UserRepository;
+import com.orange.signsatwork.biz.persistence.repository.VideoRepository;
 import com.orange.signsatwork.biz.persistence.service.Services;
 import com.orange.signsatwork.biz.persistence.service.SignService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -447,12 +461,12 @@ public class SignServiceImpl implements SignService {
 
   static Sign signFrom(SignDB signDB, Services services) {
     return signDB == null ? null :
-      new Sign(signDB.getId(), signDB.getName(), signDB.getTextDefinition(), signDB.getVideoDefinition(), signDB.getUrl(), signDB.getCreateDate(), signDB.getLastVideoId(), signDB.getNbVideo(),VideoServiceImpl.videosFrom(signDB.getVideos()), services.video(), services.comment());
+      new Sign(signDB.getId(), signDB.getName(), signDB.getTextDefinition(), signDB.getVideoDefinition(), signDB.getUrl(), signDB.getCreateDate(), signDB.getLastVideoId(), signDB.getNbVideo(),VideoServiceImpl.videosFrom(signDB.getVideos()), signDB.getTags(), services.video(), services.comment());
   }
 
 
-  private SignDB signDBFrom(Sign sign) {
-    return new SignDB(sign.name, sign.url, sign.createDate);
+  public static SignDB signDBFrom(Sign sign) {
+    return new SignDB(sign.name, sign.url, sign.createDate, sign.tags);
   }
 
   Signs signsFromSignsView(Iterable<SignDB> signsDB) {
@@ -463,11 +477,11 @@ public class SignServiceImpl implements SignService {
 
   static Sign signFromSignsView(SignDB signDB, Services services) {
     return signDB == null ? null :
-      new Sign(signDB.getId(), signDB.getName(), signDB.getTextDefinition(), signDB.getVideoDefinition(), signDB.getUrl(), signDB.getCreateDate(), signDB.getLastVideoId(), signDB.getNbVideo(), null, services.video(), services.comment());
+      new Sign(signDB.getId(), signDB.getName(), signDB.getTextDefinition(), signDB.getVideoDefinition(), signDB.getUrl(), signDB.getCreateDate(), signDB.getLastVideoId(), signDB.getNbVideo(), null, signDB.getTags(), services.video(), services.comment());
   }
 
   static Sign signFromRequestsView(SignDB signDB, Services services) {
     return signDB == null ? null :
-      new Sign(signDB.getId(), signDB.getName(), signDB.getTextDefinition(), signDB.getVideoDefinition(), signDB.getUrl(), signDB.getCreateDate(), 0, signDB.getNbVideo(), null, services.video(), services.comment());
+      new Sign(signDB.getId(), signDB.getName(), signDB.getTextDefinition(), signDB.getVideoDefinition(), signDB.getUrl(), signDB.getCreateDate(), 0, signDB.getNbVideo(), null, signDB.getTags(), services.video(), services.comment());
   }
 }

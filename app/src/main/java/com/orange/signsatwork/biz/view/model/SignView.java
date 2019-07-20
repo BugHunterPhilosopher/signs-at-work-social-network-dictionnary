@@ -25,6 +25,7 @@ package com.orange.signsatwork.biz.view.model;
 import com.orange.signsatwork.biz.domain.Sign;
 import com.orange.signsatwork.biz.domain.Signs;
 import com.orange.signsatwork.biz.domain.Videos;
+import com.orange.signsatwork.biz.persistence.model.TagDB;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,11 +47,12 @@ public class SignView {
   private String url;
   private Date createDate;
   private Videos videos;
+  private List<TagDB> tags;
   private boolean hasComment;
   private boolean recent;
 
   public Sign toSign() {
-    return new Sign(id, name, textDefinition, videoDefinition, url, createDate, 0, 0, null, null, null);
+    return new Sign(id, name, textDefinition, videoDefinition, url, createDate, 0, 0, null, tags, null, null);
   }
 
   public static SignView from(Sign sign) {
@@ -60,7 +62,7 @@ public class SignView {
     } else {
       hasComment = true;
     }
-    return new SignView(sign.id, sign.name, sign.textDefinition, sign.videoDefinition, sign.url, sign.createDate, sign.videos, hasComment, false);
+    return new SignView(sign.id, sign.name, sign.textDefinition, sign.videoDefinition, sign.url, sign.createDate, sign.videos, sign.tags, hasComment, false);
   }
 
   public static List<SignView> from(Signs signs) {
@@ -77,7 +79,7 @@ public class SignView {
     } else {
       hasComment = true;
     }
-    return new SignView(sign.id, sign.name, sign.textDefinition, sign.videoDefinition, sign.url, sign.createDate, sign.videos, hasComment, true);
+    return new SignView(sign.id, sign.name, sign.textDefinition, sign.videoDefinition, sign.url, sign.createDate, sign.videos, sign.tags, hasComment, true);
   }
 
   public static List<SignView> fromRecent(Signs signs) {

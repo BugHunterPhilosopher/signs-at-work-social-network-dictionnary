@@ -1184,7 +1184,7 @@ public class SignController {
 
       return "my-sign-automatic-definition";
     } else {
-      redirectAttributes.addFlashAttribute("message", "Désolé, il n'y a pas de définition automatique, vous pouvez en saisir une manuellement.");
+      redirectAttributes.addFlashAttribute("message", "Désolé, il n'y a pas de définition automatique pour ce signe, vous pouvez en saisir une manuellement.");
       redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
 
       return "redirect:/sign/" + signId + "/definition";

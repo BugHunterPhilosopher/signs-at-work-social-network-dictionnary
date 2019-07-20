@@ -46,6 +46,15 @@
     </div>
   </div>
 
+  <div th:switch="${message}">
+    <div th:case="'Success'" class="alert alert-success">
+      <strong>Succès !</strong> Compte créé.
+    </div>
+    <div th:case="'Failed'" class="alert alert-danger">
+      <strong>Échec !</strong> Création de compte échouée.
+    </div>
+  </div>
+
   <!--<div class="col-md-4 col-xs-12 col-lg-12">-->
     <div class=" col-xs-12">
     <aside class="sidebar">

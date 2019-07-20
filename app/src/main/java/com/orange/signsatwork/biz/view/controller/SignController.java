@@ -67,6 +67,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URLDecoder;
@@ -1148,10 +1149,9 @@ public class SignController {
 
   @Secured("ROLE_USER")
   @RequestMapping(value = "/sec/sign/{signId}/automatic-definition")
-  public String automaticDefinition(@PathVariable long signId, Principal principal, Model model) throws JsonProcessingException {
+  public String automaticDefinition(@PathVariable long signId, Principal principal, Model model, RedirectAttributes redirectAttributes) throws JsonProcessingException {
     Sign sign = services.sign().withId(signId);
 
-    /*model.addAttribute("title", messageByLocaleService.getMessage("sign.definition", new Object[]{sign.name}));*/
     model.addAttribute("title", sign.name);
     model.addAttribute("backUrl", signUrl(signId));
     AuthentModel.addAuthenticatedModel(model, AuthentModel.isAuthenticated(principal));
@@ -1184,7 +1184,10 @@ public class SignController {
 
       return "my-sign-automatic-definition";
     } else {
-      return "redirect:/sign/" + signId;
+      redirectAttributes.addFlashAttribute("message", "Désolé, il n'y a pas de définition automatique, vous pouvez en saisir une manuellement.");
+      redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
+
+      return "redirect:/sign/" + signId + "/definition";
     }
   }
 

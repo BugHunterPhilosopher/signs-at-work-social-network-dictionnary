@@ -42,17 +42,17 @@ public class VideoViewData {
 
 
   public VideoViewData(Object[] queryResultItem) {
-    signId = toLong(queryResultItem[0]);
-    signName = toString(queryResultItem[1]);
-    createDate = toDate(queryResultItem[2]);
-    videoId = toLong(queryResultItem[3]);
-    url = toString(queryResultItem[4]);
-    pictureUri = toString(queryResultItem[5]);
-    nbView = toLong(queryResultItem[6]);
-    averageRate = toLong(queryResultItem[7]);
-    nbComment = toLong(queryResultItem[8]);
-    idForName = toLong(queryResultItem[9]);
-    nbVideo = toLong(queryResultItem[10]);
+    signId = toLong(((VideoDB)queryResultItem[0]).getId());
+    signName = toString(((SignDB)queryResultItem[1]).getName());
+    createDate = toDate(((VideoDB)queryResultItem[0]).getCreateDate());
+    videoId = toLong(((VideoDB)queryResultItem[0]).getId());
+    url = toString(((VideoDB)queryResultItem[0]).getUrl());
+    pictureUri = toString(((VideoDB)queryResultItem[0]).getPictureUri());
+    nbView = toLong(((VideoDB)queryResultItem[0]).getNbView());
+    averageRate = toLong(((VideoDB)queryResultItem[0]).getAverageRate());
+    nbComment = toLong(((VideoDB)queryResultItem[0]).getNbComment());
+    idForName = toLong(((VideoDB)queryResultItem[0]).getIdForName());
+    nbVideo = toLong(((SignDB)queryResultItem[1]).getNbVideo());
   }
 
   private String toString(Object o) {
@@ -60,7 +60,7 @@ public class VideoViewData {
   }
 
   private long toLong(Object o) {
-    return ((BigInteger)o).longValue();
+    return ((Long)o).longValue();
   }
 
   private Date toDate(Object o) {

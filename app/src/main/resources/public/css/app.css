@@ -1919,6 +1919,22 @@ input[type="checkbox"] {
 #myform{
   border :none;
 }
+
+#search-criteria1 {
+  position: fixed;
+  z-index: 10;
+  margin-top: 5%;
+  width: 30%;
+}
+
+#search-criteria2 {
+  position: fixed;
+  z-index: 10;
+  margin-top: 8%;
+  width: 30%;
+}
+
+
 /*error create user*/
 
 .blink_me {

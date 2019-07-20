@@ -22,9 +22,10 @@ package com.orange.signsatwork.biz.persistence.model;
  * #L%
  */
 
-import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class SignViewData {
 
@@ -35,17 +36,17 @@ public class SignViewData {
   public final String url;
   public final String pictureUri;
   public final long nbVideo;
-
-
+  public final String tags;
 
   public SignViewData(Object[] queryResultItem) {
-    id = toLong(queryResultItem[0]);
-    name = toString(queryResultItem[1]);
-    createDate = toDate(queryResultItem[2]);
-    lastVideoId = toLong(queryResultItem[3]);
-    url = toString(queryResultItem[4]);
-    pictureUri = toString(queryResultItem[5]);
-    nbVideo = toLong(queryResultItem[6]);
+    id = toLong(((SignDB)queryResultItem[1]).getId());
+    name = toString(((SignDB)queryResultItem[1]).getName());
+    createDate = toDate(((SignDB)queryResultItem[1]).getCreateDate());
+    lastVideoId = toLong(((SignDB)queryResultItem[1]).getLastVideoId());
+    url = toString(((VideoDB)queryResultItem[0]).getUrl());
+    pictureUri = toString(((VideoDB)queryResultItem[0]).getPictureUri());
+    nbVideo = toLong(((SignDB)queryResultItem[1]).getNbVideo());
+    tags = toTags(((SignDB)queryResultItem[1]).getTags());
   }
 
   private String toString(Object o) {
@@ -53,7 +54,11 @@ public class SignViewData {
   }
 
   private long toLong(Object o) {
-    return ((BigInteger)o).longValue();
+    return ((Long)o).longValue();
+  }
+
+  private String toTags(List<TagDB> l) {
+    return l.stream().map(TagDB::getName).collect(Collectors.joining(","));
   }
 
   private Date toDate(Object o) {

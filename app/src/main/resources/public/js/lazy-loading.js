@@ -48,7 +48,8 @@ var videoAvailable = document.getElementById("video_available");
 
 var displayedVideosCount = 0;
 
-var search_criteria = document.getElementById("search-criteria");
+var search_criteria1 = document.getElementById("search-criteria1");
+var search_criteria2 = document.getElementById("search-criteria2");
 
 var accentMap = {
   "é": "e",
@@ -66,6 +67,10 @@ var accentMap = {
 var dropdownFilter = document.getElementById("dropdown-filter");
 
 var normalize = function( term ) {
+  if (typeof term == "undefined") {
+    return ""
+  }
+
   var ret = "";
   for ( var i = 0; i < term.length; i++ ) {
     ret += accentMap[ term.charAt(i) ] || term.charAt(i);
@@ -148,7 +153,11 @@ function onScroll(event) {
       var noMoreHiddenSigns = signViewsHidden.length === 0;
       var closeToBottom = $(window).scrollTop() + $(window).height() > $(document).height() - $(window).height() / 5;
 
-      if (search_criteria.value == "") {
+      if (search_criteria1.value == "") {
+        if (!noMoreHiddenSigns && closeToBottom) {
+          showNextSignViews();
+        }
+      } else if (search_criteria2.value == "") {
         if (!noMoreHiddenSigns && closeToBottom) {
           showNextSignViews();
         }
@@ -157,7 +166,11 @@ function onScroll(event) {
       if (videoViewsHidden != null) {
         var noMoreHiddenVideos = videoViewsHidden.length === 0;
         var closeToBottom = $(window).scrollTop() + $(window).height() > $(document).height() - $(window).height() / 5;
-        if (search_criteria.value == "") {
+        if (search_criteria1.value == "") {
+          if (!noMoreHiddenVideos && closeToBottom) {
+            showNextVideoViews();
+          }
+        } else if (search_criteria2.value == "") {
           if (!noMoreHiddenVideos && closeToBottom) {
             showNextVideoViews();
           }
@@ -178,6 +191,9 @@ function search(event) {
 
     if (g != "") {
       $("#signs-container").children("div").each(function () {
+        var wasShown = false;
+        var elem = $(this);
+
         $("#reset").css("visibility", "visible");
        /* $("#reset").show();*/
         var s = normalize($(this).attr("id"));
@@ -191,13 +207,31 @@ function search(event) {
             displayedSignsCount++;
 
           }
-          $(this).show();
+          elem.show();
           display++;
-        }
-        else {
-          $(this).hide();
+          wasShown = true;
         }
 
+        var s2 = normalize($(this).attr("data-tags"));
+        s2.split(',').forEach(function(tag) {
+          var img2 = $(this).find("img")[0];
+          if (tag.toUpperCase().indexOf(g.toUpperCase()) != -1) {
+            if ($(this).hasClass(SIGN_HIDDEN_CLASS)) {
+              $(this).removeClass(SIGN_HIDDEN_CLASS);
+              var thumbnailUrl = img2.dataset.src;
+              img2.src = thumbnailUrl;
+              displayedSignsCount++;
+
+            }
+            elem.show();
+            wasShown = true;
+            display++;
+          }
+        });
+
+        if (!wasShown) {
+          elem.hide();
+        }
       });
 
       console.log("display "+display);
@@ -477,7 +511,8 @@ function main() {
   }
 
   document.addEventListener('scroll', onScroll);
-  search_criteria.addEventListener('keyup', search);
+  search_criteria1.addEventListener('keyup', search);
+  search_criteria2.addEventListener('keyup', search);
   var button_reset = document.getElementById("reset");
   if (button_reset != null) {
     button_reset.addEventListener('click', onReset);
@@ -518,13 +553,13 @@ function onFiltreSign(event, href) {
       signAvailable = document.getElementById("sign_available");
       dropdownFilter = document.getElementById("dropdown-filter");
       if (signsCount == 0) {
-        $(search_criteria).hide();
+        $(search_criteria1).hide();
         $("#reset").css("visibility", "hidden");
       } else {
-        $(search_criteria).show();
-        if (search_criteria.value != "") {
-          console.log("search value " + search_criteria.value);
-          searchSignAfterReload(search_criteria.value);
+        $(search_criteria1).show();
+        if (search_criteria1.value != "") {
+          console.log("search value " + search_criteria1.value);
+          searchSignAfterReload(search_criteria1.value);
         } else {
           $("#signs-container").children("div").each(function () {
             $(this).hide();
@@ -564,13 +599,13 @@ function onFiltreVideo(event, href) {
       videoAvailable = document.getElementById("video_available");
       dropdownFilter = document.getElementById("dropdown-filter");
       if (videosCount == 0) {
-        $(search_criteria).hide();
+        $(search_criteria1).hide();
         $("#reset").css("visibility", "hidden");
       } else {
-        $(search_criteria).show();
-        if (search_criteria.value != "") {
-          console.log("search value " + search_criteria.value);
-          searchVideoAfterReload(search_criteria.value);
+        $(search_criteria1).show();
+        if (search_criteria1.value != "") {
+          console.log("search value " + search_criteria1.value);
+          searchVideoAfterReload(search_criteria1.value);
         } else {
           $("#videos-container").children("div").each(function () {
             $(this).hide();

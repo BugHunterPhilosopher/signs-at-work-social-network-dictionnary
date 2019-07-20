@@ -236,7 +236,7 @@
   }
 
   input[type=search] {
-    width: 85%;
+    width: 30%;
   }
 
 }
@@ -486,7 +486,7 @@
   }
 
   input[type=search] {
-    width: 85%;
+    width: 30%;
   }
 
 }
@@ -633,7 +633,7 @@
   }
 
   #container-input{
-    margin: 0 auto;
+    margin: -5% auto;
     width:53%
   }
 
@@ -858,7 +858,7 @@
   }
 
   #container-input{
-    margin: 0 auto;
+    margin: -5% auto;
     width:53%
   }
 

@@ -47,10 +47,12 @@ public class SignView2 implements ComparableSign {
   private boolean videoHasView;
   private boolean videoHasPositiveRate;
   private boolean signBelowToFavorite;
+  private String tags;
 
 
   public SignView2(SignViewData signViewData, boolean videoHasComment, boolean createdAfterLastDeconnection, boolean videoHasView, boolean videoHasPositiveRate, boolean signBelowToFavorite) {
     id = signViewData.id;
+    tags = signViewData.tags;
     name = signViewData.name;
     createDate = signViewData.createDate;
     lastVideoId = signViewData.lastVideoId;

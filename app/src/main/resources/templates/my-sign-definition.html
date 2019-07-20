@@ -46,12 +46,12 @@
     </div>
   </div>
 
-  <div th:switch="${message}">
+  <div th:switch="${messageType}">
     <div th:case="'Success'" class="alert alert-success">
-      <strong>Succès !</strong> Compte créé.
+      <strong th:text="${message}"/>
     </div>
     <div th:case="'Failed'" class="alert alert-danger">
-      <strong>Échec !</strong> Création de compte échouée.
+      <strong th:text="${message}"/>
     </div>
   </div>
 

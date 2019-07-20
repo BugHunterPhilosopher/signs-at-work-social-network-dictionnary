@@ -1184,10 +1184,11 @@ public class SignController {
 
       return "my-sign-automatic-definition";
     } else {
+      redirectAttributes.addFlashAttribute("messageType", "Failed");
       redirectAttributes.addFlashAttribute("message", "Désolé, il n'y a pas de définition automatique pour ce signe, vous pouvez en saisir une manuellement.");
       redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
 
-      return "redirect:/sign/" + signId + "/definition";
+      return "redirect:/sec/sign/" + signId + "/definition";
     }
   }
 

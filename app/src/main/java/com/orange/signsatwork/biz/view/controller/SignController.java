@@ -1171,17 +1171,21 @@ public class SignController {
     WiktionaryDefinition body = response.getBody();
     log.info("### " + mapper.writeValueAsString(body));
 
-    WiktionaryPage[] pages = body.getQuery().getPages();
-    List<String> allSnippets = new ArrayList<>();
+    if ((body.getQuery() != null) && (body.getQuery().getPages() != null)) {
+      WiktionaryPage[] pages = body.getQuery().getPages();
+      List<String> allSnippets = new ArrayList<>();
 
-    for (WiktionaryPage page : pages) {
-      if (null != page.getTerms()) {
-        allSnippets.addAll(Arrays.asList(page.getTerms().getDescription()).stream().map(desc -> page.getTitle() + " : " + desc).collect(Collectors.toList()));
+      for (WiktionaryPage page : pages) {
+        if (null != page.getTerms()) {
+          allSnippets.addAll(Arrays.asList(page.getTerms().getDescription()).stream().map(desc -> page.getTitle() + " : " + desc).collect(Collectors.toList()));
+        }
       }
-    }
-    model.addAttribute("snippets", allSnippets);
+      model.addAttribute("snippets", allSnippets);
 
-    return "my-sign-automatic-definition";
+      return "my-sign-automatic-definition";
+    } else {
+      return "redirect:/sign/" + signId;
+    }
   }
 
   @Secured("ROLE_USER")

@@ -21,4 +21,17 @@ public class WiktionaryQuery {
     this.pages = pages;
   }
 
+  @JsonProperty("redirects")
+  private WiktionaryRedirect[] redirects;
+
+  @JsonProperty("redirects")
+  public WiktionaryRedirect[] getRedirects() {
+    return redirects;
+  }
+
+  @JsonProperty("redirects")
+  public void setRedirects(WiktionaryRedirect[] redirects) {
+    this.redirects = redirects;
+  }
+
 }

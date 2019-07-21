@@ -219,6 +219,7 @@
     right: 44%;
     background-color: #E2E2E2;
     border: none;
+    z-index: 10;
   }
 
   #myform {
@@ -469,6 +470,7 @@
     right: 44%;
     background-color: #E2E2E2;
     border: none;
+    z-index: 10;
   }
 
   #myform {
@@ -651,6 +653,7 @@
     right: 44%;
     background-color: #E2E2E2;
     border:none;
+    z-index: 10;
   }
 
   .embed-responsive .embed-responsive-item,
@@ -876,6 +879,7 @@
     right: 44%;
     background-color: #E2E2E2;
     border:none;
+    z-index: 10;
   }
 
   .embed-responsive .embed-responsive-item,

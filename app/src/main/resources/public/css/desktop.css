@@ -216,7 +216,7 @@
   #reset {
     position: absolute;
     margin-top: 7px;
-    right: 32%;
+    right: 44%;
     background-color: #E2E2E2;
     border: none;
   }
@@ -466,7 +466,7 @@
   #reset {
     position: absolute;
     margin-top: 7px;
-    right: 32%;
+    right: 44%;
     background-color: #E2E2E2;
     border: none;
   }
@@ -648,7 +648,7 @@
   #reset{
     position: absolute;
     margin-top: 7px;
-    right: 42%;
+    right: 44%;
     background-color: #E2E2E2;
     border:none;
   }
@@ -872,8 +872,8 @@
 
   #reset{
     position: absolute;
-    margin-top: 7px;
-    right: 42%;
+    margin-top: 5%;
+    right: 44%;
     background-color: #E2E2E2;
     border:none;
   }

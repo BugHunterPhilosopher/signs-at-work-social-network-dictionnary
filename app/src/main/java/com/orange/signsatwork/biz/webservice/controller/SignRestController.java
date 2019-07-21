@@ -98,15 +98,17 @@ public class SignRestController {
 
     // Add tags provided in Ajax
     for (String tagName : allTagNames) {
-      TagDB aTag = services.tag().withName(tagName);
-      if (null == aTag) {
-        aTag = services.tag().create(tagName, signDB);
-      } else {
-        Set<SignDB> signs = aTag.getSigns();
-        signs.add(signDB);
-        aTag.setSigns(signs);
+      if (!"".equals(tagName)) {
+        TagDB aTag = services.tag().withName(tagName);
+        if (null == aTag) {
+          aTag = services.tag().create(tagName, signDB);
+        } else {
+          Set<SignDB> signs = aTag.getSigns();
+          signs.add(signDB);
+          aTag.setSigns(signs);
+        }
+        allAddedTags.add(aTag);
       }
-      allAddedTags.add(aTag);
     }
 
     // Remove tags not provided in Ajax but present on the sign (as Tagmanager is set up to always send all tags)
@@ -115,7 +117,11 @@ public class SignRestController {
         boolean removed = tag.getSigns().remove(signDB);
         log.info("### removed? " + removed);
         if (removed) {
-          services.tag().save(tag);
+          if (tag.getSigns().isEmpty()) {
+            services.tag().delete(tag);
+          } else {
+            services.tag().save(tag);
+          }
         }
       }
     }

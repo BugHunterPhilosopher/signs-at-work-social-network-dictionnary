@@ -79,6 +79,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -991,7 +992,7 @@ public class SignController {
     model.addAttribute("videoView", video);
 
     SignDB signDB = SignServiceImpl.signDBFrom(services.sign().withId(signId));
-    List<TagDB> tags = signDB.getTags();
+    Set<TagDB> tags = signDB.getTags();
     model.addAttribute("tags",
       null != tags ? tags.stream().map(TagDB::getName).collect(Collectors.joining(",")) : "");
     model.addAttribute("signId", signId);

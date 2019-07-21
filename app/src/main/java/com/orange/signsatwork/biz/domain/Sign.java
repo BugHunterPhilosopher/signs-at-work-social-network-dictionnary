@@ -29,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @RequiredArgsConstructor
 public class Sign {
@@ -41,7 +42,7 @@ public class Sign {
     public final long lastVideoId;
     public final long nbVideo;
     public final Videos videos;
-    public final List<TagDB> tags;
+    public final Set<TagDB> tags;
 
     private final VideoService videoService;
     private final CommentService commentService;

@@ -57,6 +57,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Types that carry this annotation are treated as controllers where @RequestMapping
@@ -93,21 +94,29 @@ public class SignRestController {
     SignDB signDB = SignServiceImpl.signDBFrom(sign);
     signDB.setId(sign.id);
 
-    List<TagDB> allTags = new ArrayList<>();
+    List<TagDB> allAddedTags = new ArrayList<>();
 
     // Add tags provided in Ajax
     for (String tagName : allTagNames) {
       TagDB aTag = services.tag().withName(tagName);
       if (null == aTag) {
         aTag = services.tag().create(tagName, signDB);
+      } else {
+        Set<SignDB> signs = aTag.getSigns();
+        signs.add(signDB);
+        aTag.setSigns(signs);
       }
-      allTags.add(aTag);
+      allAddedTags.add(aTag);
     }
 
     // Remove tags not provided in Ajax but present on the sign (as Tagmanager is set up to always send all tags)
-    for (TagDB tag : signDB.getTags()) {
-      if (!allTags.contains(tag)) {
-        services.tag().delete(tag);
+    for (TagDB tag : services.tag().all()) {
+      if (!allAddedTags.contains(tag)) {
+        boolean removed = tag.getSigns().remove(signDB);
+        log.info("### removed? " + removed);
+        if (removed) {
+          services.tag().save(tag);
+        }
       }
     }
 

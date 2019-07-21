@@ -25,9 +25,9 @@ package com.orange.signsatwork.biz.persistence.repository;
 import com.orange.signsatwork.biz.persistence.model.TagDB;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import java.util.Set;
 
 public interface TagRepository extends JpaRepository<TagDB, Long> {
-    List<TagDB> findByName(String name);
+    Set<TagDB> findByName(String name);
 
 }

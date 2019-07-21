@@ -38,6 +38,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 // we want to save 'Sign' objects in the 'signs' DB table
 @Table(name = "signs")
@@ -74,13 +76,28 @@ public class SignDB {
   @OneToMany(mappedBy = "sign", fetch = FetchType.LAZY)
   private List<VideoDB> videos;
 
-  @ManyToMany(mappedBy = "signs", fetch = FetchType.EAGER)
-  private List<TagDB> tags;
+  @ManyToMany(mappedBy = "signs", fetch = FetchType.LAZY)
+  private Set<TagDB> tags;
 
-  public SignDB(String name, String url, Date createDate, List<TagDB> tags) {
+  public SignDB(String name, String url, Date createDate, Set<TagDB> tags) {
     this.name = name;
     this.url = url;
     this.createDate = createDate;
     this.tags = tags;
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    SignDB signDB = (SignDB) o;
+    return id.equals(signDB.id) &&
+      name.equals(signDB.name);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, name);
+  }
+
 }

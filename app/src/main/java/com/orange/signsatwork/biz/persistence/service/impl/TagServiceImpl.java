@@ -31,8 +31,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -49,8 +49,8 @@ public class TagServiceImpl implements TagService {
 
   @Override
   public TagDB withName(String name) {
-    List<TagDB> byName = tagRepository.findByName(name);
-    return byName.isEmpty() ? null : byName.get(0);
+    Set<TagDB> byName = tagRepository.findByName(name);
+    return byName.isEmpty() ? null : byName.iterator().next();
   }
 
   @Override
@@ -58,7 +58,7 @@ public class TagServiceImpl implements TagService {
     TagDB tag = new TagDB();
     tag.setName(tagName);
 
-    ArrayList<SignDB> signs = new ArrayList<>();
+    Set<SignDB> signs = new HashSet<>();
     signs.add(signDB);
     tag.setSigns(signs);
 
@@ -66,8 +66,13 @@ public class TagServiceImpl implements TagService {
   }
 
   @Override
-  public List<TagDB> all() {
-    return tagRepository.findAll();
+  public TagDB save(TagDB tag) {
+    return tagRepository.save(tag);
+  }
+
+  @Override
+  public Set<TagDB> all() {
+    return new HashSet<>(tagRepository.findAll());
   }
 
   @Override

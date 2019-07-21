@@ -24,7 +24,7 @@ package com.orange.signsatwork.biz.persistence.model;
 
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class SignViewData {
@@ -57,7 +57,7 @@ public class SignViewData {
     return ((Long)o).longValue();
   }
 
-  private String toTags(List<TagDB> l) {
+  private String toTags(Set<TagDB> l) {
     return l.stream().map(TagDB::getName).collect(Collectors.joining(","));
   }
 

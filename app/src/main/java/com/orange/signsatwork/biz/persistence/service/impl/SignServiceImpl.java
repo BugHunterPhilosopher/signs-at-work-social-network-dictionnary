@@ -93,6 +93,11 @@ public class SignServiceImpl implements SignService {
   }
 
   @Override
+  public SignDB save(SignDB signDB) {
+    return signRepository.save(signDB);
+  }
+
+  @Override
   public List<Object[]>  mostRecent(Date lastConnectionDate) {
     return signRepository.findMostRecent(lastConnectionDate);
   }

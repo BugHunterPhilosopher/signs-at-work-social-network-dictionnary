@@ -22,12 +22,19 @@ package com.orange.signsatwork.biz.persistence.service;
  * #L%
  */
 
-import com.orange.signsatwork.biz.domain.*;
+import com.orange.signsatwork.biz.domain.Request;
+import com.orange.signsatwork.biz.domain.Sign;
+import com.orange.signsatwork.biz.domain.Signs;
+import com.orange.signsatwork.biz.domain.UrlFileUploadDailymotion;
+import com.orange.signsatwork.biz.domain.VideoDailyMotion;
+import com.orange.signsatwork.biz.persistence.model.SignDB;
 
 import java.util.Date;
 import java.util.List;
 
 public interface SignService {
+
+  SignDB save(SignDB signDB);
 
   List<Object[]> mostRecent(Date lastConnectionDate);
 

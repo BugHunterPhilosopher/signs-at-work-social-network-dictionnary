@@ -33,6 +33,7 @@ import lombok.Setter;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
@@ -47,7 +48,7 @@ public class SignView {
   private String url;
   private Date createDate;
   private Videos videos;
-  private List<TagDB> tags;
+  private Set<TagDB> tags;
   private boolean hasComment;
   private boolean recent;
 

@@ -49,7 +49,6 @@ var videoAvailable = document.getElementById("video_available");
 var displayedVideosCount = 0;
 
 var search_criteria1 = document.getElementById("search-criteria1");
-var search_criteria2 = document.getElementById("search-criteria2");
 
 var accentMap = {
   "é": "e",
@@ -157,20 +156,12 @@ function onScroll(event) {
         if (!noMoreHiddenSigns && closeToBottom) {
           showNextSignViews();
         }
-      } else if (search_criteria2.value == "") {
-        if (!noMoreHiddenSigns && closeToBottom) {
-          showNextSignViews();
-        }
       }
     } else {
       if (videoViewsHidden != null) {
         var noMoreHiddenVideos = videoViewsHidden.length === 0;
         var closeToBottom = $(window).scrollTop() + $(window).height() > $(document).height() - $(window).height() / 5;
         if (search_criteria1.value == "") {
-          if (!noMoreHiddenVideos && closeToBottom) {
-            showNextVideoViews();
-          }
-        } else if (search_criteria2.value == "") {
           if (!noMoreHiddenVideos && closeToBottom) {
             showNextVideoViews();
           }
@@ -512,7 +503,6 @@ function main() {
 
   document.addEventListener('scroll', onScroll);
   search_criteria1.addEventListener('keyup', search);
-  search_criteria2.addEventListener('keyup', search);
   var button_reset = document.getElementById("reset");
   if (button_reset != null) {
     button_reset.addEventListener('click', onReset);

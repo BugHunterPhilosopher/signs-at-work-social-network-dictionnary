@@ -994,7 +994,7 @@ public class SignController {
     SignDB signDB = SignServiceImpl.signDBFrom(services.sign().withId(signId));
     Set<TagDB> tags = signDB.getTags();
     model.addAttribute("tags",
-      null != tags ? tags.stream().map(TagDB::getName).collect(Collectors.joining(",")) : "");
+      null != tags ? tags.stream().map(TagDB::getName).collect(Collectors.joining(", ")) : "");
     model.addAttribute("signId", signId);
 
     return "sign-detail";

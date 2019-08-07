@@ -86,6 +86,7 @@
                       <div th:if="${signView.textDefinition != null} or ${signView.videoDefinition != null}">
                         <h2 id="definition" class="container_H2" th:text="#{sign.definition-not-empty}"/>
                         <div>
+                          <h4 class="container_H2" th:text="${signView.textDefinition}"/>
                           <div class="pull-right  pen"/>
                         </div>
                       </div>

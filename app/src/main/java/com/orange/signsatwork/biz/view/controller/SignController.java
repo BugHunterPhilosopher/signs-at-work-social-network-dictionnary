@@ -1206,7 +1206,7 @@ public class SignController {
 
     services.sign().changeSignTextDefinition(signId, signDefinitionCreationView.getTextDefinition());
 
-    return "redirect:/sign/" + signId;
+    return "redirect:/sec/sign/" + signId +  "/" + services.sign().withId(signId).lastVideoId + "/detail";
   }
 
   private String signUrl(long signId) {

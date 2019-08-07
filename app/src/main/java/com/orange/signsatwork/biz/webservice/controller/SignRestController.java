@@ -154,8 +154,7 @@ public class SignRestController {
           try {
             DeleteVideoOnDailyMotion(dailymotionIdForSignDefinition);
           } catch (Exception errorDailymotionDeleteVideo) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return messageByLocaleService.getMessage("errorDailymotionDeleteVideo");
+            log.error(messageByLocaleService.getMessage("errorDailymotionDeleteVideo"), errorDailymotionDeleteVideo);
           }
         }
       }
@@ -166,8 +165,7 @@ public class SignRestController {
         DeleteVideoOnDailyMotion(dailymotionId);
       }
       catch (Exception errorDailymotionDeleteVideo) {
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        return messageByLocaleService.getMessage("errorDailymotionDeleteVideo");
+        log.error(messageByLocaleService.getMessage("errorDailymotionDeleteVideo"), errorDailymotionDeleteVideo);
       }
       response.setStatus(HttpServletResponse.SC_OK);
       return "/";
@@ -180,8 +178,7 @@ public class SignRestController {
         DeleteVideoOnDailyMotion(dailymotionId);
       }
       catch (Exception errorDailymotionDeleteVideo) {
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        return messageByLocaleService.getMessage("errorDailymotionDeleteVideo");
+        log.error(messageByLocaleService.getMessage("errorDailymotionDeleteVideo"), errorDailymotionDeleteVideo);
       }
       response.setStatus(HttpServletResponse.SC_OK);
       return "/sign/" + signId;

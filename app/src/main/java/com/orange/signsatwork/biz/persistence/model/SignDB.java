@@ -26,6 +26,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -40,6 +41,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+
+import static javax.persistence.CascadeType.REMOVE;
+
 
 // we want to save 'Sign' objects in the 'signs' DB table
 @Table(name = "signs")
@@ -73,10 +77,10 @@ public class SignDB {
 
   private long nbVideo;
 
-  @OneToMany(mappedBy = "sign", fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "sign", fetch = FetchType.LAZY, cascade = REMOVE)
   private List<VideoDB> videos;
 
-  @ManyToMany(mappedBy = "signs", fetch = FetchType.LAZY)
+  @ManyToMany(mappedBy = "signs", fetch = FetchType.LAZY, cascade = REMOVE)
   private Set<TagDB> tags;
 
   public SignDB(String name, String url, Date createDate, Set<TagDB> tags) {

@@ -39,30 +39,18 @@ public class SignViewData {
   public final String tags;
 
   public SignViewData(Object[] queryResultItem) {
-    id = toLong(((SignDB)queryResultItem[0]).getId());
-    name = toString(((SignDB)queryResultItem[0]).getName());
-    createDate = toDate(((SignDB)queryResultItem[0]).getCreateDate());
-    lastVideoId = toLong(((SignDB)queryResultItem[0]).getLastVideoId());
-    url = toString(((SignDB)queryResultItem[0]).getUrl());
+    id = ((SignDB)queryResultItem[0]).getId();
+    name = ((SignDB)queryResultItem[0]).getName();
+    createDate = ((SignDB)queryResultItem[0]).getCreateDate();
+    lastVideoId = ((SignDB)queryResultItem[0]).getLastVideoId();
+    url = ((SignDB)queryResultItem[0]).getUrl();
     pictureUri = "";
-    nbVideo = toLong(((SignDB)queryResultItem[0]).getNbVideo());
+    nbVideo = ((SignDB)queryResultItem[0]).getNbVideo();
     tags = toTags(((SignDB)queryResultItem[0]).getTags());
-  }
-
-  private String toString(Object o) {
-    return (String) o;
-  }
-
-  private long toLong(Object o) {
-    return ((Long)o).longValue();
   }
 
   private String toTags(Set<TagDB> l) {
     return l.stream().map(TagDB::getName).collect(Collectors.joining(","));
   }
 
-  private Date toDate(Object o) {
-    Timestamp timestamp = ((Timestamp)o);
-    return new Date(timestamp.getTime());
-  }
 }

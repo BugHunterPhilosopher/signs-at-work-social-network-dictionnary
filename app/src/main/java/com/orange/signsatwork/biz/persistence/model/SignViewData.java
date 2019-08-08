@@ -10,12 +10,12 @@ package com.orange.signsatwork.biz.persistence.model;
  * it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 2 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-2.0.html>.
@@ -39,14 +39,14 @@ public class SignViewData {
   public final String tags;
 
   public SignViewData(Object[] queryResultItem) {
-    id = toLong(((SignDB)queryResultItem[1]).getId());
-    name = toString(((SignDB)queryResultItem[1]).getName());
-    createDate = toDate(((SignDB)queryResultItem[1]).getCreateDate());
-    lastVideoId = toLong(((SignDB)queryResultItem[1]).getLastVideoId());
-    url = toString(((VideoDB)queryResultItem[0]).getUrl());
-    pictureUri = toString(((VideoDB)queryResultItem[0]).getPictureUri());
-    nbVideo = toLong(((SignDB)queryResultItem[1]).getNbVideo());
-    tags = toTags(((SignDB)queryResultItem[1]).getTags());
+    id = toLong(((SignDB)queryResultItem[0]).getId());
+    name = toString(((SignDB)queryResultItem[0]).getName());
+    createDate = toDate(((SignDB)queryResultItem[0]).getCreateDate());
+    lastVideoId = toLong(((SignDB)queryResultItem[0]).getLastVideoId());
+    url = toString(((SignDB)queryResultItem[0]).getUrl());
+    pictureUri = "";
+    nbVideo = toLong(((SignDB)queryResultItem[0]).getNbVideo());
+    tags = toTags(((SignDB)queryResultItem[0]).getTags());
   }
 
   private String toString(Object o) {

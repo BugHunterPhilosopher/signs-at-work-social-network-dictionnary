@@ -677,11 +677,8 @@ public class SignController {
       model.addAttribute("isLowRecent", false);
       model.addAttribute("classDropdownDirection", "  direction_down pull-right");
     }
-    List<SignViewData> signViewsData = querySigns.stream()
-      .map(objectArray -> new SignViewData(objectArray))
-      .collect(Collectors.toList());
 
-    List<SignView2> signViews = signViewsData.stream()
+    List<SignView2> signViews = querySigns.stream().map(objectArray -> new SignViewData(objectArray))
       .map(signViewData -> new SignView2(signViewData, false, false, false, false, false))
       .collect(Collectors.toList());
 

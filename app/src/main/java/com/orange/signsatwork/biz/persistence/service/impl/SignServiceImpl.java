@@ -109,7 +109,7 @@ public class SignServiceImpl implements SignService {
 
   @Override
   public List<Object[]> findAll() {
-    return signRepository.findAllVideosForAllSigns();
+    return signRepository.findAllSigns();
   };
 
   @Override

@@ -104,8 +104,6 @@ function showSignView(signView) {
     } else if ((typeof img.src != 'undefined') && (img.src.indexOf('/files/') != -1)) {
       img.src = img.src.substring(img.src.indexOf("/files/") + 7); // 7 = (length of "/files/")
     }
-
-    img.src += '?anticache=' + Math.random();
   }
 
   $(signView).fadeTo(REVEAL_DURATION_MS, 100);

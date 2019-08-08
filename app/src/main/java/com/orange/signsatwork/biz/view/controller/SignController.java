@@ -672,7 +672,7 @@ public class SignController {
       model.addAttribute("classDropdownDirection", "  direction_up pull-right");
     } else {
       /*querySigns = services.sign().mostRecent(user.lastDeconnectionDate);*/
-      querySigns = services.sign().mostRecentWithoutDate();
+      querySigns = services.sign().findAll();
       model.addAttribute("isMostRecent", true);
       model.addAttribute("isLowRecent", false);
       model.addAttribute("classDropdownDirection", "  direction_down pull-right");

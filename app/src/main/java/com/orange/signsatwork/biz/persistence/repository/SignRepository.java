@@ -51,10 +51,10 @@ public interface SignRepository extends CrudRepository<SignDB, Long> {
     List<Object[]> findSignsAlphabeticalOrderDescForSignsView();
 
 
-  @Query(value="select distinct(c.sign_id) from favorites_videos a inner join favorites b inner join videos c on c.id = a.videos_id and a.favorites_id = b.id and b.user_id = :userId", nativeQuery = true)
+    @Query(value="select distinct(c.sign_id) from favorites_videos a inner join favorites b inner join videos c on c.id = a.videos_id and a.favorites_id = b.id and b.user_id = :userId", nativeQuery = true)
     Long[] findSignsBellowToFavoriteByUser(@Param("userId") long userId);
 
-    @Query(value="from VideoDB a inner join a.sign b WHERE b.id = b.id order by b.name")
+    @Query(value="from VideoDB a inner join a.sign b WHERE b.id = a.id")
     List<Object[]> findAllVideosForAllSigns();
 
     @Query(value="select a.create_date, b.username, b.first_name, b.last_name from videos a inner join userdb b on a.sign_id = :signId and a.user_id = b.id order by a.create_date desc", nativeQuery = true)

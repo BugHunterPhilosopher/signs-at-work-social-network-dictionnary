@@ -108,6 +108,11 @@ public class SignServiceImpl implements SignService {
   }
 
   @Override
+  public List<Object[]> findAll() {
+    return signRepository.findAllVideosForAllSigns();
+  };
+
+  @Override
   public List<Object[]>  mostRecentWithoutDate() {
     return signRepository.findMostRecentWithoutDate();
   }

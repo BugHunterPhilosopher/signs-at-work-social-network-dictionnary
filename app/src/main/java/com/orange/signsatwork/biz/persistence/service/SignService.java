@@ -40,6 +40,8 @@ public interface SignService {
 
   List<Object[]> lowRecent(Date lastConnectionDate);
 
+  List<Object[]> findAll();
+
   List<Object[]> mostRecentWithoutDate();
 
   List<Object[]> lowRecentWithoutDate();

@@ -781,6 +781,7 @@ public class SignController {
     model.addAttribute("requestCreationView", new RequestCreationView());
     model.addAttribute("signCreationView", new SignCreationView());
     model.addAttribute("isAll", true);
+    model.addAttribute("isSearch", true);
     model.addAttribute("isMostCommented", false);
     model.addAttribute("isLowCommented", false);
     model.addAttribute("isMostRating", false);

@@ -55,7 +55,7 @@ public class SignViewData {
     createDate = ((SignDB)queryResultItem).getCreateDate();
     lastVideoId = ((SignDB)queryResultItem).getLastVideoId();
     url = ((SignDB)queryResultItem).getUrl();
-    pictureUri = "";
+    pictureUri = null; // In sync with UI
     nbVideo = ((SignDB)queryResultItem).getNbVideo();
     tags = toTags(((SignDB)queryResultItem).getTags());
   }

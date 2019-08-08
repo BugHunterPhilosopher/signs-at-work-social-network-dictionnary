@@ -663,28 +663,27 @@ public class SignController {
       fillModelWithContext(model, "sign.list", principal, SHOW_ADD_FAVORITE, HOME_URL);
     }
 
-    List<Object[]> querySigns;
     if (isMostRecent == true) {
       /*querySigns = services.sign().lowRecent(user.lastDeconnectionDate);*/
-      querySigns = services.sign().lowRecentWithoutDate();
+      List<Object[]> querySigns = services.sign().lowRecentWithoutDate();
+      List<SignView2> signViews = querySigns.stream().map(objectArray -> new SignViewData(objectArray))
+        .map(signViewData -> new SignView2(signViewData, false, false, false, false, false))
+        .collect(Collectors.toList());
+      model.addAttribute("signsView", signViews);
       model.addAttribute("isLowRecent", true);
       model.addAttribute("isMostRecent", false);
       model.addAttribute("classDropdownDirection", "  direction_up pull-right");
     } else {
       /*querySigns = services.sign().mostRecent(user.lastDeconnectionDate);*/
-      querySigns = services.sign().findAll();
+      List<Object> querySigns = services.sign().findAll();
+      List<SignView2> signViews = querySigns.stream().map(objectArray -> new SignViewData(objectArray))
+        .map(signViewData -> new SignView2(signViewData, false, false, false, false, false))
+        .collect(Collectors.toList());
+      model.addAttribute("signsView", signViews);
       model.addAttribute("isMostRecent", true);
       model.addAttribute("isLowRecent", false);
       model.addAttribute("classDropdownDirection", "  direction_down pull-right");
     }
-
-    List<SignView2> signViews = querySigns.stream().map(objectArray -> new SignViewData(objectArray))
-      .map(signViewData -> new SignView2(signViewData, false, false, false, false, false))
-      .collect(Collectors.toList());
-
-
-    model.addAttribute("signsView", signViews);
-
 
     fillModelWithFavorites(model, user);
     model.addAttribute("requestCreationView", new RequestCreationView());
@@ -712,31 +711,37 @@ public class SignController {
 
     fillModelWithContext(model, "sign.list", principal, SHOW_ADD_FAVORITE, HOME_URL);
 
-    List<Object[]> querySigns;
     if (isMostRecent == true) {
       /*querySigns = services.sign().lowRecent(user.lastDeconnectionDate);*/
-      querySigns = services.sign().lowRecentWithoutDate();
+      List<Object[]> querySigns = services.sign().lowRecentWithoutDate();
+      List<SignViewData> signViewsData = querySigns.stream()
+      .map(objectArray -> new SignViewData(objectArray))
+      .collect(Collectors.toList());
+
+      List<SignView2> signViews = signViewsData.stream()
+      .map(signViewData -> new SignView2(signViewData, false, false, false, false, false))
+      .collect(Collectors.toList());
+
+      model.addAttribute("signsView", signViews);
       model.addAttribute("isLowRecent", true);
       model.addAttribute("isMostRecent", false);
       model.addAttribute("classDropdownDirection", "  direction_up pull-right");
     } else {
       /*querySigns = services.sign().mostRecent(user.lastDeconnectionDate);*/
-      querySigns = services.sign().mostRecentWithoutDate();
+      List<Object> querySigns = services.sign().findAll();
+      List<SignViewData> signViewsData = querySigns.stream()
+        .map(object -> new SignViewData(object))
+        .collect(Collectors.toList());
+
+      List<SignView2> signViews = signViewsData.stream()
+        .map(signViewData -> new SignView2(signViewData, false, false, false, false, false))
+        .collect(Collectors.toList());
+
+      model.addAttribute("signsView", signViews);
       model.addAttribute("isMostRecent", true);
       model.addAttribute("isLowRecent", false);
       model.addAttribute("classDropdownDirection", "  direction_down pull-right");
     }
-    List<SignViewData> signViewsData = querySigns.stream()
-      .map(objectArray -> new SignViewData(objectArray))
-      .collect(Collectors.toList());
-
-    List<SignView2> signViews = signViewsData.stream()
-      .map(signViewData -> new SignView2(signViewData, false, false, false, false, false))
-      .collect(Collectors.toList());
-
-
-    model.addAttribute("signsView", signViews);
-
 
     fillModelWithFavorites(model, user);
     model.addAttribute("requestCreationView", new RequestCreationView());

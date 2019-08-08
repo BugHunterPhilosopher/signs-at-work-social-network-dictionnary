@@ -49,6 +49,17 @@ public class SignViewData {
     tags = toTags(((SignDB)queryResultItem[0]).getTags());
   }
 
+  public SignViewData(Object queryResultItem) {
+    id = ((SignDB)queryResultItem).getId();
+    name = ((SignDB)queryResultItem).getName();
+    createDate = ((SignDB)queryResultItem).getCreateDate();
+    lastVideoId = ((SignDB)queryResultItem).getLastVideoId();
+    url = ((SignDB)queryResultItem).getUrl();
+    pictureUri = "";
+    nbVideo = ((SignDB)queryResultItem).getNbVideo();
+    tags = toTags(((SignDB)queryResultItem).getTags());
+  }
+
   private String toTags(Set<TagDB> l) {
     return l.stream().map(TagDB::getName).collect(Collectors.joining(","));
   }

@@ -763,6 +763,39 @@ public class SignController {
     return "fragments/frame-signs";
   }
 
+  @RequestMapping(value = "/sec/signs/all")
+  public String signsAll(Principal principal, Model model) {
+    User user = services.user().withUserName(principal.getName());
+    fillModelWithContext(model, "sign.list", principal, SHOW_ADD_FAVORITE, HOME_URL);
+
+    List<Object> querySigns = services.sign().findAll();
+    List<SignView2> signViews = querySigns.stream().map(objectArray -> new SignViewData(objectArray))
+      .map(signViewData -> new SignView2(signViewData, false, false, false, false, false))
+      .collect(Collectors.toList());
+    model.addAttribute("signsView", signViews);
+    model.addAttribute("isMostRecent", false);
+    model.addAttribute("isLowRecent", false);
+    model.addAttribute("classDropdownDirection", "  direction_down pull-right");
+
+    fillModelWithFavorites(model, user);
+    model.addAttribute("requestCreationView", new RequestCreationView());
+    model.addAttribute("signCreationView", new SignCreationView());
+    model.addAttribute("isAll", true);
+    model.addAttribute("isMostCommented", false);
+    model.addAttribute("isLowCommented", false);
+    model.addAttribute("isMostRating", false);
+    model.addAttribute("isLowRating", false);
+    model.addAttribute("isMostViewed", false);
+    model.addAttribute("isLowViewed", false);
+    model.addAttribute("isAlphabeticAsc", false);
+    model.addAttribute("isAlphabeticDesc", false);
+    model.addAttribute("dropdownTitle", messageByLocaleService.getMessage("all"));
+    model.addAttribute("classDropdownTitle", "  all pull-left");
+    model.addAttribute("classDropdownSize", "btn btn-default dropdown-toggle");
+
+    return "signs";
+  }
+
   @RequestMapping(value = "/sign/{signId}")
   public String sign(HttpServletRequest req, @PathVariable long signId, Principal principal, Model model) {
     final User user = AuthentModel.isAuthenticated(principal) ? services.user().withUserName(principal.getName()) : null;

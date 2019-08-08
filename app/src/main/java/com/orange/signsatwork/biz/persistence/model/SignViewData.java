@@ -49,15 +49,15 @@ public class SignViewData {
     tags = toTags(((SignDB)queryResultItem[1]).getTags());
   }
 
-  public SignViewData(Object queryResultItem) {
-    id = ((SignDB)queryResultItem).getId();
-    name = ((SignDB)queryResultItem).getName();
-    createDate = ((SignDB)queryResultItem).getCreateDate();
-    lastVideoId = ((SignDB)queryResultItem).getLastVideoId();
-    url = ((SignDB)queryResultItem).getUrl();
+  public SignViewData(SignDB queryResultItem) {
+    id = queryResultItem.getId();
+    name = queryResultItem.getName();
+    createDate = queryResultItem.getCreateDate();
+    lastVideoId = queryResultItem.getLastVideoId();
+    url = queryResultItem.getUrl();
     pictureUri = null; // In sync with UI
-    nbVideo = ((SignDB)queryResultItem).getNbVideo();
-    tags = toTags(((SignDB)queryResultItem).getTags());
+    nbVideo = queryResultItem.getNbVideo();
+    tags = toTags(queryResultItem.getTags());
   }
 
   private String toString(Object o) {

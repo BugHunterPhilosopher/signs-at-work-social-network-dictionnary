@@ -675,7 +675,7 @@ public class SignController {
       model.addAttribute("classDropdownDirection", "  direction_up pull-right");
     } else {
       /*querySigns = services.sign().mostRecent(user.lastDeconnectionDate);*/
-      List<Object> querySigns = services.sign().findAll();
+      List<SignDB> querySigns = services.sign().findAll();
       List<SignView2> signViews = querySigns.stream().map(objectArray -> new SignViewData(objectArray))
         .map(signViewData -> new SignView2(signViewData, false, false, false, false, false))
         .collect(Collectors.toList());
@@ -728,7 +728,7 @@ public class SignController {
       model.addAttribute("classDropdownDirection", "  direction_up pull-right");
     } else {
       /*querySigns = services.sign().mostRecent(user.lastDeconnectionDate);*/
-      List<Object> querySigns = services.sign().findAll();
+      List<Object[]> querySigns = services.sign().mostRecentWithoutDate();
       List<SignViewData> signViewsData = querySigns.stream()
         .map(object -> new SignViewData(object))
         .collect(Collectors.toList());
@@ -768,12 +768,12 @@ public class SignController {
     User user = services.user().withUserName(principal.getName());
     fillModelWithContext(model, "sign.list", principal, SHOW_ADD_FAVORITE, HOME_URL);
 
-    List<Object> querySigns = services.sign().findAll();
+    List<SignDB> querySigns = services.sign().findAll();
     List<SignView2> signViews = querySigns.stream().map(objectArray -> new SignViewData(objectArray))
       .map(signViewData -> new SignView2(signViewData, false, false, false, false, false))
       .collect(Collectors.toList());
     model.addAttribute("signsView", signViews);
-    model.addAttribute("isMostRecent", false);
+    model.addAttribute("isMostRecent", true);
     model.addAttribute("isLowRecent", false);
     model.addAttribute("classDropdownDirection", "  direction_down pull-right");
 

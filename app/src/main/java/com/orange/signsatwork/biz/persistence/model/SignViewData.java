@@ -39,14 +39,14 @@ public class SignViewData {
   public final String tags;
 
   public SignViewData(Object[] queryResultItem) {
-    id = ((SignDB)queryResultItem[0]).getId();
-    name = ((SignDB)queryResultItem[0]).getName();
-    createDate = ((SignDB)queryResultItem[0]).getCreateDate();
-    lastVideoId = ((SignDB)queryResultItem[0]).getLastVideoId();
-    url = ((SignDB)queryResultItem[0]).getUrl();
-    pictureUri = "";
-    nbVideo = ((SignDB)queryResultItem[0]).getNbVideo();
-    tags = toTags(((SignDB)queryResultItem[0]).getTags());
+    id = toLong(((SignDB)queryResultItem[1]).getId());
+    name = toString(((SignDB)queryResultItem[1]).getName());
+    createDate = toDate(((SignDB)queryResultItem[1]).getCreateDate());
+    lastVideoId = toLong(((SignDB)queryResultItem[1]).getLastVideoId());
+    url = toString(((VideoDB)queryResultItem[0]).getUrl());
+    pictureUri = toString(((VideoDB)queryResultItem[0]).getPictureUri());
+    nbVideo = toLong(((SignDB)queryResultItem[1]).getNbVideo());
+    tags = toTags(((SignDB)queryResultItem[1]).getTags());
   }
 
   public SignViewData(Object queryResultItem) {
@@ -60,8 +60,21 @@ public class SignViewData {
     tags = toTags(((SignDB)queryResultItem).getTags());
   }
 
+  private String toString(Object o) {
+    return (String) o;
+  }
+
+  private long toLong(Object o) {
+    return ((Long)o).longValue();
+  }
+
   private String toTags(Set<TagDB> l) {
     return l.stream().map(TagDB::getName).collect(Collectors.joining(","));
+  }
+
+  private Date toDate(Object o) {
+    Timestamp timestamp = ((Timestamp)o);
+    return new Date(timestamp.getTime());
   }
 
 }

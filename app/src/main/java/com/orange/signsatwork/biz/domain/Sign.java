@@ -45,6 +45,7 @@ public class Sign {
     public final Videos videos;
     public final Set<TagDB> tags;
     public final Set<SignDB> synonyms;
+    public final Set<SignDB> opposites;
 
     private final VideoService videoService;
     private final CommentService commentService;
@@ -53,7 +54,7 @@ public class Sign {
         if (videos != null) {
             return this;
         } else {
-            return new Sign(id, name, textDefinition, videoDefinition,url, createDate, lastVideoId, nbVideo, videoService.forSign(id), tags, synonyms, videoService, commentService);
+            return new Sign(id, name, textDefinition, videoDefinition,url, createDate, lastVideoId, nbVideo, videoService.forSign(id), tags, synonyms, opposites, videoService, commentService);
         }
     }
 

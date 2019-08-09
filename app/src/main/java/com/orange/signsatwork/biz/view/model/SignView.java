@@ -51,11 +51,12 @@ public class SignView {
   private Videos videos;
   private Set<TagDB> tags;
   private Set<SignDB> synonyms;
+  private Set<SignDB> opposites;
   private boolean hasComment;
   private boolean recent;
 
   public Sign toSign() {
-    return new Sign(id, name, textDefinition, videoDefinition, url, createDate, 0, 0, null, tags, synonyms, null, null);
+    return new Sign(id, name, textDefinition, videoDefinition, url, createDate, 0, 0, null, tags, synonyms, opposites, null, null);
   }
 
   public static SignView from(Sign sign) {
@@ -65,7 +66,7 @@ public class SignView {
     } else {
       hasComment = true;
     }
-    return new SignView(sign.id, sign.name, sign.textDefinition, sign.videoDefinition, sign.url, sign.createDate, sign.videos, sign.tags, sign.synonyms, hasComment, false);
+    return new SignView(sign.id, sign.name, sign.textDefinition, sign.videoDefinition, sign.url, sign.createDate, sign.videos, sign.tags, sign.synonyms, sign.opposites, hasComment, false);
   }
 
   public static List<SignView> from(Signs signs) {
@@ -82,7 +83,7 @@ public class SignView {
     } else {
       hasComment = true;
     }
-    return new SignView(sign.id, sign.name, sign.textDefinition, sign.videoDefinition, sign.url, sign.createDate, sign.videos, sign.tags, sign.synonyms, hasComment, true);
+    return new SignView(sign.id, sign.name, sign.textDefinition, sign.videoDefinition, sign.url, sign.createDate, sign.videos, sign.tags, sign.synonyms, sign.opposites, hasComment, true);
   }
 
   public static List<SignView> fromRecent(Signs signs) {

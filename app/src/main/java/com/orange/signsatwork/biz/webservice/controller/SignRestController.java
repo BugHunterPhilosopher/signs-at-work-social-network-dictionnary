@@ -167,6 +167,40 @@ public class SignRestController {
   }
 
   @Secured({"ROLE_USER", "ROLE_ADMIN"})
+  @RequestMapping(value = "/sec/sign/{signId}/completeOpposites", method = RequestMethod.POST)
+  public String completeOpposites(@PathVariable long signId, @ModelAttribute SignCreationView signCreationView)  {
+    String[] oppositesNames = signCreationView.getTags().split(",");
+    log.info("### " + Arrays.toString(oppositesNames));
+
+    List<String> allOppositeNames = Arrays.asList(oppositesNames);
+    Sign sign = services.sign().withId(signId);
+    SignDB signDB = SignServiceImpl.signDBFrom(sign);
+    signDB.setId(sign.id);
+
+    Set<SignDB> allAddedOpposites = new HashSet<>();
+
+    // Add opposites provided in Ajax
+    for (String oppositeName : allOppositeNames) {
+      if (!"".equals(oppositeName)) {
+        Signs aSign = services.sign().withName(oppositeName);
+        if (null == aSign) {
+          // We don't create opposites on-the-fly
+        } else {
+          Sign first = aSign.list().get(0);
+          log.info("### " + first);
+          SignDB signDb = SignServiceImpl.signDBFrom(first);
+          signDb.setId(first.id);
+          allAddedOpposites.add(signDb);
+        }
+      }
+    }
+    signDB.setOpposites(allAddedOpposites);
+    services.sign().save(signDB);
+
+    return "";
+  }
+
+  @Secured({"ROLE_USER", "ROLE_ADMIN"})
   @RequestMapping(value = "/sec/sign/autocompleteRelations")
   public String autocompleteSynonyms(@ModelAttribute SignCreationView signCreationView)  {
     return "[" + services.sign().all().stream().

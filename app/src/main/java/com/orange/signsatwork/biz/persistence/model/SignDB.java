@@ -93,20 +93,24 @@ public class SignDB {
   private Set<SignDB> synonyms;
 
   /** Relations */
-  @ManyToMany
+  @ManyToMany(cascade={CascadeType.ALL})
+  @JoinTable(name = "signs_opposites",
+    joinColumns = { @JoinColumn(name = "id", nullable = false)},
+    inverseJoinColumns = { @JoinColumn(name = "opposite_id", nullable = false)})
   private Set<SignDB> opposites;
 
   /** Relations */
   @ManyToMany
   private Set<SignDB> related;
 
-  public SignDB(String name, String url, Date createDate, List<VideoDB> videos, Set<TagDB> tags, Set<SignDB> synonyms) {
+  public SignDB(String name, String url, Date createDate, List<VideoDB> videos, Set<TagDB> tags, Set<SignDB> synonyms, Set<SignDB> opposites) {
     this.name = name;
     this.url = url;
     this.createDate = createDate;
     this.videos = videos;
     this.tags = tags;
     this.synonyms = synonyms;
+    this.opposites = opposites;
   }
 
   @Override

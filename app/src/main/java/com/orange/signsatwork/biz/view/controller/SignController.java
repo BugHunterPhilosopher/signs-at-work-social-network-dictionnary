@@ -1011,8 +1011,13 @@ public class SignController {
     SignDB signDB = SignServiceImpl.signDBFrom(sign);
     signDB.setId(sign.id);
     setRelations(model, signDB);
+    model.addAttribute("opposites", signDB.getOpposites().stream().map(SignDB::getName).
+      collect(Collectors.joining(", ")));
 
-    return "my-sign-relations";
+    model.addAttribute("signId", signId);
+    model.addAttribute("videoId", sign.videos.list().get(0).id);
+
+    return "my-sign-opposites";
   }
 
   @Secured({"ROLE_USER", "ROLE_ADMIN"})

@@ -201,8 +201,42 @@ public class SignRestController {
   }
 
   @Secured({"ROLE_USER", "ROLE_ADMIN"})
+  @RequestMapping(value = "/sec/sign/{signId}/completeRelated", method = RequestMethod.POST)
+  public String completeRelated(@PathVariable long signId, @ModelAttribute SignCreationView signCreationView)  {
+    String[] relatedNames = signCreationView.getTags().split(",");
+    log.info("### " + Arrays.toString(relatedNames));
+
+    List<String> allRelatedNames = Arrays.asList(relatedNames);
+    Sign sign = services.sign().withId(signId);
+    SignDB signDB = SignServiceImpl.signDBFrom(sign);
+    signDB.setId(sign.id);
+
+    Set<SignDB> allAddedRelated = new HashSet<>();
+
+    // Add opposites provided in Ajax
+    for (String relatedName : allRelatedNames) {
+      if (!"".equals(relatedName)) {
+        Signs aSign = services.sign().withName(relatedName);
+        if (null == aSign) {
+          // We don't create related on-the-fly
+        } else {
+          Sign first = aSign.list().get(0);
+          log.info("### " + first);
+          SignDB signDb = SignServiceImpl.signDBFrom(first);
+          signDb.setId(first.id);
+          allAddedRelated.add(signDb);
+        }
+      }
+    }
+    signDB.setRelated(allAddedRelated);
+    services.sign().save(signDB);
+
+    return "";
+  }
+
+  @Secured({"ROLE_USER", "ROLE_ADMIN"})
   @RequestMapping(value = "/sec/sign/autocompleteRelations")
-  public String autocompleteSynonyms(@ModelAttribute SignCreationView signCreationView)  {
+  public String autocompleteRelations(@ModelAttribute SignCreationView signCreationView)  {
     return "[" + services.sign().all().stream().
       map(sign -> "\"" + sign.name + "\"").
       collect(Collectors.joining(", ")) + "]";

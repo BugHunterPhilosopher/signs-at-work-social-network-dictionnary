@@ -471,12 +471,12 @@ public class SignServiceImpl implements SignService {
 
   static Sign signFrom(SignDB signDB, Services services) {
     return signDB == null ? null :
-      new Sign(signDB.getId(), signDB.getName(), signDB.getTextDefinition(), signDB.getVideoDefinition(), signDB.getUrl(), signDB.getCreateDate(), signDB.getLastVideoId(), signDB.getNbVideo(),VideoServiceImpl.videosFrom(signDB.getVideos()), signDB.getTags(), signDB.getSynonyms(), signDB.getOpposites(), services.video(), services.comment());
+      new Sign(signDB.getId(), signDB.getName(), signDB.getTextDefinition(), signDB.getVideoDefinition(), signDB.getUrl(), signDB.getCreateDate(), signDB.getLastVideoId(), signDB.getNbVideo(),VideoServiceImpl.videosFrom(signDB.getVideos()), signDB.getTags(), signDB.getSynonyms(), signDB.getOpposites(), signDB.getRelated(), services.video(), services.comment());
   }
 
 
   public static SignDB signDBFrom(Sign sign) {
-    return new SignDB(sign.name, sign.url, sign.createDate, null, sign.tags, sign.synonyms, sign.opposites);
+    return new SignDB(sign.name, sign.url, sign.createDate, null, sign.tags, sign.synonyms, sign.opposites, sign.related);
   }
 
   Signs signsFromSignsView(Iterable<SignDB> signsDB) {
@@ -487,11 +487,11 @@ public class SignServiceImpl implements SignService {
 
   static Sign signFromSignsView(SignDB signDB, Services services) {
     return signDB == null ? null :
-      new Sign(signDB.getId(), signDB.getName(), signDB.getTextDefinition(), signDB.getVideoDefinition(), signDB.getUrl(), signDB.getCreateDate(), signDB.getLastVideoId(), signDB.getNbVideo(), VideoServiceImpl.videosFrom(signDB.getVideos()), signDB.getTags(), signDB.getSynonyms(), signDB.getOpposites(), services.video(), services.comment());
+      new Sign(signDB.getId(), signDB.getName(), signDB.getTextDefinition(), signDB.getVideoDefinition(), signDB.getUrl(), signDB.getCreateDate(), signDB.getLastVideoId(), signDB.getNbVideo(), VideoServiceImpl.videosFrom(signDB.getVideos()), signDB.getTags(), signDB.getSynonyms(), signDB.getOpposites(), signDB.getRelated(), services.video(), services.comment());
   }
 
   static Sign signFromRequestsView(SignDB signDB, Services services) {
     return signDB == null ? null :
-      new Sign(signDB.getId(), signDB.getName(), signDB.getTextDefinition(), signDB.getVideoDefinition(), signDB.getUrl(), signDB.getCreateDate(), 0, signDB.getNbVideo(), VideoServiceImpl.videosFrom(signDB.getVideos()), signDB.getTags(), signDB.getSynonyms(), signDB.getOpposites(), services.video(), services.comment());
+      new Sign(signDB.getId(), signDB.getName(), signDB.getTextDefinition(), signDB.getVideoDefinition(), signDB.getUrl(), signDB.getCreateDate(), 0, signDB.getNbVideo(), VideoServiceImpl.videosFrom(signDB.getVideos()), signDB.getTags(), signDB.getSynonyms(), signDB.getOpposites(), signDB.getRelated(), services.video(), services.comment());
   }
 }

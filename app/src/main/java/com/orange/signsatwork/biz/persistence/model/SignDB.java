@@ -26,13 +26,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -82,6 +83,30 @@ public class SignDB {
 
   @ManyToMany(mappedBy = "signs", fetch = FetchType.LAZY, cascade = REMOVE)
   private Set<TagDB> tags;
+
+  /** Relations */
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(
+    name = "synonyms",
+    joinColumns = @JoinColumn(name = "sign_id"),
+    inverseJoinColumns = @JoinColumn(name = "synonym_id"))
+  private Set<SignDB> synonyms;
+
+  /** Relations */
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(
+    name = "opposites",
+    joinColumns = @JoinColumn(name = "sign_id"),
+    inverseJoinColumns = @JoinColumn(name = "opposite_id"))
+  private Set<SignDB> opposites;
+
+  /** Relations */
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(
+    name = "related",
+    joinColumns = @JoinColumn(name = "sign_id"),
+    inverseJoinColumns = @JoinColumn(name = "related_id"))
+  private Set<SignDB> related;
 
   public SignDB(String name, String url, Date createDate, Set<TagDB> tags) {
     this.name = name;

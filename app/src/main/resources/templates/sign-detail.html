@@ -141,8 +141,32 @@
                           <span th:text="${tags}"/>
                         </div>
                       </li>
+                    </div>
+                  <div th:if="${isAdmin || isVideoCreatedByMe}">
+                    <li class="aside_bckg_li">
+                      <a th:href="@{/sec/sign/} + ${signView.id} + '/relations'">
+                        <div class="pull-right add"/>
+                        <div class="pull-left definition_signe"></div>
+                          <h2 class="container_H2" th:text="#{sign.relations}"/>
+                      </a>
+                      <br/><br/><br/>
+                      <div class="pull-left">
+                        <span th:text="#{sign.synonyms}"/> :
+                        <span th:text="${synonyms}"/>
+                      </div>
+                      <br/>
+                      <div class="pull-left">
+                        <span th:text="#{sign.opposites}"/> :
+                        <span th:text="${opposites}"/>
+                      </div>
+                      <br/>
+                      <div class="pull-left">
+                        <span th:text="#{sign.related}"/> :
+                        <span th:text="${related}"/>
+                      </div>
+                    </li>
                   </div>
-                    <div th:if="${isAdmin || isVideoCreatedByMe}">
+                  <div th:if="${isAdmin || isVideoCreatedByMe}">
                       <li class="aside_bckg_li">
                         <a href="#" data-toggle="modal" data-target="#video_delete_modal">
                           <div class="pull-left delete_picto_detail"></div>
@@ -152,7 +176,7 @@
                           </div>
                         </a>
                       </li>
-                    </div>
+                  </div>
                     <li class="history_label noHover_nopointer aside_bckg_li">
                         <a href="#">
                             <div class="pull-left history_signe"></div>

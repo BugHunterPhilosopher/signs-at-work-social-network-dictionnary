@@ -81,6 +81,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @Controller
@@ -948,6 +949,13 @@ public class SignController {
   }
 
   @Secured({"ROLE_USER", "ROLE_ADMIN"})
+  @RequestMapping(value = "/sec/sign/{signId}/{videoId}/relations")
+  public String videoRelations(@PathVariable long signId, @PathVariable long videoId, Principal principal, Model model) {
+    boolean isAdmin = appSecurityAdmin.isAdmin(principal);
+    return "sign-detail";
+  }
+
+  @Secured({"ROLE_USER", "ROLE_ADMIN"})
   @RequestMapping(value = "/sec/sign/{signId}/{videoId}/detail")
   public String videoDetail(@PathVariable long signId, @PathVariable long videoId, Principal principal, Model model)  {
     boolean isAdmin = appSecurityAdmin.isAdmin(principal);
@@ -1013,11 +1021,27 @@ public class SignController {
 
     SignDB signDB = SignServiceImpl.signDBFrom(services.sign().withId(signId));
     Set<TagDB> tags = signDB.getTags();
-    model.addAttribute("tags",
-      null != tags ? tags.stream().map(TagDB::getName).collect(Collectors.joining(", ")) : "");
+    model.addAttribute("tags", null != tags ? "" :
+      objectSetToCommaSeparatedString(tags.stream().map(TagDB::getName)));
+
+    /* Relations */
+    Set<SignDB> synonyms = signDB.getSynonyms();
+    model.addAttribute("synonyms", null == synonyms ? "" :
+      objectSetToCommaSeparatedString(synonyms.stream().map(SignDB::getName)));
+    Set<SignDB> opposites = signDB.getOpposites();
+    model.addAttribute("opposites", null == opposites ? "" :
+      objectSetToCommaSeparatedString(opposites.stream().map(SignDB::getName)));
+    Set<SignDB> related = signDB.getRelated();
+    model.addAttribute("related", null == related ? "" :
+      objectSetToCommaSeparatedString(related.stream().map(SignDB::getName)));
+
     model.addAttribute("signId", signId);
 
     return "sign-detail";
+  }
+
+  private String objectSetToCommaSeparatedString(Stream<String> stringStream) {
+    return stringStream.collect(Collectors.joining(", "));
   }
 
   //fix me !!!!! kanban 473322 suite retour test utilisateurs

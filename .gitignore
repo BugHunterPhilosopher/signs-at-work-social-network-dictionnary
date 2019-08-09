@@ -6,3 +6,4 @@ app/application.yml
 **/youtube.properties
 **/google.properties
 **/client_secrets.json
+**/application.yml

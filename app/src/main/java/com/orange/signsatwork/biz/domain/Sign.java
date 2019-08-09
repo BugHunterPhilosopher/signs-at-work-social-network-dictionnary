@@ -22,6 +22,7 @@ package com.orange.signsatwork.biz.domain;
  * #L%
  */
 
+import com.orange.signsatwork.biz.persistence.model.SignDB;
 import com.orange.signsatwork.biz.persistence.model.TagDB;
 import com.orange.signsatwork.biz.persistence.service.CommentService;
 import com.orange.signsatwork.biz.persistence.service.VideoService;
@@ -43,6 +44,7 @@ public class Sign {
     public final long nbVideo;
     public final Videos videos;
     public final Set<TagDB> tags;
+    public final Set<SignDB> synonyms;
 
     private final VideoService videoService;
     private final CommentService commentService;
@@ -51,7 +53,7 @@ public class Sign {
         if (videos != null) {
             return this;
         } else {
-            return new Sign(id, name, textDefinition, videoDefinition,url, createDate, lastVideoId, nbVideo, videoService.forSign(id), tags, videoService, commentService);
+            return new Sign(id, name, textDefinition, videoDefinition,url, createDate, lastVideoId, nbVideo, videoService.forSign(id), tags, synonyms, videoService, commentService);
         }
     }
 

@@ -26,6 +26,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -85,34 +86,27 @@ public class SignDB {
   private Set<TagDB> tags;
 
   /** Relations */
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(
-    name = "synonyms",
-    joinColumns = @JoinColumn(name = "sign_id"),
-    inverseJoinColumns = @JoinColumn(name = "synonym_id"))
+  @ManyToMany(cascade={CascadeType.ALL})
+  @JoinTable(name = "signs_synonyms",
+    joinColumns = { @JoinColumn(name = "id", nullable = false)},
+    inverseJoinColumns = { @JoinColumn(name = "synonym_id", nullable = false)})
   private Set<SignDB> synonyms;
 
   /** Relations */
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(
-    name = "opposites",
-    joinColumns = @JoinColumn(name = "sign_id"),
-    inverseJoinColumns = @JoinColumn(name = "opposite_id"))
+  @ManyToMany
   private Set<SignDB> opposites;
 
   /** Relations */
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(
-    name = "related",
-    joinColumns = @JoinColumn(name = "sign_id"),
-    inverseJoinColumns = @JoinColumn(name = "related_id"))
+  @ManyToMany
   private Set<SignDB> related;
 
-  public SignDB(String name, String url, Date createDate, Set<TagDB> tags) {
+  public SignDB(String name, String url, Date createDate, List<VideoDB> videos, Set<TagDB> tags, Set<SignDB> synonyms) {
     this.name = name;
     this.url = url;
     this.createDate = createDate;
+    this.videos = videos;
     this.tags = tags;
+    this.synonyms = synonyms;
   }
 
   @Override

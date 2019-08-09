@@ -949,10 +949,92 @@ public class SignController {
   }
 
   @Secured({"ROLE_USER", "ROLE_ADMIN"})
-  @RequestMapping(value = "/sec/sign/{signId}/{videoId}/relations")
-  public String videoRelations(@PathVariable long signId, @PathVariable long videoId, Principal principal, Model model) {
-    boolean isAdmin = appSecurityAdmin.isAdmin(principal);
-    return "sign-detail";
+  @RequestMapping(value = "/sec/sign/{signId}/relations")
+  public String videoRelations(@PathVariable long signId, Principal principal, Model model) {
+    Sign sign = services.sign().withId(signId);
+
+    /*model.addAttribute("title", messageByLocaleService.getMessage("sign.definition", new Object[]{sign.name}));*/
+    model.addAttribute("title", sign.name);
+    model.addAttribute("backUrl", signUrl(signId));
+    AuthentModel.addAuthenticatedModel(model, AuthentModel.isAuthenticated(principal));
+    model.addAttribute("showAddFavorite", HIDE_ADD_FAVORITE);
+
+    model.addAttribute("signView", sign);
+    model.addAttribute("signDefinitionCreationView", new SignDefinitionCreationView());
+
+    return "my-sign-relations";
+  }
+
+
+  @Secured({"ROLE_USER", "ROLE_ADMIN"})
+  @RequestMapping(value = "/sec/sign/{signId}/synonyms")
+  public String videoSynonyms(@PathVariable long signId, Principal principal, Model model) {
+    Sign sign = services.sign().withId(signId);
+
+    /*model.addAttribute("title", messageByLocaleService.getMessage("sign.definition", new Object[]{sign.name}));*/
+    model.addAttribute("title", sign.name);
+    model.addAttribute("backUrl", signUrl(signId));
+    AuthentModel.addAuthenticatedModel(model, AuthentModel.isAuthenticated(principal));
+    model.addAttribute("showAddFavorite", HIDE_ADD_FAVORITE);
+
+    model.addAttribute("signView", sign);
+    model.addAttribute("signDefinitionCreationView", new SignDefinitionCreationView());
+
+    /* Relations */
+    SignDB signDB = SignServiceImpl.signDBFrom(sign);
+    signDB.setId(sign.id);
+    setRelations(model, signDB);
+    model.addAttribute("synonyms", signDB.getSynonyms().stream().map(SignDB::getName).
+      collect(Collectors.joining(", ")));
+
+    model.addAttribute("signId", signId);
+    model.addAttribute("videoId", sign.videos.list().get(0).id);
+
+    return "my-sign-synonyms";
+  }
+
+  @Secured({"ROLE_USER", "ROLE_ADMIN"})
+  @RequestMapping(value = "/sec/sign/{signId}/opposites")
+  public String videoOpposites(@PathVariable long signId, Principal principal, Model model) {
+    Sign sign = services.sign().withId(signId);
+
+    /*model.addAttribute("title", messageByLocaleService.getMessage("sign.definition", new Object[]{sign.name}));*/
+    model.addAttribute("title", sign.name);
+    model.addAttribute("backUrl", signUrl(signId));
+    AuthentModel.addAuthenticatedModel(model, AuthentModel.isAuthenticated(principal));
+    model.addAttribute("showAddFavorite", HIDE_ADD_FAVORITE);
+
+    model.addAttribute("signView", sign);
+    model.addAttribute("signDefinitionCreationView", new SignDefinitionCreationView());
+
+    /* Relations */
+    SignDB signDB = SignServiceImpl.signDBFrom(sign);
+    signDB.setId(sign.id);
+    setRelations(model, signDB);
+
+    return "my-sign-relations";
+  }
+
+  @Secured({"ROLE_USER", "ROLE_ADMIN"})
+  @RequestMapping(value = "/sec/sign/{signId}/related")
+  public String videoRelated(@PathVariable long signId, Principal principal, Model model) {
+    Sign sign = services.sign().withId(signId);
+
+    /*model.addAttribute("title", messageByLocaleService.getMessage("sign.definition", new Object[]{sign.name}));*/
+    model.addAttribute("title", sign.name);
+    model.addAttribute("backUrl", signUrl(signId));
+    AuthentModel.addAuthenticatedModel(model, AuthentModel.isAuthenticated(principal));
+    model.addAttribute("showAddFavorite", HIDE_ADD_FAVORITE);
+
+    model.addAttribute("signView", sign);
+    model.addAttribute("signDefinitionCreationView", new SignDefinitionCreationView());
+
+    /* Relations */
+    SignDB signDB = SignServiceImpl.signDBFrom(sign);
+    signDB.setId(sign.id);
+    setRelations(model, signDB);
+
+    return "my-sign-relations";
   }
 
   @Secured({"ROLE_USER", "ROLE_ADMIN"})
@@ -1019,29 +1101,63 @@ public class SignController {
     model.addAttribute("signCreationView", new SignCreationView());
     model.addAttribute("videoView", video);
 
-    SignDB signDB = SignServiceImpl.signDBFrom(services.sign().withId(signId));
+    SignDB signDB = SignServiceImpl.signDBFrom(sign);
+    signDB.setId(signId);
     Set<TagDB> tags = signDB.getTags();
+    Set<SignDB> syns = signDB.getSynonyms();
     model.addAttribute("tags", null != tags ? "" :
       objectSetToCommaSeparatedString(tags.stream().map(TagDB::getName)));
 
     /* Relations */
-    Set<SignDB> synonyms = signDB.getSynonyms();
-    model.addAttribute("synonyms", null == synonyms ? "" :
-      objectSetToCommaSeparatedString(synonyms.stream().map(SignDB::getName)));
-    Set<SignDB> opposites = signDB.getOpposites();
-    model.addAttribute("opposites", null == opposites ? "" :
-      objectSetToCommaSeparatedString(opposites.stream().map(SignDB::getName)));
-    Set<SignDB> related = signDB.getRelated();
-    model.addAttribute("related", null == related ? "" :
-      objectSetToCommaSeparatedString(related.stream().map(SignDB::getName)));
+    setRelationsForLinks(model, signDB);
 
     model.addAttribute("signId", signId);
 
     return "sign-detail";
   }
 
+  private void setRelations(Model model, SignDB signDB) {
+    Set<SignDB> synonyms = signDB.getSynonyms();
+    model.addAttribute("synonyms", null == synonyms ? "" :
+      signDbSetToCommaSeparatedString(synonyms.stream()));
+
+    Set<SignDB> opposites = signDB.getOpposites();
+    model.addAttribute("opposites", null == opposites ? "" :
+      signDbSetToCommaSeparatedString(opposites.stream()));
+
+    Set<SignDB> related = signDB.getRelated();
+    model.addAttribute("related", null == related ? "" :
+      signDbSetToCommaSeparatedString(related.stream()));
+  }
+
+  private void setRelationsForLinks(Model model, SignDB signDB) {
+    Set<SignDB> synonyms = signDB.getSynonyms();
+    model.addAttribute("synonyms", null == synonyms ? "" :
+      signDbSetToLinkString(synonyms.stream()));
+
+    Set<SignDB> opposites = signDB.getOpposites();
+    model.addAttribute("opposites", null == opposites ? "" :
+      signDbSetToLinkString(opposites.stream()));
+
+    Set<SignDB> related = signDB.getRelated();
+    model.addAttribute("related", null == related ? "" :
+      signDbSetToLinkString(related.stream()));
+  }
+
   private String objectSetToCommaSeparatedString(Stream<String> stringStream) {
     return stringStream.collect(Collectors.joining(", "));
+  }
+
+  private String signDbSetToLinkString(Stream<SignDB> stringStream) {
+    return stringStream.map(signDb -> "<a style=\"color: #4866f7;\" " +
+      "href=\"/sec/sign/" + signDb.getId() + "/" + signDb.getVideos().get(0).getId() +
+      "/detail\">" + signDb.getName() + "</a>")
+      .collect(Collectors.joining(", "));
+  }
+
+  private String signDbSetToCommaSeparatedString(Stream<SignDB> stringStream) {
+    return stringStream.map(SignDB::getName)
+      .collect(Collectors.joining(", "));
   }
 
   //fix me !!!!! kanban 473322 suite retour test utilisateurs

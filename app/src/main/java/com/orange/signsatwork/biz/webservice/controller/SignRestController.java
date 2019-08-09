@@ -27,6 +27,7 @@ import com.orange.signsatwork.SpringRestClient;
 import com.orange.signsatwork.biz.domain.AuthTokenInfo;
 import com.orange.signsatwork.biz.domain.Request;
 import com.orange.signsatwork.biz.domain.Sign;
+import com.orange.signsatwork.biz.domain.Signs;
 import com.orange.signsatwork.biz.domain.User;
 import com.orange.signsatwork.biz.domain.Video;
 import com.orange.signsatwork.biz.persistence.model.SignDB;
@@ -56,8 +57,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Types that carry this annotation are treated as controllers where @RequestMapping
@@ -127,6 +130,48 @@ public class SignRestController {
     }
 
     return "";
+  }
+
+  @Secured({"ROLE_USER", "ROLE_ADMIN"})
+  @RequestMapping(value = "/sec/sign/{signId}/completeSynonyms", method = RequestMethod.POST)
+  public String completeSynonyms(@PathVariable long signId, @ModelAttribute SignCreationView signCreationView)  {
+    String[] synonymNames = signCreationView.getTags().split(",");
+    log.info("### " + Arrays.toString(synonymNames));
+
+    List<String> allSynonymNames = Arrays.asList(synonymNames);
+    Sign sign = services.sign().withId(signId);
+    SignDB signDB = SignServiceImpl.signDBFrom(sign);
+    signDB.setId(sign.id);
+
+    Set<SignDB> allAddedSynonyms = new HashSet<>();
+
+    // Add synonyms provided in Ajax
+    for (String synonymName : allSynonymNames) {
+      if (!"".equals(synonymName)) {
+        Signs aSign = services.sign().withName(synonymName);
+        if (null == aSign) {
+          // We don't create synonyms on-the-fly
+        } else {
+          Sign first = aSign.list().get(0);
+          log.info("### " + first);
+          SignDB signDb = SignServiceImpl.signDBFrom(first);
+          signDb.setId(first.id);
+          allAddedSynonyms.add(signDb);
+        }
+      }
+    }
+    signDB.setSynonyms(allAddedSynonyms);
+    services.sign().save(signDB);
+
+    return "";
+  }
+
+  @Secured({"ROLE_USER", "ROLE_ADMIN"})
+  @RequestMapping(value = "/sec/sign/autocompleteRelations")
+  public String autocompleteSynonyms(@ModelAttribute SignCreationView signCreationView)  {
+    return "[" + services.sign().all().stream().
+      map(sign -> "\"" + sign.name + "\"").
+      collect(Collectors.joining(", ")) + "]";
   }
 
   @Secured("ROLE_USER")

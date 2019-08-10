@@ -22,6 +22,7 @@ package com.orange.signsatwork.biz.persistence.service;
  * #L%
  */
 
+import com.orange.signsatwork.biz.domain.MediaType;
 import com.orange.signsatwork.biz.domain.Request;
 import com.orange.signsatwork.biz.domain.Sign;
 import com.orange.signsatwork.biz.domain.Signs;
@@ -91,9 +92,9 @@ public interface SignService {
 
   Signs search(String signName);
 
-  Sign addNewVideo(long userId, long signId, String signUrl, String pictureUri);
+  Sign addNewVideo(long userId, long signId, String signUrl, String pictureUri, MediaType mediaType);
 
-  Sign replace(long signId, long videoId, String signUrl, String pictureUri);
+  Sign replace(long signId, long videoId, String signUrl, String pictureUri, MediaType mediaType);
 
   UrlFileUploadDailymotion getUrlFileUpload();
 

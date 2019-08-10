@@ -18,7 +18,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-/*
 console.log("Cool, sign.js is loaded :)");
 
 var errorSelectedSpan = document.getElementById('errorSelectedSpan');
@@ -27,7 +26,7 @@ var errorSelectedSpan = document.getElementById('errorSelectedSpan');
 var $formUploadSelectedVideoFile = $('#uploadSelectedVideoFile');
 $formUploadSelectedVideoFile.on('submit', function(event) {
   //document.getElementById('submitButtonFileDailymotion').disabled = true;
-  if (document.getElementById("InputFileVideo").value) {
+  if (document.getElementById("InputFile").value) {
     $(".spinner").removeClass("spinner_hidden").addClass("spinner_show");
     $(".spinner").css("z-index", "1500").visibility = "visible";
     $("#submitButtonFileDailymotion").css("color", "black");
@@ -37,6 +36,11 @@ $formUploadSelectedVideoFile.on('submit', function(event) {
     var data = (formdata !== null) ? formdata : $form.serialize();
 
     event.preventDefault();
+    $.ajaxSetup({
+      headers:
+        { 'X-CSRF-TOKEN': $("input[name='_csrf']").attr("value") }
+    });
+    var token = $("input[name='_csrf']").attr("value");
     $.ajax({
       url: $formUploadSelectedVideoFile.attr('action'),
       type: 'post',
@@ -44,8 +48,65 @@ $formUploadSelectedVideoFile.on('submit', function(event) {
       contentType: false,
       processData: false,
       //dataType: 'json',
+      beforeSend: function(xhr){
+      xhr.setRequestHeader("X-CSRF-TOKEN", token);
+      },
       success: function (response) {
-        window.location.href = response.redirect;
+        //var url = "/sign/"+response;
+        var url = response;
+        window.location = url;
+        errorSelectedSpan.style.visibility = "hidden";
+        $(".spinner").visibility = "hidden";
+        console.log("Success " + response);
+      },
+      error: function (response) {
+        errorSelectedSpan.textContent = response.responseText;
+        errorSelectedSpan.style.visibility = "visible";
+        $(".spinner").css("z-index", "-1").css("opacity", "0.1");
+        $(".spinner").visibility = "hidden";
+        console.log("Erreur " + response.responseText);
+      }
+    })
+  } else {
+    event.preventDefault();
+    errorSelectedSpan.textContent = "Vous devez séléctionner un fichier";
+    errorSelectedSpan.style.visibility = "visible";
+  }
+
+});
+
+var $uploadSelectedGifFile = $('#uploadSelectedGifFile');
+$uploadSelectedGifFile.on('submit', function(event) {
+  //document.getElementById('submitButtonFileDailymotion').disabled = true;
+  if (document.getElementById("InputFileGif").value) {
+    $(".spinner").removeClass("spinner_hidden").addClass("spinner_show");
+    $(".spinner").css("z-index", "1500").visibility = "visible";
+    $("#submitButtonFileDailymotion").css("color", "black");
+    $("#submitButtonGifFile").css("color", "black");
+    var $form = $(this);
+    var formdata = new FormData($form[0]);
+    var data = (formdata !== null) ? formdata : $form.serialize();
+
+    event.preventDefault();
+    $.ajaxSetup({
+      headers:
+        { 'X-CSRF-TOKEN': $("input[name='_csrf']").attr("value") }
+    });
+    var token = $("input[name='_csrf']").attr("value");
+    $.ajax({
+      url: $uploadSelectedGifFile.attr('action') + '/' + ($('#lsf:checked').val() == "LSF" ? "LSF" : "LPC"),
+      type: 'post',
+      data: data,
+      contentType: false,
+      processData: false,
+      //dataType: 'json',
+      beforeSend: function(xhr){
+      xhr.setRequestHeader("X-CSRF-TOKEN", token);
+      },
+      success: function (response) {
+        //var url = "/sign/"+response;
+        var url = response;
+        window.location = url;
         errorSelectedSpan.style.visibility = "hidden";
         $(".spinner").visibility = "hidden";
         console.log("Success " + response);
@@ -79,4 +140,3 @@ $add_video_file_dailymotion.on('hidden.bs.modal', function() {
     $('#signNameSelected').val("");
   }
 });
-*/

@@ -45,13 +45,13 @@ public class RestApi {
 
   public static final String WS_SEC_REQUEST_DELETE = WS_SEC + "request/{requestId}/delete";
 
-  public static final String WS_SEC_RECORDED_VIDEO_FILE_UPLOAD = WS_SEC + "uploadRecordedVideoFile";
+  public static final String WS_SEC_RECORDED_VIDEO_FILE_UPLOAD = WS_SEC + "uploadRecordedVideoFile/upload";
 
   public static final String WS_SEC_RECORDED_VIDEO_FILE_UPLOAD_FROM_REQUEST = WS_SEC + "uploadRecordedVideoFile/{requestId}";
 
   public static final String WS_SEC_RECORDED_VIDEO_FILE_UPLOAD_FROM_SIGN = WS_SEC + "uploadRecordedVideoFileFromSign/{signId}/{videoId}";
 
-  public static final String WS_SEC_RECORDED_VIDEO_FILE_UPLOAD_FOR_NEW_VIDEO = WS_SEC + "uploadRecordedVideoFileForNewVideo/{signId}";
+  public static final String WS_SEC_RECORDED_VIDEO_FILE_UPLOAD_FOR_NEW_VIDEO = WS_SEC + "uploadRecordedVideoFileForNewVideo/{signId}/upload";
 
   public static final String WS_SEC_RECORDED_VIDEO_FILE_UPLOAD_FOR_JOB_DESCRIPTION = WS_SEC + "uploadRecordedVideoFileForJobDescription";
 
@@ -65,7 +65,7 @@ public class RestApi {
 
   public static final String WS_SEC_SELECTED_GIF_FILE_UPLOAD = WS_SEC + "uploadSelectedGifFile";
 
-  public static final String WS_SEC_SELECTED_GIF_FILE_UPLOAD_FOR_VARIANT = WS_SEC + "uploadSelectedGifFileForVariant/{sign}";
+  public static final String WS_SEC_SELECTED_GIF_FILE_UPLOAD_FOR_VARIANT = WS_SEC + "uploadSelectedGifFileForVariant/{signId}/{mediaType}";
 
   public static final String WS_SEC_SELECTED_VIDEO_FILE_UPLOAD_FROM_REQUEST = WS_SEC + "uploadSelectedVideoFile/{requestId}";
 

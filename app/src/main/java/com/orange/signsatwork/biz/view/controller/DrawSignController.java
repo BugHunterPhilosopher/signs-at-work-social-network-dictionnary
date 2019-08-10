@@ -22,7 +22,9 @@ package com.orange.signsatwork.biz.view.controller;
  * #L%
  */
 
+import com.orange.signsatwork.biz.domain.MediaType;
 import com.orange.signsatwork.biz.domain.Sign;
+import com.orange.signsatwork.biz.domain.Signs;
 import com.orange.signsatwork.biz.domain.User;
 import com.orange.signsatwork.biz.persistence.service.MessageByLocaleService;
 import com.orange.signsatwork.biz.persistence.service.Services;
@@ -89,8 +91,14 @@ public class DrawSignController {
       log.error("Error in draw sign processing!", e);
     }
 
-    Sign s = services.sign().create(user.id, signName, filename, filename, mediaType);
-    return "{ \"signId\": " + s.id + ", \"videoId\": " + s.lastVideoId + " }";
+    Sign sign = services.sign().withId(signId);
+    if (sign == null) {
+      Sign s = services.sign().create(user.id, signName, filename, filename, mediaType);
+      return "{ \"signId\": " + s.id + ", \"videoId\": " + s.lastVideoId + " }";
+    }
+
+    sign = services.sign().addNewVideo(user.id, signId, imageFile.getName(), imageFile.getName(), MediaType.valueOf(mediaType));
+    return "{ \"signId\": " + signId + ", \"videoId\": " + sign.lastVideoId + " }";
   }
 
 }

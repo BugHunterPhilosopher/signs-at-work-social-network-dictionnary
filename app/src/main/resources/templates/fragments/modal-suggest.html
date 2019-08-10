@@ -109,7 +109,10 @@
         <div id="container_video" class="col-xs-offset-1 col-xs-10" >
           <div class="spinner spinner_hidden"></div>
           <span id="counter"></span>
-          <video id="video"></video>
+          <video id="video"></video><br/>
+          <span class="container_H2" th:text="#{sign.media.type}"/>
+          <input th:value="LSF" type="radio" name="mediaType"/> = L.S.F. /
+          <input th:value="LPC" type="radio" name="mediaType"/> = Lf.P.C.<br/>
         </div>
 
         <div class="btn-group-vertical" role="group">
@@ -130,6 +133,7 @@
       <form id="uploadRecordedVideoFile" th:action="@{/ws/sec/uploadRecordedVideoFile}"
             th:object="${signCreationView}" method="post">
         <div class="modal-body text-center">
+          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
           <input th:field="*{signName}" id="signNameRecording" name="signNameRecording" type="text"
                  class="text-center border form-control" th:placeholder="#{sign.enter_name}"
                  style="display: none"/><br/>
@@ -206,7 +210,10 @@
           <input th:field="*{signName}" id="signNameSelected" type="text" class="text-center border form-control"
                  th:placeholder="#{sign.enter_name}" style="display: none"/><br/>
           <h4 class="pull-left" th:text="#{sign.join_video}"></h4><br/>
-          <input name="file" type="file" id="InputFileVideo"/>
+          <input name="file" type="file" id="InputFileVideo"/><br/><br/>
+          <span class="container_H2" th:text="#{sign.media.type}"/>
+          <input id="lsf" th:value="LSF" type="radio" name="mediaType"/> = L.S.F. /
+          <input id="lpc" th:value="LPC" type="radio" name="mediaType"/> = Lf.P.C.
           <h4 id="errorSelectedSpan" style="visibility: hidden"></h4>
         </div>
         <div class="modal-footer">

@@ -112,6 +112,10 @@
             <div class="spinner spinner_hidden"></div>
             <span id="counter"></span>
             <video id="video"></video>
+            <br/>
+            <span class="container_H2" th:text="#{sign.media.type}"/>
+            <input th:value="LSF" type="radio" name="mediaType"/> = L.S.F. /
+            <input th:value="LPC" type="radio" name="mediaType"/> = Lf.P.C.<br/>
           </div>
 
           <div class="btn-group-vertical" role="group">
@@ -167,6 +171,12 @@
         <div class="modal-body text-center">
           <h4 class="pull-left" th:text="#{sign.join_video}"></h4><br/>
           <input name="file" type="file" id="InputFile"/>
+          <br/><br/>
+          <div class="pull-left">
+            <span class="container_H2" th:text="#{sign.media.type}"/>
+            <input th:value="LSF" type="radio" name="mediaType"/> = L.S.F. /
+            <input th:value="LPC" type="radio" name="mediaType"/> = Lf.P.C.
+          </div><br/>
           <h4 id="errorSelectedSpan"  style="visibility: hidden"></h4>
         </div>
         <div class="modal-footer">
@@ -191,13 +201,17 @@
         </div>
       </div>
       <div class="spinner spinner_hidden"></div>
-      <form id="uploadSelectedGifFile" th:action="@{/ws/sec/uploadSelectedGifFileForVariant/} + ${signName}" enctype="multipart/form-data"
+      <form id="uploadSelectedGifFile" th:action="@{/ws/sec/uploadSelectedGifFileForVariant/} + ${signId}" enctype="multipart/form-data"
             th:object="${signCreationView}" method="post">
         <div class="modal-body text-center">
           <input th:field="*{signName}" id="signNameSelected" type="text" class="text-center border form-control"
                  th:placeholder="#{sign.enter_name}" style="display: none"/><br/>
           <h4 class="pull-left" th:text="#{sign.join_gif}"></h4><br/>
           <input name="file" type="file" id="InputFileGif"/>
+          <br/><br/>
+          <span class="container_H2" th:text="#{sign.media.type}"/>
+          <input id="lsf" th:value="LSF" type="radio" name="mediaType"/> = L.S.F. /
+          <input id="lpc" th:value="LPC" type="radio" name="mediaType"/> = Lf.P.C.
           <h4 id="errorSelectedSpan" style="visibility: hidden"></h4>
         </div>
         <div class="modal-footer">

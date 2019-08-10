@@ -66,6 +66,11 @@
     </dl>
     <br style="clear:both"/>
     <canvas id="the_canvas" width="600" height="400" style="margin:auto;display:block"></canvas>
+    <br/><br/>
+    <span class="container_H2" th:text="#{sign.media.type}"/>
+    <input id="lsf" th:value="LSF" type="radio" name="mediaType"/> = L.S.F. /
+    <input id="lpc" th:value="LPC" type="radio" name="mediaType"/> = Lf.P.C.
+    <br/><br/>
     <button id="download-to-svg">Valider</button>
     <h3>Personnalisez votre pose :</h3>
     <ul id="customize" class="inline">
@@ -441,7 +446,7 @@
         var signId = /*[[${signId}]]*/ '';
         $.ajax({
           url:'/sec/draw-sign/' + signName + '/'+ signId + '/create',
-          data:{imageBase64: imageData},
+          data:{imageBase64: imageData, mediaType: $('#lsf:checked').val() =="LSF" ? "LSF" : "LPC" },
           type: 'post',
           dataType: 'json',
           timeout: 10000,

@@ -339,7 +339,7 @@ public class SignServiceImpl implements SignService {
 
 
   @Override
-  public Sign addNewVideo(long userId, long signId, String signUrl, String pictureUri) {
+  public Sign addNewVideo(long userId, long signId, String signUrl, String pictureUri, MediaType mediaType) {
     SignDB signDB = signRepository.findOne(signId);
     UserDB userDB = userRepository.findOne(userId);
 
@@ -349,6 +349,7 @@ public class SignServiceImpl implements SignService {
     videoDB.setUrl(signUrl);
     videoDB.setCreateDate(now);
     videoDB.setUser(userDB);
+    videoDB.setMediaType(mediaType);
 
     signDB.setCreateDate(now);
     signDB.setUrl(signUrl);
@@ -383,7 +384,7 @@ public class SignServiceImpl implements SignService {
 
 
   @Override
-  public Sign replace(long signId, long videoId, String signUrl, String pictureUri) {
+  public Sign replace(long signId, long videoId, String signUrl, String pictureUri, MediaType mediaType) {
     SignDB signDB = signRepository.findOne(signId);
 
     Date now = new Date();
@@ -391,6 +392,7 @@ public class SignServiceImpl implements SignService {
     VideoDB videoDB = videoRepository.findOne(videoId);
     videoDB.setUrl(signUrl);
     videoDB.setCreateDate(now);
+    videoDB.setMediaType(mediaType);
 
     signDB.setUrl(signUrl);
     signDB.setCreateDate(now);

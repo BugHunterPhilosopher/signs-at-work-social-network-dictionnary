@@ -100,7 +100,7 @@ $formRequestDescription.on('submit', function(event) {
 
         event.preventDefault();
         $.ajax({
-          url: $formRequestDescription.attr('action'),
+          url: $formRequestDescription.attr('action') + '?mediaType=' + ($('#lsf:checked').val() == "LSF" ? "LSF" : "LPC"),
           type: 'post',
           data: data,
           contentType: false,

@@ -39,6 +39,7 @@ import com.orange.signsatwork.biz.persistence.service.Services;
 import com.orange.signsatwork.biz.storage.StorageProperties;
 import com.orange.signsatwork.biz.storage.StorageService;
 import com.orange.signsatwork.biz.view.model.RequestCreationView;
+import com.orange.signsatwork.biz.view.model.SignCreationView;
 import com.orange.signsatwork.biz.webservice.model.RequestResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.jcodec.api.JCodecException;
@@ -108,7 +109,7 @@ public class FileUploadRestController {
 
   @Secured("ROLE_USER")
   @RequestMapping(value = RestApi.WS_SEC_RECORDED_VIDEO_FILE_UPLOAD, method = RequestMethod.POST)
-  public String uploadRecordedVideoFile(@RequestBody VideoFile videoFile, @RequestParam String mediaType, Principal principal, HttpServletResponse response) {
+  public String uploadRecordedVideoFile(@RequestBody VideoFile videoFile, @RequestParam("mediaType") String mediaType, Principal principal, HttpServletResponse response) {
     return handleRecordedVideoFile(videoFile, mediaType, OptionalLong.empty(), OptionalLong.empty(), OptionalLong.empty(), principal, response);
   }
 
@@ -127,7 +128,7 @@ public class FileUploadRestController {
 
   @Secured("ROLE_USER")
   @RequestMapping(value = RestApi.WS_SEC_RECORDED_VIDEO_FILE_UPLOAD_FOR_NEW_VIDEO, method = RequestMethod.POST)
-  public String uploadRecordedVideoFileForNewVideo(@RequestBody VideoFile videoFile, @RequestParam String mediaType, @PathVariable long signId, Principal principal, HttpServletResponse response) {
+  public String uploadRecordedVideoFileForNewVideo(@RequestBody VideoFile videoFile, @PathVariable("signId") long signId, @RequestParam("mediaType") String mediaType, Principal principal, HttpServletResponse response) {
     return handleRecordedVideoFile(videoFile, mediaType, OptionalLong.empty(), OptionalLong.of(signId), OptionalLong.empty(), principal, response);
   }
 
@@ -269,9 +270,9 @@ public class FileUploadRestController {
       catch (Exception errorDailymotionDeleteVideo) {
         log.error("error!", errorDailymotionDeleteVideo);
       }
-      sign = services.sign().replace(signId.getAsLong(), videoId.getAsLong(), videoUrl, pictureUri);
+      sign = services.sign().replace(signId.getAsLong(), videoId.getAsLong(), videoUrl, pictureUri, com.orange.signsatwork.biz.domain.MediaType.valueOf(mediaType));
     } else if (signId.isPresent() && !(videoId.isPresent())) {
-      sign = services.sign().addNewVideo(user.id, signId.getAsLong(), videoUrl, pictureUri);
+      sign = services.sign().addNewVideo(user.id, signId.getAsLong(), videoUrl, pictureUri, com.orange.signsatwork.biz.domain.MediaType.valueOf(mediaType));
     } else {
       sign = services.sign().create(user.id, videoFile.signNameRecording, videoUrl, pictureUri, mediaType);
       log.info("handleFileUpload : username = {} / sign name = {} / video url = {}", user.username, videoFile.signNameRecording, videoUrl);
@@ -421,6 +422,154 @@ public class FileUploadRestController {
     }
   }
 
+  @Secured("ROLE_USER")
+  @RequestMapping(value = RestApi.WS_SEC_SELECTED_VIDEO_FILE_UPLOAD_FOR_NEW_VIDEO, method = RequestMethod.POST)
+  public String createSignFromUploadondailymotionForNewVideo(@RequestBody MultipartFile file, @RequestParam("mediaType") String mediaType, @PathVariable("signId") long signId, @ModelAttribute SignCreationView signCreationView, Principal principal, HttpServletResponse response) {
+    return handleSelectedVideoFileUpload(file, mediaType, OptionalLong.empty(), OptionalLong.of(signId), OptionalLong.empty(), signCreationView, principal, response);
+  }
+
+  @Secured("ROLE_USER")
+  @RequestMapping(value = RestApi.WS_SEC_SELECTED_GIF_FILE_UPLOAD_FOR_VARIANT, method = RequestMethod.POST)
+  public String uploadSelectedGifFileForVariant(@RequestBody MultipartFile file, @PathVariable("mediaType") String mediaType, @PathVariable("signId") long signId, @ModelAttribute SignCreationView signCreationView, Principal principal, HttpServletResponse response) {
+    return handleSelectedGifFileUploadForVariant(file, mediaType, signId, signCreationView, principal, response);
+  }
+
+  private String handleSelectedGifFileUploadForVariant(MultipartFile file, String mediaType, long signId, SignCreationView signCreationView, Principal principal, HttpServletResponse response) {
+    if ((!file.getOriginalFilename().endsWith(".gif")) && (!file.getOriginalFilename().endsWith(".GIF"))) {
+      log.error(file.getOriginalFilename() + " filename doesn't ends with '.gif'");
+      return "";
+    }
+
+    User user = services.user().withUserName(principal.getName());
+    File inputFile;
+
+    storageService.store(file);
+    inputFile = storageService.load(file.getOriginalFilename()).toFile();
+
+    Resource resource = new FileSystemResource(inputFile.getAbsolutePath());
+    MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
+    parts.add("file", resource);
+
+    Sign sign = services.sign().addNewVideo(user.id, signId, inputFile.getName(), inputFile.getName(), com.orange.signsatwork.biz.domain.MediaType.valueOf(mediaType));
+
+    log.info("handleSelectedVideoFileUploadForVariant : username = {} / file name = {}", user.username, inputFile.getName());
+
+    response.setStatus(HttpServletResponse.SC_OK);
+
+    return "/sec/sign/" + sign.id + "/" + sign.lastVideoId + "/detail";
+  }
+
+  private String handleSelectedVideoFileUpload(MultipartFile file, String mediaType, OptionalLong requestId, OptionalLong signId, OptionalLong videoId, @ModelAttribute SignCreationView signCreationView, Principal principal, HttpServletResponse response) {
+
+    if ((!file.getOriginalFilename().endsWith(".mp4")) && (!file.getOriginalFilename().endsWith(".MP4"))) {
+      log.error(file.getOriginalFilename() + " filename doesn't ends with '.mp4'");
+      return "";
+    }
+
+    String dailymotionId;
+    String pictureUri = null;
+    User user = services.user().withUserName(principal.getName());
+    AuthTokenInfo authTokenInfo = null;
+    File inputFile = null;
+
+    try {
+
+      authTokenInfo = dailymotionToken.getAuthTokenInfo();
+      if (authTokenInfo.isExpired()) {
+        dailymotionToken.retrieveToken();
+        authTokenInfo = dailymotionToken.getAuthTokenInfo();
+      }
+    } catch (Exception errorDailymotionUploadFile) {
+      log.error("error while uploading!", errorDailymotionUploadFile);
+    }
+
+
+    try {
+      storageService.store(file);
+      inputFile = storageService.load(file.getOriginalFilename()).toFile();
+
+      UrlFileUploadDailymotion urlfileUploadDailymotion = services.sign().getUrlFileUpload();
+
+      if (null != authTokenInfo) {
+        Resource resource = new FileSystemResource(inputFile.getAbsolutePath());
+        MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
+        parts.add("file", resource);
+
+        RestTemplate restTemplate = springRestClient.buildRestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(parts, headers);
+
+        ResponseEntity<FileUploadDailymotion> responseDailyMotion = restTemplate.exchange(urlfileUploadDailymotion.upload_url,
+          HttpMethod.POST, requestEntity, FileUploadDailymotion.class);
+        FileUploadDailymotion fileUploadDailyMotion = responseDailyMotion.getBody();
+
+
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<String, Object>();
+        body.add("url", fileUploadDailyMotion.url);
+        if (signId.isPresent()) {
+          body.add("title", services.sign().withId(signId.getAsLong()).name);
+        } else {
+          body.add("title", signCreationView.getSignName());
+        }
+        body.add("channel", messageByLocaleService.getMessage("video_category"));
+        body.add("published", true);
+        body.add("private", true);
+
+
+        RestTemplate restTemplate1 = springRestClient.buildRestTemplate();
+        HttpHeaders headers1 = new HttpHeaders();
+        headers1.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers1.set("Authorization", "Bearer " + authTokenInfo.getAccess_token());
+        headers1.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+
+        HttpEntity<MultiValueMap<String, Object>> requestEntity1 = new HttpEntity<MultiValueMap<String, Object>>(body, headers1);
+        ResponseEntity<VideoDailyMotion> response1 = restTemplate1.exchange("https://api.dailymotion.com/videos",
+          HttpMethod.POST, requestEntity1, VideoDailyMotion.class);
+        VideoDailyMotion videoDailyMotion = response1.getBody();
+
+
+        String url = REST_SERVICE_URI + "/video/" + videoDailyMotion.id + "?thumbnail_ratio=square&ssl_assets=true&fields=" + VIDEO_THUMBNAIL_FIELDS + VIDEO_EMBED_FIELD;
+        int i = 0;
+        do {
+          videoDailyMotion = services.sign().getVideoDailyMotionDetails(videoDailyMotion.id, url);
+          Thread.sleep(2 * 1000);
+          if (i > 30) {
+            break;
+          }
+          i++;
+        }
+        while ((videoDailyMotion.thumbnail_360_url == null) || (videoDailyMotion.embed_url == null) || (videoDailyMotion.thumbnail_360_url.contains("no-such-asset")));
+
+
+        if (!videoDailyMotion.thumbnail_360_url.isEmpty()) {
+          pictureUri = videoDailyMotion.thumbnail_360_url;
+          log.warn("handleSelectedVideoFileUpload : thumbnail_360_url = {}", videoDailyMotion.thumbnail_360_url);
+        }
+
+        if (!videoDailyMotion.embed_url.isEmpty()) {
+          signCreationView.setVideoUrl(videoDailyMotion.embed_url);
+          log.warn("handleSelectedVideoFileUpload : embed_url = {}", videoDailyMotion.embed_url);
+        }
+      }
+    } catch(Exception errorDailymotionUploadFile){
+      log.error("error while uploading!", errorDailymotionUploadFile);
+    }
+
+    Sign sign = services.sign().addNewVideo(user.id, signId.getAsLong(), signCreationView.getVideoUrl() == null ? inputFile.getName() : signCreationView.getVideoUrl(), pictureUri, com.orange.signsatwork.biz.domain.MediaType.valueOf(mediaType));
+    log.info("handleSelectedVideoFileUpload : username = {} / sign name = {} / video url = {}", user.username, signCreationView.getSignName(), signCreationView.getVideoUrl() == null ? inputFile.getName() : signCreationView.getVideoUrl());
+
+    if (requestId.isPresent()) {
+      services.request().changeSignRequest(requestId.getAsLong(), sign.id);
+    }
+
+    response.setStatus(HttpServletResponse.SC_OK);
+
+    return "/sec/sign/" + sign.id + "/" + sign.lastVideoId + "/detail";
+  }
 
   @Secured("ROLE_USER")
   @RequestMapping(value = RestApi.WS_SEC_RECORDED_VIDEO_FILE_UPLOAD_FOR_JOB_DESCRIPTION, method = RequestMethod.POST)

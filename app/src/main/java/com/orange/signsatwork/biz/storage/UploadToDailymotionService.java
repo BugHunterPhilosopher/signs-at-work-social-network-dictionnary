@@ -164,9 +164,9 @@ public class UploadToDailymotionService {
         myResult = true;
         return this;
       }
-      sign = services.sign().replace(signId.getAsLong(), videoId.getAsLong(), videoDailyMotion.embed_url, pictureUri);
+      sign = services.sign().replace(signId.getAsLong(), videoId.getAsLong(), videoDailyMotion.embed_url, pictureUri, null);
     } else if (signId.isPresent() && !(videoId.isPresent())) {
-      sign = services.sign().addNewVideo(user.id, signId.getAsLong(), videoDailyMotion.embed_url, pictureUri);
+      sign = services.sign().addNewVideo(user.id, signId.getAsLong(), videoDailyMotion.embed_url, pictureUri, null);
     } else {
       sign = services.sign().create(user.id, videoFile.signNameRecording, videoDailyMotion.embed_url, pictureUri, MediaType.LSF.toString());
       log.info("handleFileUpload : username = {} / sign name = {} / video url = {}", user.username, videoFile.signNameRecording, videoDailyMotion.embed_url);

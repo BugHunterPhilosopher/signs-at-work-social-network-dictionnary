@@ -191,11 +191,19 @@ $formUploadRecordedVideoFile.on('submit', function(event) {
   $("#continue").css("color","black");
   videoFile.signNameRecording = $('#signNameRecording').val();
   event.preventDefault();
+  $.ajaxSetup({
+    headers:
+      { 'X-CSRF-TOKEN': $("input[name='_csrf']").attr("value") }
+  });
+  var token = $("input[name='_csrf']").attr("value");
   $.ajax({
-    url: $formUploadRecordedVideoFile.attr('action'),
+    url: $formUploadRecordedVideoFile.attr('action') + '/upload?mediaType=' + ($('#lsf:checked').val() == "LSF" ? "LSF" : "LPC"),
     type: 'post',
     data: JSON.stringify(videoFile),
     contentType: "application/json",
+    beforeSend: function(xhr){
+      xhr.setRequestHeader("X-CSRF-TOKEN", token);
+    },
     success: function(response) {
       //var url = "/sign/"+response;
       var url = response;

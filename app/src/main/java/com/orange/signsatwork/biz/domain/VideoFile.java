@@ -10,26 +10,35 @@ package com.orange.signsatwork.biz.domain;
  * it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 2 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-2.0.html>.
  * #L%
  */
 
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 public class VideoFile {
-  public final String name;
-  public final String type;
-  public final String signNameRecording;
-  public final String requestNameRecording;
-  public final String requestTextDescriptionRecording;
-  public final String contents;
+  public String name;
+  public String type;
+  public String signNameRecording;
+  public String requestNameRecording = "";
+  public String requestTextDescriptionRecording = "";
+  public String contents;
+
+  public VideoFile() {
+
+  }
+
+  public VideoFile(String name, String type, String signNameRecording, String contents) {
+    this.name = name;
+    this.type = type;
+    this.signNameRecording = signNameRecording;
+    this.contents = contents;
+  }
+
 }

@@ -26,6 +26,7 @@ import com.orange.signsatwork.AppProfile;
 import com.orange.signsatwork.DailymotionToken;
 import com.orange.signsatwork.SpringRestClient;
 import com.orange.signsatwork.biz.domain.AuthTokenInfo;
+import com.orange.signsatwork.biz.domain.MediaType;
 import com.orange.signsatwork.biz.domain.Request;
 import com.orange.signsatwork.biz.domain.Sign;
 import com.orange.signsatwork.biz.domain.Signs;
@@ -49,7 +50,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -255,13 +255,13 @@ public class SignServiceImpl implements SignService {
     }
 
     HttpHeaders headers = new HttpHeaders();
-    headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+    headers.setAccept(Arrays.asList(org.springframework.http.MediaType.APPLICATION_JSON));
     headers.set("Authorization", "Bearer "+ authTokenInfo.getAccess_token());
     return headers;
   }
 
   @Override
-  public Sign create(long userId, String signName, String signUrl, String pictureUri) {
+  public Sign create(long userId, String signName, String signUrl, String pictureUri, String mediaType) {
     SignDB signDB;
     UserDB userDB = userRepository.findOne(userId);
 
@@ -272,6 +272,7 @@ public class SignServiceImpl implements SignService {
       videoDB.setUrl(signUrl);
       videoDB.setUser(userDB);
       videoDB.setCreateDate(now);
+      videoDB.setMediaType(MediaType.valueOf(mediaType));
 
       signDB = new SignDB();
       signDB.setName(signName);

@@ -28,6 +28,7 @@ import com.orange.signsatwork.AppProfile;
 import com.orange.signsatwork.SpringRestClient;
 import com.orange.signsatwork.biz.domain.Favorite;
 import com.orange.signsatwork.biz.domain.FavoriteType;
+import com.orange.signsatwork.biz.domain.MediaType;
 import com.orange.signsatwork.biz.domain.Sign;
 import com.orange.signsatwork.biz.domain.Signs;
 import com.orange.signsatwork.biz.domain.User;
@@ -1127,6 +1128,7 @@ public class SignController {
     setRelationsForLinks(model, signDB);
 
     model.addAttribute("signId", signId);
+    model.addAttribute("typeLsf", video.mediaType.equals(MediaType.LSF));
 
     return "sign-detail";
   }
@@ -1261,9 +1263,9 @@ public class SignController {
 
   @Secured("ROLE_USER")
   @RequestMapping(value = "/sec/sign/create", method = RequestMethod.POST)
-  public String createSign(@ModelAttribute SignCreationView signCreationView, Principal principal) {
+  public String createSign(@ModelAttribute SignCreationView signCreationView, @RequestParam String mediaType, Principal principal) {
     User user = services.user().withUserName(principal.getName());
-    Sign sign = services.sign().create(user.id, signCreationView.getSignName(), signCreationView.getVideoUrl(), "");
+    Sign sign = services.sign().create(user.id, signCreationView.getSignName(), signCreationView.getVideoUrl(), "", mediaType);
 
     log.info("createSign: username = {} / sign name = {} / video url = {}", user.username, signCreationView.getSignName(), signCreationView.getVideoUrl());
 

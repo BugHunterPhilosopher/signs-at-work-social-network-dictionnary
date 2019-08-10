@@ -75,7 +75,7 @@ public class DrawSignController {
   @Secured("ROLE_USER")
   @RequestMapping(value = REQUEST_URL + "/create", method = RequestMethod.POST)
   @ResponseBody
-  public String createDrawSign(HttpServletRequest req, @PathVariable String signName, @PathVariable long signId, Principal principal, HttpServletResponse response, @RequestParam(value="imageBase64", defaultValue="")String imageBase64) {
+  public String createDrawSign(HttpServletRequest req, @RequestParam String mediaType, @PathVariable String signName, @PathVariable long signId, Principal principal, HttpServletResponse response, @RequestParam(value="imageBase64", defaultValue="")String imageBase64) {
     String filename = UUID.randomUUID() + ".png";
     File imageFile = new File(storageProperties.getLocation() + filename);
     User user = services.user().withUserName(principal.getName());
@@ -89,7 +89,7 @@ public class DrawSignController {
       log.error("Error in draw sign processing!", e);
     }
 
-    Sign s = services.sign().create(user.id, signName, filename, filename);
+    Sign s = services.sign().create(user.id, signName, filename, filename, mediaType);
     return "{ \"signId\": " + s.id + ", \"videoId\": " + s.lastVideoId + " }";
   }
 

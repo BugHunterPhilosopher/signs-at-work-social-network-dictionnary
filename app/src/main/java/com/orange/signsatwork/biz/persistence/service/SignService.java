@@ -87,7 +87,7 @@ public interface SignService {
 
   Sign create(Sign sign);
 
-  Sign create(long userId, String signName, String signUrl, String pictureUri);
+  Sign create(long userId, String signName, String signUrl, String pictureUri, String mediaType);
 
   Signs search(String signName);
 

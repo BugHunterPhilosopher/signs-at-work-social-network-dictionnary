@@ -4,6 +4,7 @@ import com.orange.signsatwork.DailymotionToken;
 import com.orange.signsatwork.SpringRestClient;
 import com.orange.signsatwork.biz.domain.AuthTokenInfo;
 import com.orange.signsatwork.biz.domain.FileUploadDailymotion;
+import com.orange.signsatwork.biz.domain.MediaType;
 import com.orange.signsatwork.biz.domain.Sign;
 import com.orange.signsatwork.biz.domain.UrlFileUploadDailymotion;
 import com.orange.signsatwork.biz.domain.User;
@@ -18,7 +19,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -97,7 +97,7 @@ public class UploadToDailymotionService {
     RestTemplate restTemplate = springRestClient.buildRestTemplate();
 
     HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+    headers.setContentType(org.springframework.http.MediaType.MULTIPART_FORM_DATA);
 
 
     HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(parts, headers);
@@ -121,7 +121,7 @@ public class UploadToDailymotionService {
 
     RestTemplate restTemplate1 = springRestClient.buildRestTemplate();
     HttpHeaders headers1 = new HttpHeaders();
-    headers1.setContentType(MediaType.MULTIPART_FORM_DATA);
+    headers1.setContentType(org.springframework.http.MediaType.MULTIPART_FORM_DATA);
     headers1.set("Authorization", "Bearer " + authTokenInfo.getAccess_token());
 
     HttpEntity<MultiValueMap<String, Object>> requestEntity1 = new HttpEntity<>(body, headers1);
@@ -168,7 +168,7 @@ public class UploadToDailymotionService {
     } else if (signId.isPresent() && !(videoId.isPresent())) {
       sign = services.sign().addNewVideo(user.id, signId.getAsLong(), videoDailyMotion.embed_url, pictureUri);
     } else {
-      sign = services.sign().create(user.id, videoFile.signNameRecording, videoDailyMotion.embed_url, pictureUri);
+      sign = services.sign().create(user.id, videoFile.signNameRecording, videoDailyMotion.embed_url, pictureUri, MediaType.LSF.toString());
       log.info("handleFileUpload : username = {} / sign name = {} / video url = {}", user.username, videoFile.signNameRecording, videoDailyMotion.embed_url);
     }
     myResult = false;

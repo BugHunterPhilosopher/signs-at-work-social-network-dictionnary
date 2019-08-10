@@ -22,6 +22,8 @@ package com.orange.signsatwork.biz.persistence.model;
  * #L%
  */
 
+import com.orange.signsatwork.biz.domain.MediaType;
+
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -39,6 +41,7 @@ public class VideoViewData {
   public final long nbComment;
   public final long idForName;
   public final long nbVideo;
+  public final MediaType mediaType;
 
 
   public VideoViewData(Object[] queryResultItem) {
@@ -53,6 +56,7 @@ public class VideoViewData {
     nbComment = toLong(((VideoDB)queryResultItem[0]).getNbComment());
     idForName = toLong(((VideoDB)queryResultItem[0]).getIdForName());
     nbVideo = toLong(((SignDB)queryResultItem[1]).getNbVideo());
+    mediaType = ((VideoDB)queryResultItem[0]).getMediaType();
   }
 
   private String toString(Object o) {

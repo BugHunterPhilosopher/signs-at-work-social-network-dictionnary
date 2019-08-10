@@ -190,12 +190,12 @@ public class VideoServiceImpl implements VideoService {
   }
 
   static Video videoFrom(VideoDB videoDB) {
-    return new Video(videoDB.getId(), videoDB.getIdForName(), videoDB.getUrl(), videoDB.getPictureUri(), 0, videoDB.getAverageRate(), videoDB.getCreateDate(), UserServiceImpl.userFromSignView(videoDB.getUser()), null, RatingServiceImpl.ratingsFrom(videoDB.getRatings()),null,null);
+    return new Video(videoDB.getId(), videoDB.getIdForName(), videoDB.getUrl(), videoDB.getPictureUri(), 0, videoDB.getAverageRate(), videoDB.getCreateDate(), UserServiceImpl.userFromSignView(videoDB.getUser()), null, RatingServiceImpl.ratingsFrom(videoDB.getRatings()),null,null, videoDB.getMediaType());
   }
 
 
   static Video videoFromRatingView(VideoDB videoDB) {
-    return new Video(videoDB.getId(), videoDB.getIdForName(), videoDB.getUrl(), videoDB.getPictureUri(), 0, 0, videoDB.getCreateDate(), null, null, null, null, null);
+    return new Video(videoDB.getId(), videoDB.getIdForName(), videoDB.getUrl(), videoDB.getPictureUri(), 0, 0, videoDB.getCreateDate(), null, null, null, null, null, videoDB.getMediaType());
   }
 
   static Videos videosFromSignsView(Iterable<VideoDB> videosDB) {
@@ -205,7 +205,7 @@ public class VideoServiceImpl implements VideoService {
   }
 
   static Video videoFromSignsView(VideoDB videoDB) {
-    return new Video(videoDB.getId(), videoDB.getIdForName(), videoDB.getUrl(), videoDB.getPictureUri(), 0, 0, videoDB.getCreateDate(), null, null, null, null, null);
+    return new Video(videoDB.getId(), videoDB.getIdForName(), videoDB.getUrl(), videoDB.getPictureUri(), 0, 0, videoDB.getCreateDate(), null, null, null, null, null, videoDB.getMediaType());
   }
 
   @Override
@@ -242,7 +242,7 @@ public class VideoServiceImpl implements VideoService {
 
   Video videoFromWithAssociates(VideoDB videoDB) {
     return videoDB == null ? null :
-      new Video(videoDB.getId(), videoDB.getIdForName(), videoDB.getUrl(), videoDB.getPictureUri(), 0, 0, videoDB.getCreateDate(), null, null, null, videosFromSignsView(videoDB.getAssociates()).ids(), videosFromSignsView(videoDB.getReferenceBy()).ids());
+      new Video(videoDB.getId(), videoDB.getIdForName(), videoDB.getUrl(), videoDB.getPictureUri(), 0, 0, videoDB.getCreateDate(), null, null, null, videosFromSignsView(videoDB.getAssociates()).ids(), videosFromSignsView(videoDB.getReferenceBy()).ids(), videoDB.getMediaType());
   }
 
   @Override

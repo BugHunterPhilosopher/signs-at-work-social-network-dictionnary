@@ -114,10 +114,10 @@ public class RequestController {
   @Secured("ROLE_USER")
   @RequestMapping(value = "/sec/request/{requestId}/add/sign", method = RequestMethod.POST)
   public String changeSignRequest(
-          javax.servlet.http.HttpServletRequest req, @PathVariable long requestId, Model model, @ModelAttribute SignCreationView signCreationView, Principal principal) {
+          javax.servlet.http.HttpServletRequest req, @RequestParam String mediaType, @PathVariable long requestId, Model model, @ModelAttribute SignCreationView signCreationView, Principal principal) {
 
     User user = services.user().withUserName(principal.getName());
-    Sign sign = services.sign().create(user.id, signCreationView.getSignName(), signCreationView.getVideoUrl(), "");
+    Sign sign = services.sign().create(user.id, signCreationView.getSignName(), signCreationView.getVideoUrl(), "", mediaType);
     services.request().changeSignRequest(requestId, sign.id);
     log.info("createSign: username = {} / sign name = {} / video url = {} and associate to request = {} ", user.username, signCreationView.getSignName(), signCreationView.getVideoUrl(),requestId);
 

@@ -108,43 +108,43 @@ public class FileUploadNonRestController {
 
   @Secured("ROLE_USER")
   @RequestMapping(value = RestApi.WS_SEC_SELECTED_VIDEO_FILE_UPLOAD, method = RequestMethod.POST)
-  public String uploadSelectedVideoFile(@RequestParam("file") MultipartFile file, @ModelAttribute SignCreationView signCreationView, Principal principal, HttpServletResponse response) {
-    return handleSelectedVideoFileUpload(file, OptionalLong.empty(), OptionalLong.empty(), OptionalLong.empty(), signCreationView, principal, response);
+  public String uploadSelectedVideoFile(@RequestParam("file") MultipartFile file, @RequestParam String mediaType, @ModelAttribute SignCreationView signCreationView, Principal principal, HttpServletResponse response) {
+    return handleSelectedVideoFileUpload(file, mediaType, OptionalLong.empty(), OptionalLong.empty(), OptionalLong.empty(), signCreationView, principal, response);
   }
 
   @Secured("ROLE_USER")
   @RequestMapping(value = RestApi.WS_SEC_SELECTED_GIF_FILE_UPLOAD, method = RequestMethod.POST)
-  public String uploadSelectedGifFile(@RequestParam("file") MultipartFile file, @ModelAttribute SignCreationView signCreationView, Principal principal, HttpServletResponse response) {
-    return handleSelectedGifFileUpload(file, OptionalLong.empty(), OptionalLong.empty(), signCreationView, principal, response);
+  public String uploadSelectedGifFile(@RequestParam("file") MultipartFile file, @RequestParam("mediaType") String mediaType, @ModelAttribute SignCreationView signCreationView, Principal principal, HttpServletResponse response) {
+    return handleSelectedGifFileUpload(file, mediaType, signCreationView, principal, response);
   }
 
   @Secured("ROLE_USER")
   @RequestMapping(value = RestApi.WS_SEC_SELECTED_GIF_FILE_UPLOAD_FOR_VARIANT, method = RequestMethod.POST)
-  public String uploadSelectedGifFileForVariant(@RequestParam("file") MultipartFile file, @PathVariable String sign, @ModelAttribute SignCreationView signCreationView, Principal principal, HttpServletResponse response) {
-    return handleSelectedGifFileUploadForVariant(file, sign, signCreationView, principal, response);
+  public String uploadSelectedGifFileForVariant(@RequestParam("file") MultipartFile file, @RequestParam String mediaType, @PathVariable String sign, @ModelAttribute SignCreationView signCreationView, Principal principal, HttpServletResponse response) {
+    return handleSelectedGifFileUploadForVariant(file, mediaType, sign, signCreationView, principal, response);
   }
 
   @Secured("ROLE_USER")
   @RequestMapping(value = RestApi.WS_SEC_SELECTED_VIDEO_FILE_UPLOAD_FROM_REQUEST, method = RequestMethod.POST)
-  public String createSignFromUploadondailymotion(@RequestParam("file") MultipartFile file,@PathVariable long requestId, @ModelAttribute SignCreationView signCreationView, Principal principal, HttpServletResponse response) {
-    return handleSelectedVideoFileUpload(file, OptionalLong.of(requestId), OptionalLong.empty(), OptionalLong.empty(), signCreationView, principal, response);
+  public String createSignFromUploadondailymotion(@RequestParam("file") MultipartFile file, @RequestParam String mediaType,@PathVariable long requestId, @ModelAttribute SignCreationView signCreationView, Principal principal, HttpServletResponse response) {
+    return handleSelectedVideoFileUpload(file, mediaType, OptionalLong.of(requestId), OptionalLong.empty(), OptionalLong.empty(), signCreationView, principal, response);
 
   }
   @Secured("ROLE_USER")
   @RequestMapping(value = RestApi.WS_SEC_SELECTED_VIDEO_FILE_UPLOAD_FROM_SIGN, method = RequestMethod.POST)
-  public String createSignFromUploadondailymotionFromSign(@RequestParam("file") MultipartFile file,@PathVariable long signId, @PathVariable long videoId, @ModelAttribute SignCreationView signCreationView, Principal principal, HttpServletResponse response) {
-    return handleSelectedVideoFileUpload(file, OptionalLong.empty(), OptionalLong.of(signId), OptionalLong.of(videoId), signCreationView, principal, response);
+  public String createSignFromUploadondailymotionFromSign(@RequestParam("file") MultipartFile file, @RequestParam String mediaType,@PathVariable long signId, @PathVariable long videoId, @ModelAttribute SignCreationView signCreationView, Principal principal, HttpServletResponse response) {
+    return handleSelectedVideoFileUpload(file, mediaType, OptionalLong.empty(), OptionalLong.of(signId), OptionalLong.of(videoId), signCreationView, principal, response);
 
   }
 
   @Secured("ROLE_USER")
   @RequestMapping(value = RestApi.WS_SEC_SELECTED_VIDEO_FILE_UPLOAD_FOR_NEW_VIDEO, method = RequestMethod.POST)
-  public String createSignFromUploadondailymotionForNewVideo(@RequestParam("file") MultipartFile file,@PathVariable long signId, @ModelAttribute SignCreationView signCreationView, Principal principal, HttpServletResponse response) {
-    return handleSelectedVideoFileUpload(file, OptionalLong.empty(), OptionalLong.of(signId), OptionalLong.empty(), signCreationView, principal, response);
+  public String createSignFromUploadondailymotionForNewVideo(@RequestParam("file") MultipartFile file, @RequestParam String mediaType,@PathVariable long signId, @ModelAttribute SignCreationView signCreationView, Principal principal, HttpServletResponse response) {
+    return handleSelectedVideoFileUpload(file, mediaType, OptionalLong.empty(), OptionalLong.of(signId), OptionalLong.empty(), signCreationView, principal, response);
 
   }
 
-  private String handleSelectedVideoFileUpload(@RequestParam("file") MultipartFile file, OptionalLong requestId, OptionalLong signId, OptionalLong videoId, @ModelAttribute SignCreationView signCreationView, Principal principal, HttpServletResponse response) {
+  private String handleSelectedVideoFileUpload(@RequestParam("file") MultipartFile file, @RequestParam String mediaType, OptionalLong requestId, OptionalLong signId, OptionalLong videoId, @ModelAttribute SignCreationView signCreationView, Principal principal, HttpServletResponse response) {
 
     if ((!file.getOriginalFilename().endsWith(".mp4")) && (!file.getOriginalFilename().endsWith(".MP4"))) {
       log.error(file.getOriginalFilename() + " filename doesn't ends with '.mp4'");
@@ -244,7 +244,7 @@ public class FileUploadNonRestController {
       log.error("error while uploading!", errorDailymotionUploadFile);
     }
 
-    Sign sign = services.sign().create(user.id, signCreationView.getSignName(), signCreationView.getVideoUrl() == null ? inputFile.getName() : signCreationView.getVideoUrl(), pictureUri);
+    Sign sign = services.sign().create(user.id, signCreationView.getSignName(), signCreationView.getVideoUrl() == null ? inputFile.getName() : signCreationView.getVideoUrl(), pictureUri, mediaType);
     log.info("handleSelectedVideoFileUpload : username = {} / sign name = {} / video url = {}", user.username, signCreationView.getSignName(), signCreationView.getVideoUrl() == null ? inputFile.getName() : signCreationView.getVideoUrl());
 
     if (requestId.isPresent()) {
@@ -257,7 +257,7 @@ public class FileUploadNonRestController {
   }
 
 
-  private String handleSelectedGifFileUpload(@RequestParam("file") MultipartFile file, OptionalLong requestId, OptionalLong signId, @ModelAttribute SignCreationView signCreationView, Principal principal, HttpServletResponse response) {
+  private String handleSelectedGifFileUpload(@RequestParam("file") MultipartFile file, String mediaType, @ModelAttribute SignCreationView signCreationView, Principal principal, HttpServletResponse response) {
     if ((!file.getOriginalFilename().endsWith(".gif")) && (!file.getOriginalFilename().endsWith(".GIF"))) {
       log.error(file.getOriginalFilename() + " filename doesn't ends with '.gif'");
       return "";
@@ -273,20 +273,16 @@ public class FileUploadNonRestController {
     MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
     parts.add("file", resource);
 
-    Sign sign = services.sign().create(user.id, signCreationView.getSignName(), inputFile.getName(), inputFile.getName());
+    Sign sign = services.sign().create(user.id, signCreationView.getSignName(), inputFile.getName(), inputFile.getName(), mediaType);
 
     log.info("handleSelectedVideoFileUpload : username = {} / sign name = {} / file name = {}", user.username, signCreationView.getSignName(), inputFile.getName());
-
-    if (requestId.isPresent()) {
-      services.request().changeSignRequest(requestId.getAsLong(), sign.id);
-    }
 
     response.setStatus(HttpServletResponse.SC_OK);
 
     return "redirect:/sec/sign/" + sign.id + "/" + sign.lastVideoId + "/detail";
   }
 
-  private String handleSelectedGifFileUploadForVariant(@RequestParam("file") MultipartFile file, String signName, @ModelAttribute SignCreationView signCreationView, Principal principal, HttpServletResponse response) {
+  private String handleSelectedGifFileUploadForVariant(@RequestParam("file") MultipartFile file, String mediaType, String signName, @ModelAttribute SignCreationView signCreationView, Principal principal, HttpServletResponse response) {
     if ((!file.getOriginalFilename().endsWith(".gif")) && (!file.getOriginalFilename().endsWith(".GIF"))) {
       log.error(file.getOriginalFilename() + " filename doesn't ends with '.gif'");
       return "";
@@ -302,7 +298,7 @@ public class FileUploadNonRestController {
     MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
     parts.add("file", resource);
 
-    Sign sign = services.sign().create(user.id, signName, inputFile.getName(), inputFile.getName());
+    Sign sign = services.sign().create(user.id, signName, inputFile.getName(), inputFile.getName(), mediaType);
 
     log.info("handleSelectedVideoFileUploadForVariant : username = {} / sign name = {} / file name = {}", user.username, signName, inputFile.getName());
 

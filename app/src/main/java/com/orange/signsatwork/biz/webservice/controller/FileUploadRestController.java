@@ -108,30 +108,30 @@ public class FileUploadRestController {
 
   @Secured("ROLE_USER")
   @RequestMapping(value = RestApi.WS_SEC_RECORDED_VIDEO_FILE_UPLOAD, method = RequestMethod.POST)
-  public String uploadRecordedVideoFile(@RequestBody VideoFile videoFile, Principal principal, HttpServletResponse response) {
-    return handleRecordedVideoFile(videoFile, OptionalLong.empty(), OptionalLong.empty(), OptionalLong.empty(), principal, response);
+  public String uploadRecordedVideoFile(@RequestBody VideoFile videoFile, @RequestParam String mediaType, Principal principal, HttpServletResponse response) {
+    return handleRecordedVideoFile(videoFile, mediaType, OptionalLong.empty(), OptionalLong.empty(), OptionalLong.empty(), principal, response);
   }
 
 
   @Secured("ROLE_USER")
   @RequestMapping(value = RestApi.WS_SEC_RECORDED_VIDEO_FILE_UPLOAD_FROM_REQUEST, method = RequestMethod.POST)
-  public String uploadRecordedVideoFileFromRequest(@RequestBody VideoFile videoFile, @PathVariable long requestId, Principal principal, HttpServletResponse response) {
-    return handleRecordedVideoFile(videoFile, OptionalLong.of(requestId), OptionalLong.empty(), OptionalLong.empty(), principal, response);
+  public String uploadRecordedVideoFileFromRequest(@RequestBody VideoFile videoFile, @RequestParam String mediaType, @PathVariable long requestId, Principal principal, HttpServletResponse response) {
+    return handleRecordedVideoFile(videoFile, mediaType, OptionalLong.of(requestId), OptionalLong.empty(), OptionalLong.empty(), principal, response);
   }
 
   @Secured("ROLE_USER")
   @RequestMapping(value = RestApi.WS_SEC_RECORDED_VIDEO_FILE_UPLOAD_FROM_SIGN, method = RequestMethod.POST)
-  public String uploadRecordedVideoFileFromSign(@RequestBody VideoFile videoFile, @PathVariable long signId, @PathVariable long videoId, Principal principal, HttpServletResponse response) {
-    return handleRecordedVideoFile(videoFile, OptionalLong.empty(), OptionalLong.of(signId), OptionalLong.of(videoId), principal, response);
+  public String uploadRecordedVideoFileFromSign(@RequestBody VideoFile videoFile, @RequestParam String mediaType, @PathVariable long signId, @PathVariable long videoId, Principal principal, HttpServletResponse response) {
+    return handleRecordedVideoFile(videoFile, mediaType, OptionalLong.empty(), OptionalLong.of(signId), OptionalLong.of(videoId), principal, response);
   }
 
   @Secured("ROLE_USER")
   @RequestMapping(value = RestApi.WS_SEC_RECORDED_VIDEO_FILE_UPLOAD_FOR_NEW_VIDEO, method = RequestMethod.POST)
-  public String uploadRecordedVideoFileForNewVideo(@RequestBody VideoFile videoFile, @PathVariable long signId, Principal principal, HttpServletResponse response) {
-    return handleRecordedVideoFile(videoFile, OptionalLong.empty(), OptionalLong.of(signId), OptionalLong.empty(), principal, response);
+  public String uploadRecordedVideoFileForNewVideo(@RequestBody VideoFile videoFile, @RequestParam String mediaType, @PathVariable long signId, Principal principal, HttpServletResponse response) {
+    return handleRecordedVideoFile(videoFile, mediaType, OptionalLong.empty(), OptionalLong.of(signId), OptionalLong.empty(), principal, response);
   }
 
-  private String handleRecordedVideoFile(VideoFile videoFile, OptionalLong requestId,OptionalLong signId, OptionalLong videoId, Principal principal, HttpServletResponse response) {
+  private String handleRecordedVideoFile(VideoFile videoFile, String mediaType, OptionalLong requestId,OptionalLong signId, OptionalLong videoId, Principal principal, HttpServletResponse response) {
     log.info("VideoFile "+videoFile);
     log.info("VideoFile name"+videoFile.name);
     String videoUrl = null;
@@ -273,7 +273,7 @@ public class FileUploadRestController {
     } else if (signId.isPresent() && !(videoId.isPresent())) {
       sign = services.sign().addNewVideo(user.id, signId.getAsLong(), videoUrl, pictureUri);
     } else {
-      sign = services.sign().create(user.id, videoFile.signNameRecording, videoUrl, pictureUri);
+      sign = services.sign().create(user.id, videoFile.signNameRecording, videoUrl, pictureUri, mediaType);
       log.info("handleFileUpload : username = {} / sign name = {} / video url = {}", user.username, videoFile.signNameRecording, videoUrl);
     }
 

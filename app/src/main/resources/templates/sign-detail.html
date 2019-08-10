@@ -43,8 +43,14 @@
     <div class="pull-right text-center title_middle col-lg-8 col-md-8 col-xs-12 middle-col ">
 
       <h2 class="label_sign_H2 text-center" th:text="#{sign.variant.media}"/>
-      <br/><br/>
-
+      <br/>
+      <div th:if="${typeLsf}">
+        <h3 class="label_sign_H3 text-center" th:text="#{sign.variant.media.lsf}"/>
+      </div>
+      <div th:if="${!typeLsf}">
+        <h3 class="label_sign_H3 text-center" th:text="#{sign.variant.media.lpc}"/>
+      </div>
+      <br/>
       <div id="tooltipInframe" class="pull-right" >
         <div th:if="${videoHasPositiveRate}" style="z-index: 100"  class="tooltip_positif_in_frame"></div>
         <div th:if="${!videoHasPositiveRate}" style="visibility: hidden" class="tooltip_positif_in_frame"></div>

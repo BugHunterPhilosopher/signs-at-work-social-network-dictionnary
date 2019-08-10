@@ -97,7 +97,11 @@ function showSignView(signView) {
         img.src = '/img/video_thumbnail.png';
       } else {
         var thumbnailUrl = img.dataset.src;
-        img.src = thumbnailUrl;
+        if (thumbnailUrl.indexOf('/files/') != -1) {
+          img.src = thumbnailUrl;
+        } else {
+          img.src = '/files/' + thumbnailUrl;
+        }
       }
     } else if ((typeof img.src != 'undefined') && (img.src.endsWith('.gif') || img.src.endsWith('.png'))) {
       // Nothing special to do here

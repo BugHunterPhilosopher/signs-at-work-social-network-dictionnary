@@ -41,6 +41,10 @@
 
   <div class="pull-right col-md-12 col-xs-12 col-sm-12 col-lg-12">
     <div class="pull-right text-center title_middle col-lg-8 col-md-8 col-xs-12 middle-col ">
+
+      <h2 class="label_sign_H2 text-center" th:text="#{sign.variant.media}"/>
+      <br/><br/>
+
       <div id="tooltipInframe" class="pull-right" >
         <div th:if="${videoHasPositiveRate}" style="z-index: 100"  class="tooltip_positif_in_frame"></div>
         <div th:if="${!videoHasPositiveRate}" style="visibility: hidden" class="tooltip_positif_in_frame"></div>
@@ -192,27 +196,27 @@
                         </a>
                       </li>
                   </div>
-                    <li class="history_label noHover_nopointer aside_bckg_li">
-                        <a href="#">
-                            <div class="pull-left history_signe"></div>
-                            <h2 class=" container_H2" th:text="#{history}"/>
-                        </a>
+                    <li class="history_label aside_bckg_li">
+                      <div>
+                          <div class="pull-left history_signe"></div>
+                          <h2 class="container_H2 noHover_nopointer" style="color: #373737" th:text="#{history}"/>
+                      </div>
+                      <br/><br/><br/>
+                      <div th:if="${not #lists.isEmpty(videoHistoryDatas)}">
+                          <div class="table-responsive pull-left">
+                              <table class="table table-sm table-bordered table-hover" style="margin-top: 1%">
+                                  <tbody>
+                                  <div th:each="video, stats :${videoHistoryDatas}">
+                                      <tr>
+                                          <td th:if="${stats.last}" th:text="#{created_by(${video.name()},${#dates.format(video.createDate, 'dd-MM-yyyy HH:mm')})}"></td>
+                                          <td th:if="${!stats.last}" th:text="#{updated_by(${video.name()},${#dates.format(video.createDate, 'dd-MM-yyyy HH:mm')})}"></td>
+                                      </tr>
+                                  </div>
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
                     </li>
-
-                    <div th:if="${not #lists.isEmpty(videoHistoryDatas)}">
-                        <div class="table-responsive">
-                            <table class="table table-sm table-bordered table-hover" style="margin-top: 1%">
-                                <tbody>
-                                <div th:each="video, stats :${videoHistoryDatas}">
-                                    <tr>
-                                        <td th:if="${stats.last}" th:text="#{created_by(${video.name()},${#dates.format(video.createDate, 'dd-MM-yyyy HH:mm')})}"></td>
-                                        <td th:if="${!stats.last}" th:text="#{updated_by(${video.name()},${#dates.format(video.createDate, 'dd-MM-yyyy HH:mm')})}"></td>
-                                    </tr>
-                                </div>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
                 </ul>
             </aside>
         </div>

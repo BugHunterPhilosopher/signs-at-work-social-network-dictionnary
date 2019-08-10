@@ -89,8 +89,8 @@
                         </li>
                     </div>
 
-                    <div sec:authorize="hasRole('USER_A')">
-                      <li th:if="${isAuthenticated and nbRating > 0}" class="aside_bckg_li">
+                    <div sec:authorize="hasRole('ADMIN') or hasRole('USER_A')">
+                      <li th:if="${(isAuthenticated and nbRating > 0) or (isAdmin)}" class="aside_bckg_li">
                         <a href="#" data-toggle="modal" data-target="#new-video">
                           <div>
                             <div class="pull-left add_video"></div>

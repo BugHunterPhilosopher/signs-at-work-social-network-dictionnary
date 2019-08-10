@@ -945,6 +945,12 @@ public class SignController {
     Long nbRating = services.sign().NbRatingForSign(signId);
     model.addAttribute("nbRating", nbRating);
 
+    boolean isAdmin = appSecurityAdmin.isAdmin(principal);
+    model.addAttribute("isAdmin", isAdmin);
+    model.addAttribute("signName", sign.name);
+    model.addAttribute("signId", signId);
+    model.addAttribute("signCreationView", new SignCreationView());
+
     return "sign";
   }
 
@@ -1100,7 +1106,7 @@ public class SignController {
       .map(objectArray -> new VideoHistoryData(objectArray))
       .collect(Collectors.toList());
     model.addAttribute("videoHistoryDatas", videoHistoryDatas);
-    model.addAttribute("title",  messageByLocaleService.getMessage("détail"));
+    model.addAttribute("title", sign.name);
     if ((video.idForName == 0) || (sign.nbVideo == 1 )){
       model.addAttribute("videoName", sign.name);
     } else {
@@ -1114,8 +1120,7 @@ public class SignController {
     SignDB signDB = SignServiceImpl.signDBFrom(sign);
     signDB.setId(signId);
     Set<TagDB> tags = signDB.getTags();
-    Set<SignDB> syns = signDB.getSynonyms();
-    model.addAttribute("tags", null != tags ? "" :
+    model.addAttribute("tags", null == tags ? "" :
       objectSetToCommaSeparatedString(tags.stream().map(TagDB::getName)));
 
     /* Relations */

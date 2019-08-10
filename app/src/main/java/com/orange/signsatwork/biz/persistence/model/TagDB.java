@@ -17,6 +17,8 @@ import javax.validation.constraints.NotNull;
 import java.util.Objects;
 import java.util.Set;
 
+import static javax.persistence.CascadeType.REMOVE;
+
 // we want to save 'Tag' objects in the 'tags' DB table
 @Table(name = "tags")
 @Entity
@@ -35,7 +37,7 @@ public class TagDB {
   @NotNull
   private String name;
 
-  @ManyToMany(fetch = FetchType.LAZY)
+  @ManyToMany(fetch = FetchType.LAZY, cascade = REMOVE)
   @JoinColumn(name="sign_id")
   private Set<SignDB> signs;
 

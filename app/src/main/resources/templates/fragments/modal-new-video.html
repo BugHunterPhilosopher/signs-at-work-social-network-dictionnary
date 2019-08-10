@@ -63,6 +63,31 @@
                     </div>
                   </a>
                 </li>
+
+                <li th:if="${isAuthenticated}" class="forIE aside_bckg_li">
+                  <a data-target="#add_gif_file" data-toggle="modal" href="#">
+                    <div>
+                      <div class="pull-left folderCamera_picto"></div>
+                      <h4 class="container_H2" th:text="#{sign.new_from_gif_file}"/>
+                      <div>
+                        <div class="pull-right add"></div>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+
+                <li th:if="${isAuthenticated}" class="aside_bckg_li">
+                  <a th:href="@{/sec/draw-sign/} + ${signName} + '/' + ${signId}">
+                    <div>
+                      <div class="pull-left add_video"></div>
+                      <h4 class="container_H2" th:text="#{graphical_signs}"/>
+                      <div>
+                        <div class="pull-right add"></div>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+
               </ul>
             </div>
         </div>
@@ -153,6 +178,36 @@
   </div>
 </div>
 <!--end modal-new-sign-video-file-dailymotion-->
+
+<!--start modal-new-sign-gif-file-->
+<div th:if="${isAuthenticated}" id="add_gif_file" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <div class="pull-left">
+          <div class="newAddition_signe pull-left"></div>
+          <h2 class="pull-right" th:text="#{sign.suggest}"/>
+        </div>
+      </div>
+      <div class="spinner spinner_hidden"></div>
+      <form id="uploadSelectedGifFile" th:action="@{/ws/sec/uploadSelectedGifFileForVariant/} + ${signName}" enctype="multipart/form-data"
+            th:object="${signCreationView}" method="post">
+        <div class="modal-body text-center">
+          <input th:field="*{signName}" id="signNameSelected" type="text" class="text-center border form-control"
+                 th:placeholder="#{sign.enter_name}" style="display: none"/><br/>
+          <h4 class="pull-left" th:text="#{sign.join_gif}"></h4><br/>
+          <input name="file" type="file" id="InputFileGif"/>
+          <h4 id="errorSelectedSpan" style="visibility: hidden"></h4>
+        </div>
+        <div class="modal-footer">
+          <button id="submitButtonGifFile" th:text="#{continue}" type="submit" class="btn btn-default"
+                  data-dismiss=""></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
 
 </body>

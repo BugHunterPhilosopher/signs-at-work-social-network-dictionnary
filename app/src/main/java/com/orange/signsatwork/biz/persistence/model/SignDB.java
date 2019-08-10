@@ -74,10 +74,12 @@ public class SignDB {
   @NotNull
   private Date createDate;
 
+  @Column(name = "last_video_id")
   @NotNull
-  private long lastVideoId;
+  private Long lastVideoId;
 
-  private long nbVideo;
+  @Column(name = "nb_video")
+  private Long nbVideo;
 
   @OneToMany(mappedBy = "sign", fetch = FetchType.LAZY, cascade = REMOVE)
   private List<VideoDB> videos;
@@ -106,10 +108,12 @@ public class SignDB {
     inverseJoinColumns = { @JoinColumn(name = "related_id", nullable = false)})
   private Set<SignDB> related;
 
-  public SignDB(String name, String url, Date createDate, List<VideoDB> videos, Set<TagDB> tags, Set<SignDB> synonyms, Set<SignDB> opposites, Set<SignDB> related) {
+  public SignDB(String name, String url, Date createDate, Long lastVideoId, Long nbVideo, List<VideoDB> videos, Set<TagDB> tags, Set<SignDB> synonyms, Set<SignDB> opposites, Set<SignDB> related) {
     this.name = name;
     this.url = url;
     this.createDate = createDate;
+    this.lastVideoId = lastVideoId;
+    this.nbVideo = nbVideo;
     this.videos = videos;
     this.tags = tags;
     this.synonyms = synonyms;

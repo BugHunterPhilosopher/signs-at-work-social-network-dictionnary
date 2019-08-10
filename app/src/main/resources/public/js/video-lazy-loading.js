@@ -65,9 +65,27 @@
     videoView.style.opacity = "0";
     videoView.className = videoView.className.replace(HIDDEN_CLASS, '');
     var img = videoView.getElementsByTagName('img')[0];
-    var thumbnailUrl = img.dataset.src;
-    img.src = thumbnailUrl;
-    $(videoView).fadeTo(REVEAL_DURATION_MS, 1);
+
+    if (typeof img != 'undefined') {
+      if ((typeof img.src == 'undefined') || (img.src == '') || (img.src.endsWith("null"))) {
+        if (typeof img.dataset.src == 'undefined') {
+          img.src = '/img/video_thumbnail.png';
+        } else {
+          var thumbnailUrl = img.dataset.src;
+          if (thumbnailUrl.indexOf('/files/') != -1) {
+            img.src = thumbnailUrl;
+          } else {
+            img.src = '/files/' + thumbnailUrl;
+          }
+        }
+      } else if ((typeof img.src != 'undefined') && (img.src.endsWith('.gif') || img.src.endsWith('.png'))) {
+        // Nothing special to do here
+      } else if ((typeof img.src != 'undefined') && (img.src.indexOf('/files/') != -1)) {
+        img.src = img.src.substring(img.src.indexOf("/files/") + 7); // 7 = (length of "/files/")
+      }
+    }
+
+    $(videoView).fadeTo(REVEAL_DURATION_MS, 100);
   }
 
   function showNextVideoViews() {

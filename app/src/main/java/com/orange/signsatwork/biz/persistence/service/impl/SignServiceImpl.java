@@ -476,7 +476,7 @@ public class SignServiceImpl implements SignService {
 
 
   public static SignDB signDBFrom(Sign sign) {
-    return new SignDB(sign.name, sign.url, sign.createDate, null, sign.tags, sign.synonyms, sign.opposites, sign.related);
+    return new SignDB(sign.name, sign.url, sign.createDate, sign.lastVideoId, sign.nbVideo, null, sign.tags, sign.synonyms, sign.opposites, sign.related);
   }
 
   Signs signsFromSignsView(Iterable<SignDB> signsDB) {

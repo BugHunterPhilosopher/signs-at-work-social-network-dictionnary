@@ -119,6 +119,12 @@ public class FileUploadNonRestController {
   }
 
   @Secured("ROLE_USER")
+  @RequestMapping(value = RestApi.WS_SEC_SELECTED_GIF_FILE_UPLOAD_FOR_VARIANT, method = RequestMethod.POST)
+  public String uploadSelectedGifFileForVariant(@RequestParam("file") MultipartFile file, @PathVariable String sign, @ModelAttribute SignCreationView signCreationView, Principal principal, HttpServletResponse response) {
+    return handleSelectedGifFileUploadForVariant(file, sign, signCreationView, principal, response);
+  }
+
+  @Secured("ROLE_USER")
   @RequestMapping(value = RestApi.WS_SEC_SELECTED_VIDEO_FILE_UPLOAD_FROM_REQUEST, method = RequestMethod.POST)
   public String createSignFromUploadondailymotion(@RequestParam("file") MultipartFile file,@PathVariable long requestId, @ModelAttribute SignCreationView signCreationView, Principal principal, HttpServletResponse response) {
     return handleSelectedVideoFileUpload(file, OptionalLong.of(requestId), OptionalLong.empty(), OptionalLong.empty(), signCreationView, principal, response);
@@ -274,6 +280,31 @@ public class FileUploadNonRestController {
     if (requestId.isPresent()) {
       services.request().changeSignRequest(requestId.getAsLong(), sign.id);
     }
+
+    response.setStatus(HttpServletResponse.SC_OK);
+
+    return "redirect:/sec/sign/" + sign.id + "/" + sign.lastVideoId + "/detail";
+  }
+
+  private String handleSelectedGifFileUploadForVariant(@RequestParam("file") MultipartFile file, String signName, @ModelAttribute SignCreationView signCreationView, Principal principal, HttpServletResponse response) {
+    if ((!file.getOriginalFilename().endsWith(".gif")) && (!file.getOriginalFilename().endsWith(".GIF"))) {
+      log.error(file.getOriginalFilename() + " filename doesn't ends with '.gif'");
+      return "";
+    }
+
+    User user = services.user().withUserName(principal.getName());
+    File inputFile;
+
+    storageService.store(file);
+    inputFile = storageService.load(file.getOriginalFilename()).toFile();
+
+    Resource resource = new FileSystemResource(inputFile.getAbsolutePath());
+    MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
+    parts.add("file", resource);
+
+    Sign sign = services.sign().create(user.id, signName, inputFile.getName(), inputFile.getName());
+
+    log.info("handleSelectedVideoFileUploadForVariant : username = {} / sign name = {} / file name = {}", user.username, signName, inputFile.getName());
 
     response.setStatus(HttpServletResponse.SC_OK);
 

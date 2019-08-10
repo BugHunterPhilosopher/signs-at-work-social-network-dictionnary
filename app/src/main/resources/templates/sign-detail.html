@@ -151,18 +151,33 @@
                       </a>
                       <br/><br/><br/>
                       <div class="pull-left">
-                        <span th:text="#{sign.synonyms}"/> :
-                        <span th:utext="${synonyms}"/>
+                        <div th:if= "${synonyms != ''}">
+                          <span th:text="#{sign.synonyms}"/> :
+                          <span th:utext="${synonyms}"/>
+                        </div>
+                        <div th:if= "${synonyms == ''}">
+                          <span th:text="#{sign.nosynonym}"/>
+                        </div>
                       </div>
                       <br/>
                       <div class="pull-left">
-                        <span th:text="#{sign.opposites}"/> :
-                        <span th:utext="${opposites}"/>
+                        <div th:if= "${opposites != ''}">
+                          <span th:text="#{sign.opposites}"/> :
+                          <span th:utext="${opposites}"/>
+                        </div>
+                        <div th:if= "${opposites == ''}">
+                          <span th:utext="#{sign.noopposite}"/>
+                        </div>
                       </div>
                       <br/>
                       <div class="pull-left">
-                        <span th:text="#{sign.related}"/> :
-                        <span th:utext="${related}"/>
+                        <div th:if= "${related != ''}">
+                          <span th:text="#{sign.related}"/> :
+                          <span th:utext="${related}"/>
+                        </div>
+                        <div th:if= "${related == ''}">
+                          <span th:utext="#{sign.norelated}"/>
+                        </div>
                       </div>
                     </li>
                   </div>

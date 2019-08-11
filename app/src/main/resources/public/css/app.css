@@ -1922,7 +1922,7 @@ input[type="checkbox"] {
 #search-criteria1 {
   position: fixed;
   z-index: 10;
-  margin-top: 5%;
+  margin-top: 8%;
   width: 30%;
 }
 
@@ -1936,7 +1936,7 @@ input[type="checkbox"] {
 #search-media-type {
   position: fixed;
   z-index: 10;
-  margin-top: 8%;
+  margin-top: 5%;
   width: 30%;
 }
 
@@ -1960,6 +1960,27 @@ input[type="checkbox"] {
 
 .my-button-lpc-active {
   background: url('/img/boutonlpc.png') no-repeat bottom;
+}
+
+.my-button-conditions-and {
+  width: 75px;
+  height: 43px;
+  border-style: none;
+  background: url('/img/boutonconditions.png') no-repeat 0px 0px;
+}
+
+.my-button-conditions-or {
+  width: 75px;
+  height: 43px;
+  border-style: none;
+  background: url('/img/boutonconditions.png') no-repeat 0px -87px;
+}
+
+.my-button-conditions-none {
+  width: 75px;
+  height: 43px;
+  border-style: none;
+  background: url('/img/boutonconditions.png') no-repeat 0px -43px;
 }
 
 /*error create user*/

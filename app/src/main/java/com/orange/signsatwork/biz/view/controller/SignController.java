@@ -770,7 +770,7 @@ public class SignController {
     User user = services.user().withUserName(principal.getName());
     fillModelWithContext(model, "sign.list", principal, SHOW_ADD_FAVORITE, HOME_URL);
 
-    List<SignDB> querySigns = services.sign().findAll();
+    List<Object[]> querySigns = services.sign().SignsForSignsView();
     List<SignView2> signViews = querySigns.stream().map(objectArray -> new SignViewData(objectArray))
       .map(signViewData -> new SignView2(signViewData, false, false, false, false, false))
       .collect(Collectors.toList());

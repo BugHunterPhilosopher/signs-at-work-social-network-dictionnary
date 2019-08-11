@@ -22,9 +22,15 @@ package com.orange.signsatwork.biz.persistence.model;
  * #L%
  */
 
+import com.orange.signsatwork.biz.domain.MediaType;
+
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class SignViewData {
@@ -37,6 +43,7 @@ public class SignViewData {
   public final String pictureUri;
   public final long nbVideo;
   public final String tags;
+  public final String mediaTypes;
 
   public SignViewData(Object[] queryResultItem) {
     id = toLong(((SignDB)queryResultItem[1]).getId());
@@ -47,6 +54,7 @@ public class SignViewData {
     pictureUri = toString(((VideoDB)queryResultItem[0]).getPictureUri());
     nbVideo = toLong(((SignDB)queryResultItem[1]).getNbVideo());
     tags = toTags(((SignDB)queryResultItem[1]).getTags());
+    mediaTypes = toMediaTypes(((SignDB)queryResultItem[1]).getVideos());
   }
 
   public SignViewData(SignDB queryResultItem) {
@@ -58,6 +66,7 @@ public class SignViewData {
     pictureUri = null; // In sync with UI
     nbVideo = queryResultItem.getNbVideo();
     tags = toTags(queryResultItem.getTags());
+    mediaTypes = "";
   }
 
   private String toString(Object o) {
@@ -72,9 +81,20 @@ public class SignViewData {
     return l.stream().map(TagDB::getName).collect(Collectors.joining(","));
   }
 
+  private String toMediaTypes(List<VideoDB> l) {
+    return l.stream().filter(distinctByKey(VideoDB::getMediaType)).
+      map(VideoDB::getMediaType).map(MediaType::toString).
+      collect(Collectors.joining(","));
+  }
+
   private Date toDate(Object o) {
     Timestamp timestamp = ((Timestamp)o);
     return new Date(timestamp.getTime());
+  }
+
+  public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+    Set<Object> seen = ConcurrentHashMap.newKeySet();
+    return t -> seen.add(keyExtractor.apply(t));
   }
 
 }

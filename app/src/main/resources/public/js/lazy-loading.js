@@ -49,6 +49,9 @@ var videoAvailable = document.getElementById("video_available");
 var displayedVideosCount = 0;
 
 var search_criteria1 = document.getElementById("search-criteria1");
+var mediaTypeCriteria1 = document.getElementsByClassName("my-button-lsf")[0];
+var mediaTypeCriteria2 = document.getElementsByClassName("my-button-lpc")[0];
+var conditions = document.getElementById("conditions");
 
 var accentMap = {
   "é": "e",
@@ -174,11 +177,161 @@ function onScroll(event) {
 
 }
 
+$(function() {
+  $('.my-button-lsf').addClass('my-button-lsf-active');
+  $('.my-button-lpc').addClass('my-button-lpc-active');
+});
+
+var resetSearch = function() {
+    $(addNewSuggestRequest).hide();
+    $(signAvailable).hide();
+    $("#reset").css("visibility", "hidden");
+    /*$("#reset").hide();*/
+    $("#signs-container").children("div").each(function () {
+      if (!$(this).hasClass(SIGN_HIDDEN_CLASS)) {
+        $(this).addClass(SIGN_HIDDEN_CLASS);
+        $(this).hide();
+      }
+    });
+    displayedSignsCount = 0;
+    if (modeSearch === "false") {
+      initWithFirstSigns();
+    } else {
+      $(nb).hide();
+    }
+
+  $('#search-criteria1').val('');
+}
+
+var conditionsState = "and";
+
+function condition(event) {
+  if ($('.my-button-lpc').hasClass('my-button-lpc-active') && $('.my-button-lsf').hasClass('my-button-lsf-active')) {
+
+
+    if ($('#conditions').hasClass('my-button-conditions-and')) {
+      conditionsState = "and";
+    } else if ($('#conditions').hasClass('my-button-conditions-or')) {
+      conditionsState = "or";
+    } else {
+      conditionsState = "none";
+    }
+
+    var conditionsNextState = "";
+
+    if (conditionsState == 'and') {
+      conditionsNextState = "or";
+    } else if (conditionsState == 'or') {
+      conditionsNextState = "and";
+    } else {
+      conditionsNextState = "and";
+    }
+
+    if (conditionsNextState == 'and') {
+      $('#conditions').addClass('my-button-conditions-and')
+      $('#conditions').removeClass('my-button-conditions-or')
+      $('#conditions').removeClass('my-button-conditions-none')
+      resetSearch();
+    } else if (conditionsNextState == 'or') {
+      $('#conditions').removeClass('my-button-conditions-and')
+      $('#conditions').addClass('my-button-conditions-or')
+      $('#conditions').removeClass('my-button-conditions-none')
+      resetSearch();
+    } else {
+      $('#conditions').removeClass('my-button-conditions-and')
+      $('#conditions').removeClass('my-button-conditions-or')
+      $('#conditions').addClass('my-button-conditions-none')
+    }
+
+    conditionsState = conditionsNextState;
+  }
+}
 
 function search(event) {
+  function arraysEqual(a, b) {
+    if (a.sort) {
+      a.sort();
+    }
+
+    if (b.sort) {
+      b.sort();
+    }
+
+    if (a === b) return true;
+    if (a == null || b == null) return false;
+    if (a.length != b.length) return false;
+
+    // If you don't care about the order of the elements inside
+    // the array, you should sort both arrays here.
+    // Please note that calling sort on an array will modify that array.
+    // you might want to clone your array first.
+
+    for (var i = 0; i < a.length; ++i) {
+      if (a[i] !== b[i]) return false;
+    }
+    return true;
+  }
+
+  console.log(event.target.className);
+  var searchToReset = false;
+
+  if (event.target.className.indexOf('lsf') != -1) {
+    if ($('.my-button-lsf').hasClass('my-button-lsf-active') && !$('.my-button-lpc').hasClass('my-button-lpc-active')) {
+      $('.my-button-lsf').toggleClass('my-button-lsf-active');
+      $('.my-button-lpc').toggleClass('my-button-lpc-active');
+    } else {
+      $('.my-button-lsf').toggleClass('my-button-lsf-active');
+    }
+
+    searchToReset = true;
+  }
+
+  if (event.target.className.indexOf('lpc') != -1) {
+    if ($('.my-button-lpc').hasClass('my-button-lpc-active') && !$('.my-button-lsf').hasClass('my-button-lsf-active')) {
+      $('.my-button-lpc').toggleClass('my-button-lpc-active');
+      $('.my-button-lsf').toggleClass('my-button-lsf-active');
+    } else {
+      $('.my-button-lpc').toggleClass('my-button-lpc-active');
+    }
+
+    searchToReset = true;
+  }
+
+  if (searchToReset) {
+
+    if ($('.my-button-lpc').hasClass('my-button-lpc-active') && $('.my-button-lsf').hasClass('my-button-lsf-active')) {
+      conditionsState = 'and';
+      $('#conditions').addClass('my-button-conditions-and');
+      $('#conditions').removeClass('my-button-conditions-or');
+      $('#conditions').removeClass('my-button-conditions-none');
+    } else {
+      conditionsState = 'none';
+      $('#conditions').removeClass('my-button-conditions-and');
+      $('#conditions').removeClass('my-button-conditions-or');
+      $('#conditions').addClass('my-button-conditions-none');
+    }
+
+    resetSearch();
+    return false;
+  }
+
 
   var display = 0;
   $(addNewSuggestRequest).hide();
+
+  function prepareMediaTypeToSearch() {
+    var lpc = $('.my-button-lpc').hasClass('my-button-lpc-active') ? 'Lf.P.C.' : '';
+    var lsf = $('.my-button-lsf').hasClass('my-button-lsf-active') ? 'L.S.F.' : '';
+    var mediaTypesToSearch = [];
+    if (lpc != '') {
+      mediaTypesToSearch.push(lpc);
+    }
+    if (lsf != '') {
+      mediaTypesToSearch.push(lsf);
+    }
+    return mediaTypesToSearch;
+  }
+
   if (signsContainer != null) {
     var g = normalize($(this).val());
 
@@ -190,35 +343,53 @@ function search(event) {
         $("#reset").css("visibility", "visible");
        /* $("#reset").show();*/
         var s = normalize($(this).attr("id"));
+        var s3 = normalize($(this).attr("data-media-types"));
         var img = $(this).find("img")[0];
         /*if (s.toUpperCase().startsWith(g.toUpperCase()) == true) {*/
         if (s.toUpperCase().indexOf(g.toUpperCase()) != -1) {
-          if ($(this).hasClass(SIGN_HIDDEN_CLASS)) {
-            $(this).removeClass(SIGN_HIDDEN_CLASS);
-            var thumbnailUrl = img.dataset.src;
-            img.src = thumbnailUrl;
-            displayedSignsCount++;
+          var mediaTypesToSearch = prepareMediaTypeToSearch();
 
-          }
-          elem.show();
-          display++;
-          wasShown = true;
-        }
-
-        var s2 = normalize($(this).attr("data-tags"));
-        s2.split(',').forEach(function(tag) {
-          var img2 = $(this).find("img")[0];
-          if (tag.toUpperCase().indexOf(g.toUpperCase()) != -1) {
+          if ((conditionsState == 'and' && s3 != '' && arraysEqual(mediaTypesToSearch, s3.split(','))) ||
+            (conditionsState == 'or' && s3 != '' && (s3.indexOf(',') != -1) && mediaTypesToSearch.some(r=> s3.split(',').includes(r))) ||
+            (conditionsState == 'or' && s3 != '' && (s3.indexOf(',') == -1) && mediaTypesToSearch.includes(s3)) ||
+            (conditionsState == 'none' && s3 != '' && (s3.indexOf(',') == -1) && mediaTypesToSearch == s3) ||
+            (conditionsState == 'none' && s3 != '' && (s3.indexOf(',') != -1) && s3.split(',').some(r=> mediaTypesToSearch.includes(r)))) {
             if ($(this).hasClass(SIGN_HIDDEN_CLASS)) {
               $(this).removeClass(SIGN_HIDDEN_CLASS);
-              var thumbnailUrl = img2.dataset.src;
-              img2.src = thumbnailUrl;
+              var thumbnailUrl = img.dataset.src;
+              img.src = thumbnailUrl;
               displayedSignsCount++;
 
             }
             elem.show();
-            wasShown = true;
             display++;
+            wasShown = true;
+          }
+        }
+
+        var s2 = normalize($(this).attr("data-tags"));
+
+        s2.split(',').forEach(function(tag) {
+          var img2 = $(this).find("img")[0];
+          if (tag.toUpperCase().indexOf(g.toUpperCase()) != -1) {
+            var mediaTypesToSearch = prepareMediaTypeToSearch();
+
+            if ((conditionsState == 'and' && s3 != '' && arraysEqual(mediaTypesToSearch, s3.split(','))) ||
+              (conditionsState == 'or' && s3 != '' && (s3.indexOf(',') != -1) && mediaTypesToSearch.some(r=> s3.split(',').includes(r))) ||
+              (conditionsState == 'or' && s3 != '' && (s3.indexOf(',') == -1) && mediaTypesToSearch.includes(s3)) ||
+            (conditionsState == 'none' && s3 != '' && (s3.indexOf(',') == -1) && mediaTypesToSearch == s3) ||
+            (conditionsState == 'none' && s3 != '' && (s3.indexOf(',') != -1) && s3.split(',').some(r=> mediaTypesToSearch.includes(r)))) {
+                if ($(this).hasClass(SIGN_HIDDEN_CLASS)) {
+                $(this).removeClass(SIGN_HIDDEN_CLASS);
+                var thumbnailUrl = img2.dataset.src;
+                img2.src = thumbnailUrl;
+                displayedSignsCount++;
+              }
+
+              elem.show();
+              wasShown = true;
+              display++;
+            }
           }
         });
 
@@ -238,21 +409,7 @@ function search(event) {
         $(addNewSuggestRequest).hide();
       }
     } else {
-      $(addNewSuggestRequest).hide();
-      $(signAvailable).hide();
-      $("#reset").css("visibility", "hidden");
-      /*$("#reset").hide();*/
-      $("#signs-container").children("div").each(function () {
-        if (!$(this).hasClass(SIGN_HIDDEN_CLASS)) {
-          $(this).addClass(SIGN_HIDDEN_CLASS);
-          $(this).hide();
-        }});
-      displayedSignsCount = 0;
-      if (modeSearch === "false") {
-        initWithFirstSigns();
-      } else {
-        $(nb).hide();
-      }
+      resetSearch();
     }
   } else {
     var g = normalize($(this).val());
@@ -278,8 +435,8 @@ function search(event) {
           $(this).hide();
         }
       });
-      console.log("display "+display);
-      nb.innerHTML = "("+display+")";
+      console.log("display "+displayedSignsCount);
+      nb.innerHTML = "("+displayedSignsCount+")";
       $(nb).show();
       if (display == 0) {
         $(videoAvailable).hide();
@@ -505,6 +662,11 @@ function main() {
 
   document.addEventListener('scroll', onScroll);
   search_criteria1.addEventListener('keyup', search);
+
+  mediaTypeCriteria1.addEventListener('click', search);
+  mediaTypeCriteria2.addEventListener('click', search);
+  conditions.addEventListener('click', condition);
+
   var button_reset = document.getElementById("reset");
   if (button_reset != null) {
     button_reset.addEventListener('click', onReset);
@@ -521,8 +683,6 @@ function main() {
   } else {
     $(nb).hide();
   }
-
-
 }
 
 function onFiltreSign(event, href) {

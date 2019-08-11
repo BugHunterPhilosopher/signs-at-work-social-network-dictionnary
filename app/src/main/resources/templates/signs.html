@@ -53,7 +53,7 @@
     <span id="search-media-type">
         <div th:text='#{sign.media.type.search}'/>
         <input type='button' class="my-button-lsf"/>
-        /
+        <span id='and'>ET</span>
         <input type='button' class="my-button-lpc"/>
       </span>
   </div>
@@ -69,6 +69,13 @@
 </body>
 <script th:inline="javascript">
     /*<![CDATA[*/
+  var hideOrShowAnd = function() {
+    if($('.my-button-lpc').hasClass('my-button-lpc-active') && $('.my-button-lsf').hasClass('my-button-lsf-active')) {
+        $('#and').html('Et');
+    } else {
+        $('#and').html('&thinsp;&thinsp;&thinsp;&thinsp;&thinsp;&thinsp;&thinsp;');
+    }
+  }
 
   $(function() {
       $('.my-button-lsf').addClass('my-button-lsf-active');
@@ -80,6 +87,7 @@
           } else {
               $(this).toggleClass('my-button-lsf-active');
           }
+          hideOrShowAnd();
         });
 
       $('.my-button-lpc').addClass('my-button-lpc-active');
@@ -91,6 +99,7 @@
           } else {
               $(this).toggleClass('my-button-lpc-active');
           }
+          hideOrShowAnd();
       });
   });
     /*]]>*/

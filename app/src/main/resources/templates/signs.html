@@ -49,6 +49,13 @@
       <input th:if="${not #lists.isEmpty(videosView)}" type="search" id="search-criteria1" th:placeholder="#{search}" class="border form-control"/>
       <input th:if="${#lists.isEmpty(videosView)}" type="search" id="search-criteria1" th:placeholder="#{search}" class="border form-control search-hidden"/>
     </div>
+    <br/>
+    <span id="search-media-type">
+        <div th:text='#{sign.media.type.search}'/>
+        <input type='button' class="my-button-lsf"/>
+        /
+        <input type='button' class="my-button-lpc"/>
+      </span>
   </div>
   </input>
 </div>
@@ -60,6 +67,34 @@
 
 
 </body>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+  $(function() {
+      $('.my-button-lsf').addClass('my-button-lsf-active');
+
+      $('.my-button-lsf').on('click', function() {
+          if (($(this).hasClass('my-button-lsf-active')) && (!$('.my-button-lpc').hasClass('my-button-lpc-active'))) {
+              $(this).toggleClass('my-button-lsf-active');
+              $('.my-button-lpc').toggleClass('my-button-lpc-active');
+          } else {
+              $(this).toggleClass('my-button-lsf-active');
+          }
+        });
+
+      $('.my-button-lpc').addClass('my-button-lpc-active');
+
+      $('.my-button-lpc').on('click', function() {
+          if (($(this).hasClass('my-button-lpc-active')) && (!$('.my-button-lsf').hasClass('my-button-lsf-active'))) {
+              $(this).toggleClass('my-button-lpc-active');
+              $('.my-button-lsf').toggleClass('my-button-lsf-active');
+          } else {
+              $(this).toggleClass('my-button-lpc-active');
+          }
+      });
+  });
+    /*]]>*/
+</script>
 <script type="text/javascript" src="../public/js/lazy-loading.js" th:src="@{/js/lazy-loading.js}"></script>
 <script type="text/javascript" src="../public/js/object-fit_for_IE.js" th:src="@{/js/object-fit_for_IE.js}"></script>
 

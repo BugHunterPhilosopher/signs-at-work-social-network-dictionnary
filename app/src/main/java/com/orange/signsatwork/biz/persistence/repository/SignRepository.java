@@ -73,16 +73,16 @@ public interface SignRepository extends CrudRepository<SignDB, Long> {
     @Query(value="select  a.sign_id, sum(a.nb_view) as nbr from videos a where a.nb_view != 0 group by a.sign_id order by nbr asc", nativeQuery = true)
     Long[] findLowViewed();
 
-    @Query(value="from VideoDB a inner join a.sign b WHERE a.id = b.lastVideoId and b.createDate > :lastDeconnectionDate order by b.createDate desc")
+    @Query(value="from VideoDB a inner join a.sign b WHERE a.id = b.lastVideoId and b.createDate > :lastDeconnectionDate order by b.createDate asc")
     List<Object[]> findMostRecent(@Param("lastDeconnectionDate") Date lastDeconnectionDate);
 
-    @Query(value="from VideoDB a inner join a.sign b WHERE a.id = b.lastVideoId and b.createDate > :lastDeconnectionDate order by b.createDate asc")
+    @Query(value="from VideoDB a inner join a.sign b WHERE a.id = b.lastVideoId and b.createDate > :lastDeconnectionDate order by b.createDate desc")
     List<Object[]> findLowRecent(@Param("lastDeconnectionDate") Date lastDeconnectionDate);
 
-    @Query(value="from VideoDB a inner join a.sign b WHERE a.id = b.lastVideoId order by b.createDate desc")
+    @Query(value="from VideoDB a inner join a.sign b WHERE a.id = b.lastVideoId order by b.createDate asc")
     List<Object[]> findMostRecentWithoutDate();
 
-    @Query(value="from VideoDB a inner join a.sign b WHERE a.id = b.lastVideoId order by b.createDate asc")
+    @Query(value="from VideoDB a inner join a.sign b WHERE a.id = b.lastVideoId order by b.createDate desc")
     List<Object[]> findLowRecentWithoutDate();
 
 

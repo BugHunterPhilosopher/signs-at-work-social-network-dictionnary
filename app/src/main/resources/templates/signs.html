@@ -43,9 +43,9 @@
     <!--<input type="search" id="search-criteria" th:placeholder="#{search} + '&hellip;'" class="text-center  border form-control"/>-->
     <span id="search-media-type">
       <div th:text='#{sign.media.type.search}'/>
-      <input type='button' class="my-button-lsf"/>
-      <input type='button' class="my-button-conditions-and" id="conditions"/>
-      <input type='button' class="my-button-lpc"/>
+      <input type='button' class="my-button-lsf my-button-lsf-active"/>
+      <input type='button' class="my-button-conditions-or" id="conditions"/>
+      <input type='button' class="my-button-lpc my-button-lpc-active"/>
     </span>
     <br/>
     <div th:if="${favoriteId} == null">

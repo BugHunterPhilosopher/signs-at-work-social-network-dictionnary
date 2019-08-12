@@ -175,12 +175,8 @@ function onScroll(event) {
     }
   }
 
+  refreshLogos();
 }
-
-$(function() {
-  $('.my-button-lsf').addClass('my-button-lsf-active');
-  $('.my-button-lpc').addClass('my-button-lpc-active');
-});
 
 var resetSearch = function() {
     $(addNewSuggestRequest).hide();
@@ -203,11 +199,10 @@ var resetSearch = function() {
   $('#search-criteria1').val('');
 }
 
-var conditionsState = "and";
+var conditionsState = "or";
 
 function condition(event) {
   if ($('.my-button-lpc').hasClass('my-button-lpc-active') && $('.my-button-lsf').hasClass('my-button-lsf-active')) {
-
 
     if ($('#conditions').hasClass('my-button-conditions-and')) {
       conditionsState = "and";
@@ -261,11 +256,6 @@ function search(event) {
     if (a == null || b == null) return false;
     if (a.length != b.length) return false;
 
-    // If you don't care about the order of the elements inside
-    // the array, you should sort both arrays here.
-    // Please note that calling sort on an array will modify that array.
-    // you might want to clone your array first.
-
     for (var i = 0; i < a.length; ++i) {
       if (a[i] !== b[i]) return false;
     }
@@ -298,11 +288,10 @@ function search(event) {
   }
 
   if (searchToReset) {
-
     if ($('.my-button-lpc').hasClass('my-button-lpc-active') && $('.my-button-lsf').hasClass('my-button-lsf-active')) {
-      conditionsState = 'and';
-      $('#conditions').addClass('my-button-conditions-and');
-      $('#conditions').removeClass('my-button-conditions-or');
+      conditionsState = 'or';
+      $('#conditions').addClass('my-button-conditions-or');
+      $('#conditions').removeClass('my-button-conditions-and');
       $('#conditions').removeClass('my-button-conditions-none');
     } else {
       conditionsState = 'none';
@@ -315,11 +304,10 @@ function search(event) {
     return false;
   }
 
-
   var display = 0;
   $(addNewSuggestRequest).hide();
 
-  function prepareMediaTypeToSearch() {
+  function getMediaTypesInSearchField() {
     var lpc = $('.my-button-lpc').hasClass('my-button-lpc-active') ? 'Lf.P.C.' : '';
     var lsf = $('.my-button-lsf').hasClass('my-button-lsf-active') ? 'L.S.F.' : '';
     var mediaTypesToSearch = [];
@@ -332,63 +320,67 @@ function search(event) {
     return mediaTypesToSearch;
   }
 
-  if (signsContainer != null) {
-    var g = normalize($(this).val());
+  function matchesNameOrTag(nameOrTag) {
+    return nameOrTag.toUpperCase().indexOf(searchString.toUpperCase()) != -1;
+  }
 
-    if (g != "") {
+  function matchesSearchCondition(mediaTypesInSign, mediaTypesInSearchField) {
+    return (conditionsState == 'and' && mediaTypesInSign != '' && arraysEqual(mediaTypesInSearchField, mediaTypesInSign.split(','))) ||
+      (conditionsState == 'or' && mediaTypesInSign != '' && (mediaTypesInSign.indexOf(',') != -1) && mediaTypesInSearchField.some(r => mediaTypesInSign.split(',').includes(r))) ||
+      (conditionsState == 'or' && mediaTypesInSign != '' && (mediaTypesInSign.indexOf(',') == -1) && mediaTypesInSearchField.includes(mediaTypesInSign)) ||
+      (conditionsState == 'none' && mediaTypesInSign != '' && (mediaTypesInSign.indexOf(',') == -1) && mediaTypesInSearchField == mediaTypesInSign) ||
+      (conditionsState == 'none' && mediaTypesInSign != '' && (mediaTypesInSign.indexOf(',') != -1) && mediaTypesInSign.split(',').some(r => mediaTypesInSearchField.includes(r)));
+  }
+
+  function processHidden(img) {
+    if ($(this).hasClass(SIGN_HIDDEN_CLASS)) {
+      $(this).removeClass(SIGN_HIDDEN_CLASS);
+      var thumbnailUrl = img.dataset.src;
+      img.src = thumbnailUrl;
+      displayedSignsCount++;
+    }
+  }
+
+  function process(elem, wasShown) {
+    elem.show();
+    display++;
+    wasShown = true;
+    return wasShown;
+  }
+
+  if (signsContainer != null) {
+    var searchString = normalize($(this).val());
+
+    if (searchString != "") {
       $("#signs-container").children("div").each(function () {
         var wasShown = false;
         var elem = $(this);
 
         $("#reset").css("visibility", "visible");
-       /* $("#reset").show();*/
-        var s = normalize($(this).attr("id"));
-        var s3 = normalize($(this).attr("data-media-types"));
+
+        var signName = normalize($(this).attr("id"));
+        var mediaTypesInSign = normalize($(this).attr("data-media-types"));
         var img = $(this).find("img")[0];
-        /*if (s.toUpperCase().startsWith(g.toUpperCase()) == true) {*/
-        if (s.toUpperCase().indexOf(g.toUpperCase()) != -1) {
-          var mediaTypesToSearch = prepareMediaTypeToSearch();
 
-          if ((conditionsState == 'and' && s3 != '' && arraysEqual(mediaTypesToSearch, s3.split(','))) ||
-            (conditionsState == 'or' && s3 != '' && (s3.indexOf(',') != -1) && mediaTypesToSearch.some(r=> s3.split(',').includes(r))) ||
-            (conditionsState == 'or' && s3 != '' && (s3.indexOf(',') == -1) && mediaTypesToSearch.includes(s3)) ||
-            (conditionsState == 'none' && s3 != '' && (s3.indexOf(',') == -1) && mediaTypesToSearch == s3) ||
-            (conditionsState == 'none' && s3 != '' && (s3.indexOf(',') != -1) && s3.split(',').some(r=> mediaTypesToSearch.includes(r)))) {
-            if ($(this).hasClass(SIGN_HIDDEN_CLASS)) {
-              $(this).removeClass(SIGN_HIDDEN_CLASS);
-              var thumbnailUrl = img.dataset.src;
-              img.src = thumbnailUrl;
-              displayedSignsCount++;
+        if (matchesNameOrTag(signName)) {
+          var mediaTypesInSearchField = getMediaTypesInSearchField();
 
-            }
-            elem.show();
-            display++;
-            wasShown = true;
+          if (matchesSearchCondition(mediaTypesInSign, mediaTypesInSearchField)) {
+            processHidden.call(this, img);
+            wasShown = process(elem, wasShown);
           }
         }
 
-        var s2 = normalize($(this).attr("data-tags"));
+        var tags = normalize($(this).attr("data-tags"));
 
-        s2.split(',').forEach(function(tag) {
+        tags.split(',').forEach(function(tag) {
           var img2 = $(this).find("img")[0];
-          if (tag.toUpperCase().indexOf(g.toUpperCase()) != -1) {
-            var mediaTypesToSearch = prepareMediaTypeToSearch();
+          if (matchesNameOrTag(tag)) {
+            var mediaTypesInSearchField = getMediaTypesInSearchField();
 
-            if ((conditionsState == 'and' && s3 != '' && arraysEqual(mediaTypesToSearch, s3.split(','))) ||
-              (conditionsState == 'or' && s3 != '' && (s3.indexOf(',') != -1) && mediaTypesToSearch.some(r=> s3.split(',').includes(r))) ||
-              (conditionsState == 'or' && s3 != '' && (s3.indexOf(',') == -1) && mediaTypesToSearch.includes(s3)) ||
-            (conditionsState == 'none' && s3 != '' && (s3.indexOf(',') == -1) && mediaTypesToSearch == s3) ||
-            (conditionsState == 'none' && s3 != '' && (s3.indexOf(',') != -1) && s3.split(',').some(r=> mediaTypesToSearch.includes(r)))) {
-                if ($(this).hasClass(SIGN_HIDDEN_CLASS)) {
-                $(this).removeClass(SIGN_HIDDEN_CLASS);
-                var thumbnailUrl = img2.dataset.src;
-                img2.src = thumbnailUrl;
-                displayedSignsCount++;
-              }
-
-              elem.show();
-              wasShown = true;
-              display++;
+            if (matchesSearchCondition(mediaTypesInSign, mediaTypesInSearchField)) {
+              processHidden.call(this, img2);
+              wasShown = process(elem, wasShown);
             }
           }
         });
@@ -412,16 +404,16 @@ function search(event) {
       resetSearch();
     }
   } else {
-    var g = normalize($(this).val());
+    var searchString = normalize($(this).val());
 
-    if (g!="") {
+    if (searchString!="") {
       $("#videos-container").children("div").each(function () {
         $("#reset").css("visibility", "visible");
         /*$("#reset").show();*/
         var s = normalize($(this).attr("id"));
         var img = $(this).find("img")[0];
-       /* if (s.toUpperCase().startsWith(g.toUpperCase()) == true) {*/
-          if (s.toUpperCase().indexOf(g.toUpperCase()) != -1) {
+
+        if (s.toUpperCase().indexOf(searchString.toUpperCase()) != -1) {
           if ($(this).hasClass(VIDEO_HIDDEN_CLASS)) {
             $(this).removeClass(VIDEO_HIDDEN_CLASS);
             var thumbnailUrl = img.dataset.src;
@@ -430,8 +422,7 @@ function search(event) {
           }
           $(this).show();
           display++;
-        }
-        else {
+        } else {
           $(this).hide();
         }
       });
@@ -463,9 +454,26 @@ function search(event) {
       }
     }
   }
+
+  refreshLogos();
 }
 
+var refreshLogos = function() {
+  $('div.logo').each(function () {
+    if ($(this).data("media-types").indexOf("L.S.F.") == -1) {
+      $(this).find("img.logolsf").hide();
+    } else {
+      $(this).find("img.logolsf").attr('src', '/img/lsf.jpg')
+    }
+    if ($(this).data("media-types").indexOf("Lf.P.C.") == -1) {
+      $(this).find("img.logolpc").hide();
+    } else {
+      $(this).find("img.logolpc").attr('src', '/img/lpc.jpg')
+    }
+  });
+}
 
+$(refreshLogos());
 
 function searchSignAfterReload(search_value) {
   var display = 0;

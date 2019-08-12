@@ -149,7 +149,7 @@
   <div th:if="${favoriteId} == null">
     <div th:if="${not #lists.isEmpty(signsView)}" id="signs-container" class="row" >
       <h2 id="sign_available" th:text="#{sign_available}" style="display: none"></h2>
-      <div th:id="${signView.name}" data-th-attr="data-tags=${signView.tags},data-media-types=${signView.mediaTypes}" th:each="signView:${signsView}" class="sign-view-hidden text-center separated col-xl-2 col-lg-3 col-md-4 col-xs-6 col-sm-4">
+      <div th:id="${signView.name}" data-th-attr="data-tags=${signView.tags},data-media-types=${signView.mediaTypes}" th:each="signView:${signsView}" class="logo sign-view-hidden text-center separated col-xl-2 col-lg-3 col-md-4 col-xs-6 col-sm-4">
         <div class="row">
           <div class="col-lg-12 col-xl-12" >
             <div th:if="${signView.signCreateAfterLastDateDeconnection}" class="tooltip_newSigne"></div>
@@ -164,6 +164,10 @@
           </div>
           <div class="col-lg-12 col-xl-12">
             <a th:if="${signView.id != 0}" th:href="@{/sign/} + ${signView.id}" >
+              <span class="logos">
+                <img class="logolsf" src="/img/lsf.jpg" title="L.S.F."/>
+                <img class="logolpc" src="/img/lpc.jpg" title="Lf.P.C."/>
+              </span>
               <div class="container_tooltip_in_image">
                 <div th:if="${signView.videoHasView}" class="tooltip_eye"></div>
                 <div th:if="${!signView.videoHasView}" style="visibility: hidden" class="tooltip_eye"></div>

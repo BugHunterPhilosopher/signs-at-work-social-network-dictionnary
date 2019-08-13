@@ -102,11 +102,11 @@ function showSignView(signView) {
         var thumbnailUrl = img.dataset.src;
         if (thumbnailUrl.indexOf('/files/') != -1) {
           img.src = thumbnailUrl;
-        } else {
+        } else if (!thumbnailUrl.startsWith('https:')) {
           img.src = '/files/' + thumbnailUrl;
         }
       }
-    } else if ((typeof img.src != 'undefined') && (img.src.endsWith('.gif') || img.src.endsWith('.png') || img.src.startsWith('https://'))) {
+    } else if ((typeof img.src != 'undefined') && (img.src.endsWith('.gif') || img.src.endsWith('.png'))) {
       // Nothing special to do here
     } else if ((typeof img.src != 'undefined') && (img.src.indexOf('/files/') != -1)) {
       img.src = img.src.substring(img.src.indexOf("/files/") + 7); // 7 = (length of "/files/")

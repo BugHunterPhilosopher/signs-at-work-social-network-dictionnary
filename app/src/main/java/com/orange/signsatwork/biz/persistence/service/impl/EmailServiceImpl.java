@@ -57,12 +57,12 @@ public class EmailServiceImpl implements EmailService {
       MimeMessageHelper helper = new MimeMessageHelper(message, true);
       helper.setTo(to);
       helper.setSubject(subject);
-      helper.setFrom("admin@admin.com");
+      helper.setFrom("bougetesmains@gmail.com");
       Context ctx = new Context();
       ctx.setVariable("user_name", userName);
       ctx.setVariable("request_name", requestName);
       ctx.setVariable("url", url);
-      ctx.setVariable("imageResourceName", "logo_and_texte.png");
+      ctx.setVariable("imageResourceName", "logosign.png");
       String htmlContent = templateEngine.process("email", ctx);
       helper.setText(htmlContent, true);
 

@@ -52,6 +52,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -108,7 +109,7 @@ public class FileUploadNonRestController {
 
   @Secured("ROLE_USER")
   @RequestMapping(value = RestApi.WS_SEC_SELECTED_VIDEO_FILE_UPLOAD, method = RequestMethod.POST)
-  public String uploadSelectedVideoFile(@RequestParam("file") MultipartFile file, @RequestParam String mediaType,@PathVariable long signId, @ModelAttribute SignCreationView signCreationView, Principal principal, HttpServletResponse response) {
+  public String uploadSelectedVideoFile(@RequestBody MultipartFile file, @RequestBody String mediaType, @PathVariable long signId, @ModelAttribute SignCreationView signCreationView, Principal principal, HttpServletResponse response) {
     return handleSelectedVideoFileUpload(file, mediaType, OptionalLong.empty(), OptionalLong.of(signId), OptionalLong.empty(), signCreationView, principal, response);
   }
 
@@ -266,7 +267,7 @@ public class FileUploadNonRestController {
 
     response.setStatus(HttpServletResponse.SC_OK);
 
-    return "/sec/sign/" + sign.id + "/" + sign.lastVideoId + "/detail";
+    return "redirect:/sec/sign/" + sign.id + "/" + sign.lastVideoId + "/detail";
   }
 
 }

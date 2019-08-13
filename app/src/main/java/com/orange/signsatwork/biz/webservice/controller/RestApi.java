@@ -61,7 +61,7 @@ public class RestApi {
 
   public static final String WS_SEC_RECORDED_VIDEO_FILE_UPLOAD_FOR_NAME = WS_SEC + "uploadRecordedVideoFileForName";
 
-  public static final String WS_SEC_SELECTED_VIDEO_FILE_UPLOAD = WS_SEC + "uploadSelectedVideoFile/{mediaType}";
+  public static final String WS_SEC_SELECTED_VIDEO_FILE_UPLOAD = WS_SEC + "uploadSelectedVideoFile";
 
   public static final String WS_SEC_SELECTED_GIF_FILE_UPLOAD = WS_SEC + "uploadSelectedGifFile/{mediaType}";
 

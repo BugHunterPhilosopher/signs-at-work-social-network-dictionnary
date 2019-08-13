@@ -109,8 +109,8 @@ public class FileUploadNonRestController {
 
   @Secured("ROLE_USER")
   @RequestMapping(value = RestApi.WS_SEC_SELECTED_VIDEO_FILE_UPLOAD, method = RequestMethod.POST)
-  public String uploadSelectedVideoFile(@RequestBody MultipartFile file, @RequestBody String mediaType, @PathVariable long signId, @ModelAttribute SignCreationView signCreationView, Principal principal, HttpServletResponse response) {
-    return handleSelectedVideoFileUpload(file, mediaType, OptionalLong.empty(), OptionalLong.of(signId), OptionalLong.empty(), signCreationView, principal, response);
+  public String uploadSelectedVideoFile(@RequestBody MultipartFile file, @RequestBody String mediaType, @ModelAttribute SignCreationView signCreationView, Principal principal, HttpServletResponse response) {
+    return handleSelectedVideoFileUpload(file, mediaType, OptionalLong.empty(), OptionalLong.empty(), OptionalLong.empty(), signCreationView, principal, response);
   }
 
   @Secured("ROLE_USER")

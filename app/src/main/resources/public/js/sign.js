@@ -106,7 +106,7 @@ $uploadSelectedGifFile.on('submit', function(event) {
       success: function (response) {
         //var url = "/sign/"+response;
         var url = response;
-        window.location = url;
+        window.location.href = url;
         errorSelectedSpan.style.visibility = "hidden";
         $(".spinner").visibility = "hidden";
         console.log("Success " + response);

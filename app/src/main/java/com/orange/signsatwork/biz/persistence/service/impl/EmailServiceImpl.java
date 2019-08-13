@@ -62,7 +62,7 @@ public class EmailServiceImpl implements EmailService {
       ctx.setVariable("user_name", userName);
       ctx.setVariable("request_name", requestName);
       ctx.setVariable("url", url);
-      ctx.setVariable("imageResourceName", "logosign.png");
+      ctx.setVariable("imageResourceName", "logo_and_texte.png");
       String htmlContent = templateEngine.process("email", ctx);
       helper.setText(htmlContent, true);
 

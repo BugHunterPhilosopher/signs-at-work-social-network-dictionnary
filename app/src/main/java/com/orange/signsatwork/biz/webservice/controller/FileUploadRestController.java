@@ -179,6 +179,7 @@ public class FileUploadRestController {
     String dailymotionId;
     String pictureUri = null;
     User user = services.user().withUserName(principal.getName());
+    File fileMp4 = new File("");
 
     try {
       // Youtube
@@ -195,7 +196,7 @@ public class FileUploadRestController {
 
       UrlFileUploadDailymotion urlfileUploadDailymotion = services.sign().getUrlFileUpload();
 
-      File fileMp4 = new File(fileOutput);
+      fileMp4 = new File(fileOutput);
       Resource resource = new FileSystemResource(fileMp4.getAbsolutePath());
       MultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
       parts.add("file", resource);
@@ -274,7 +275,7 @@ public class FileUploadRestController {
     } else if (signId.isPresent() && !(videoId.isPresent())) {
       sign = services.sign().addNewVideo(user.id, signId.getAsLong(), videoUrl, pictureUri, com.orange.signsatwork.biz.domain.MediaType.valueOf(mediaType));
     } else {
-      sign = services.sign().create(user.id, videoFile.signNameRecording, videoUrl, pictureUri, mediaType);
+      sign = services.sign().create(user.id, videoFile.signNameRecording, videoUrl == null ? fileMp4.getName() : videoUrl, pictureUri , mediaType);
       log.info("handleFileUpload : username = {} / sign name = {} / video url = {}", user.username, videoFile.signNameRecording, videoUrl);
     }
 

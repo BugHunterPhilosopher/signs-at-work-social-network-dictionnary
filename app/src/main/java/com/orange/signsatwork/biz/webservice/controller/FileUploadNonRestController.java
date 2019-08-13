@@ -109,7 +109,7 @@ public class FileUploadNonRestController {
 
   @Secured("ROLE_USER")
   @RequestMapping(value = RestApi.WS_SEC_SELECTED_VIDEO_FILE_UPLOAD, method = RequestMethod.POST)
-  public String uploadSelectedVideoFile(@RequestBody MultipartFile file, @RequestBody String mediaType, @ModelAttribute SignCreationView signCreationView, Principal principal, HttpServletResponse response) {
+  public String uploadSelectedVideoFile(@RequestParam("file") MultipartFile file, @RequestParam("mediaType") String mediaType, @ModelAttribute SignCreationView signCreationView, Principal principal, HttpServletResponse response) {
     return handleSelectedVideoFileUpload(file, mediaType, OptionalLong.empty(), OptionalLong.empty(), OptionalLong.empty(), signCreationView, principal, response);
   }
 
@@ -232,7 +232,7 @@ public class FileUploadNonRestController {
       log.error("error while uploading!", errorDailymotionUploadFile);
     }
 
-    Sign sign = services.sign().create(user.id, services.sign().withId(signId.getAsLong()).name, signCreationView.getVideoUrl() == null ? inputFile.getName() : signCreationView.getVideoUrl(), pictureUri, mediaType);
+    Sign sign = services.sign().create(user.id, signCreationView.getSignName(), signCreationView.getVideoUrl() == null ? inputFile.getName() : signCreationView.getVideoUrl(), pictureUri, mediaType);
     log.info("handleSelectedVideoFileUpload : username = {} / sign name = {} / video url = {}", user.username, signCreationView.getSignName(), signCreationView.getVideoUrl() == null ? inputFile.getName() : signCreationView.getVideoUrl());
 
     if (requestId.isPresent()) {

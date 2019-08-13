@@ -106,10 +106,10 @@ $uploadSelectedGifFile.on('submit', function(event) {
       success: function (response) {
         //var url = "/sign/"+response;
         var url = response;
-        window.location.href = url;
         errorSelectedSpan.style.visibility = "hidden";
         $(".spinner").visibility = "hidden";
         console.log("Success " + response);
+        $("html").html(response);
       },
       error: function (response) {
         errorSelectedSpan.textContent = response.responseText;

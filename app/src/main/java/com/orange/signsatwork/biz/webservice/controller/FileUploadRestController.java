@@ -164,7 +164,7 @@ public class FileUploadRestController {
     try {
       String cmd;
 
-      cmd = String.format("mencoder %s -vf scale=640:-1 -ovc xvid -xvidencopts pass=1 -o %s", file, fileOutput);
+      cmd = String.format("/usr/local/bin/ffmpeg -i %s -map_metadata -1 -c:a libopus -c:v libaom-av1 -crf 34 -b:v 0 -pix_fmt yuv420p -movflags +faststart -vf \"scale=trunc(iw/2)*2:trunc(ih/2)*2\" -strict experimental %s", file, fileOutput);
 
       String cmdFilterLog = "/tmp/mencoder.log";
       NativeInterface.launch(cmd, null, cmdFilterLog);

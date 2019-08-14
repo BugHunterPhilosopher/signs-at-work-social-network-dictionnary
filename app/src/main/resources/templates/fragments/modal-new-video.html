@@ -112,10 +112,6 @@
             <div class="spinner spinner_hidden"></div>
             <span id="counter"></span>
             <video id="video"></video>
-            <br/>
-            <span class="container_H2" th:text="#{sign.media.type}"/>
-            <input th:value="LSF" type="radio" name="mediaType"/> = L.S.F. /
-            <input th:value="LPC" type="radio" name="mediaType"/> = Lf.P.C.<br/>
           </div>
 
           <div class="btn-group-vertical" role="group">
@@ -138,12 +134,16 @@
           </div>
           <div id="modal-footer_add_video_file_recording" class="modal-footer" style="display: none">
             <div class="retry_recording pull-left"></div>
+            <br/>
             <button id="cancel-recording" type="button" data-dismiss="" class="btn btn-secondary" title="Cliquer pour annuler">
               <span th:text="#{cancel}"></span>
             </button>
             <button id="retry-recording" type="button" class="btn btn-secondary" title="Cliquer pour enregistrer">
               <span th:text="#{retry}"></span>
-            </button>
+            </button><br/>
+            <span class="container_H2" th:text="#{sign.media.type}"/><br/>
+            <input id="lsfRec" th:value="LSF" type="radio" name="mediaType"/> = L.S.F. /
+            <input id="lpcRec" th:value="LPC" type="radio" name="mediaType"/> = Lf.P.C.<br/><br/>
             <button id="continue" type="submit" class="btn btn-primary" data-dismiss="" disabled="" >
               <div id="btnChecked"></div><span th:text="#{validate}" ></span>
             </button>

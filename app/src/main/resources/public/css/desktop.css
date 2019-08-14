@@ -860,9 +860,19 @@
     vertical-align: middle;
   }
 
-  #container-input{
-    margin: -5% auto;
+  #container-input {
+    margin-top: -4%;
     width:53%
+  }
+
+  #search-criteria1 {
+    margin-top: 8%;
+    margin-left: 2%;
+    width:28%
+  }
+
+  #search-media-type {
+    margin-left: 1%;
   }
 
   #myform input[type=search]{

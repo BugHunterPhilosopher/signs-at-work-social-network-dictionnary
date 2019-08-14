@@ -199,7 +199,7 @@ $formUploadRecordedVideoFile.on('submit', function(event) {
   });
   var token = $("input[name='_csrf']").attr("value");
   $.ajax({
-    url: $formUploadRecordedVideoFile.attr('action') + '/upload?mediaType=' + ($('#lsf:checked').val() == "LSF" ? "LSF" : "LPC"),
+    url: $formUploadRecordedVideoFile.attr('action') + '/upload?mediaType=' + ($('#lsfRec:checked').val() == "LSF" ? "LSF" : "LPC"),
     type: 'post',
     data: JSON.stringify(videoFile),
     contentType: "application/json",

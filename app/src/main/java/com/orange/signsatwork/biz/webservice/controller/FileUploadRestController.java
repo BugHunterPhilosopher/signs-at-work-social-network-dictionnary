@@ -128,7 +128,7 @@ public class FileUploadRestController {
 
   @Secured("ROLE_USER")
   @RequestMapping(value = RestApi.WS_SEC_RECORDED_VIDEO_FILE_UPLOAD_FOR_NEW_VIDEO, method = RequestMethod.POST)
-  public String uploadRecordedVideoFileForNewVideo(@RequestBody VideoFile videoFile, @PathVariable("signId") long signId, @RequestParam("mediaType") String mediaType, Principal principal, HttpServletResponse response) {
+  public String uploadRecordedVideoFileForNewVideo(@RequestBody VideoFile videoFile, @RequestParam("mediaType") String mediaType, @PathVariable("signId") long signId, Principal principal, HttpServletResponse response) {
     return handleRecordedVideoFile(videoFile, mediaType, OptionalLong.empty(), OptionalLong.of(signId), OptionalLong.empty(), principal, response);
   }
 
@@ -271,9 +271,9 @@ public class FileUploadRestController {
       catch (Exception errorDailymotionDeleteVideo) {
         log.error("error!", errorDailymotionDeleteVideo);
       }
-      sign = services.sign().replace(signId.getAsLong(), videoId.getAsLong(), videoUrl, pictureUri, com.orange.signsatwork.biz.domain.MediaType.valueOf(mediaType));
+      sign = services.sign().replace(signId.getAsLong(), videoId.getAsLong(), videoUrl == null ? fileWebm.getName() : videoUrl, pictureUri, com.orange.signsatwork.biz.domain.MediaType.valueOf(mediaType));
     } else if (signId.isPresent() && !(videoId.isPresent())) {
-      sign = services.sign().addNewVideo(user.id, signId.getAsLong(), videoUrl, pictureUri, com.orange.signsatwork.biz.domain.MediaType.valueOf(mediaType));
+      sign = services.sign().addNewVideo(user.id, signId.getAsLong(), videoUrl == null ? fileWebm.getName() : videoUrl, pictureUri, com.orange.signsatwork.biz.domain.MediaType.valueOf(mediaType));
     } else {
       sign = services.sign().create(user.id, videoFile.signNameRecording, videoUrl == null ? fileWebm.getName() : videoUrl, pictureUri , mediaType);
       log.info("handleFileUpload : username = {} / sign name = {} / video url = {}", user.username, videoFile.signNameRecording, videoUrl);

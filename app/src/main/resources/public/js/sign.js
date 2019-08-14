@@ -105,11 +105,15 @@ $uploadSelectedGifFile.on('submit', function(event) {
       },
       success: function (response) {
         //var url = "/sign/"+response;
-        var url = response;
         errorSelectedSpan.style.visibility = "hidden";
         $(".spinner").visibility = "hidden";
         console.log("Success " + response);
-        $("html").html(response);
+
+        if (response.startsWith('/sec/sign')) {
+          window.location = response;
+        } else {
+          $("html").html(response);
+        }
       },
       error: function (response) {
         errorSelectedSpan.textContent = response.responseText;

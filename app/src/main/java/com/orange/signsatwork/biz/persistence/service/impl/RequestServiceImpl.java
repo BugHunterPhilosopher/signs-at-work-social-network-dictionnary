@@ -22,6 +22,7 @@ package com.orange.signsatwork.biz.persistence.service.impl;
  * #L%
  */
 
+import com.orange.signsatwork.biz.domain.MediaType;
 import com.orange.signsatwork.biz.domain.Request;
 import com.orange.signsatwork.biz.domain.Requests;
 import com.orange.signsatwork.biz.domain.Signs;
@@ -130,7 +131,7 @@ public class RequestServiceImpl implements RequestService {
   }
 
   @Override
-  public Request create(long userId, String requestName, String requestTextDescription) {
+  public Request create(long userId, String requestName, String requestTextDescription, MediaType mediaType) {
     RequestDB requestDB;
     UserDB userDB = userRepository.findOne(userId);
 
@@ -139,6 +140,7 @@ public class RequestServiceImpl implements RequestService {
     requestDB.setName(requestName);
     requestDB.setRequestTextDescription(requestTextDescription);
     requestDB.setUser(userDB);
+    requestDB.setMediaType(mediaType);
     requestRepository.save(requestDB);
 
     userDB.getRequests().add(requestDB);
@@ -148,7 +150,7 @@ public class RequestServiceImpl implements RequestService {
   }
 
   @Override
-  public Request create(long userId, String requestName, String requestTextDescription, String requestVideoDescription) {
+  public Request create(long userId, String requestName, String requestTextDescription, String requestVideoDescription, MediaType mediaType) {
     RequestDB requestDB;
     UserDB userDB = userRepository.findOne(userId);
 
@@ -158,6 +160,7 @@ public class RequestServiceImpl implements RequestService {
     requestDB.setRequestTextDescription(requestTextDescription);
     requestDB.setRequestVideoDescription(requestVideoDescription);
     requestDB.setUser(userDB);
+    requestDB.setMediaType(mediaType);
     requestRepository.save(requestDB);
 
     userDB.getRequests().add(requestDB);
@@ -192,7 +195,7 @@ public class RequestServiceImpl implements RequestService {
   }
 
   static Request requestFrom(RequestDB requestDB, Services services) {
-    return new Request(requestDB.getId(), requestDB.getName(), requestDB.getRequestTextDescription(), requestDB.getRequestVideoDescription(), requestDB.getRequestDate(), SignServiceImpl.signFromRequestsView(requestDB.getSign(),  services), UserServiceImpl.userFromSignView(requestDB.getUser()));
+    return new Request(requestDB.getId(), requestDB.getName(), requestDB.getRequestTextDescription(), requestDB.getRequestVideoDescription(), requestDB.getRequestDate(), SignServiceImpl.signFromRequestsView(requestDB.getSign(),  services), UserServiceImpl.userFromSignView(requestDB.getUser()), requestDB.getMediaType());
   }
 
   private RequestDB requestDBFrom(Request request) {

@@ -2825,7 +2825,11 @@ function WhammyRecorder(mediaStream, config) {
             if (typeof video.srcObject !== 'undefined') {
                 video.srcObject = mediaStream;
             } else {
-                video.src = URL.createObjectURL(mediaStream);
+              try {
+                video.srcObject = mediaStream;
+              } catch (error) {
+                video.src = window.URL.createObjectURL(mediaStream);
+              }
             }
 
             video.onloadedmetadata = function() { // "onloadedmetadata" may NOT work in FF?
@@ -3954,11 +3958,11 @@ function GifRecorder(mediaStream, config) {
         video.muted = true;
         video.autoplay = true;
 
-        if (typeof video.srcObject !== 'undefined') {
-            video.srcObject = mediaStream;
-        } else {
-            video.src = URL.createObjectURL(mediaStream);
-        }
+          try {
+            this.srcObject = mediaStream;
+          } catch (error) {
+            this.src = window.URL.createObjectURL(mediaStream);
+          }
 
         video.play();
     }

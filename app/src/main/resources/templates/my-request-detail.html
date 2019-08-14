@@ -77,6 +77,21 @@
           </a>
         </li>
         <li  class="aside_bckg_li">
+          <h4 class="label_request_H2" th:text="#{sign.request.media}"/>
+          <div th:if="${mediaType == 'L.S.F.'}">
+            <h4 class="label_request_H2" th:text="#{sign.suggest.media.lsf}"/>
+          </div>
+          <div th:if="${mediaType == 'Lf.P.C.'}">
+            <h4 class="label_request_H2" th:text="#{sign.suggest.media.lpc}"/>
+          </div>
+          <div th:if="${mediaType == 'Les deux médias'}">
+            <h4 class="label_request_H2" th:text="#{sign.suggest.media.both}"/>
+          </div>
+          <div th:if="${mediaType == 'Indifférent'}">
+            <h4 class="label_request_H2" th:text="#{sign.suggest.media.unimportant}"/>
+          </div>
+        </li>
+        <li  class="aside_bckg_li">
           <a data-target="#add_request_description_LSF" data-toggle="modal" href="#">
             <div th:if="${requestView.requestVideoDescription== null}">
               <div class="pull-left create_sign"></div>

@@ -28,17 +28,19 @@ public class VideoFile {
   public String signNameRecording;
   public String requestNameRecording = "";
   public String requestTextDescriptionRecording = "";
+  public MediaType requestMediaType;
   public String contents;
 
   public VideoFile() {
 
   }
 
-  public VideoFile(String name, String type, String signNameRecording, String contents) {
+  public VideoFile(String name, String type, String signNameRecording, String contents, MediaType mediaType) {
     this.name = name;
     this.type = type;
     this.signNameRecording = signNameRecording;
     this.contents = contents;
+    this.requestMediaType = mediaType;
   }
 
 }

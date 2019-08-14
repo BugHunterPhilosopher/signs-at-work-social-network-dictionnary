@@ -44,6 +44,7 @@
           <textarea th:field="*{requestTextDescription}" name="requestTextDescription"
                     th:placeholder="#{text}" type="text" class="text-center border form-control" rows="3"
                     cols="40"/><br/>
+          <input type="hidden" id="mediaType" name="mediaType" th:value="${mediaType}"/>
           <span id="requestSpan" style="visibility: hidden"></span>
           <a id="seeSignButton" href="" class="btn btn-default" th:text="#{see_sign}" style="visibility: hidden"></a>
         </div>

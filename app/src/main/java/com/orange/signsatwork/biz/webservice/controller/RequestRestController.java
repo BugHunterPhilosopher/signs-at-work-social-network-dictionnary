@@ -25,6 +25,7 @@ package com.orange.signsatwork.biz.webservice.controller;
 import com.orange.signsatwork.DailymotionToken;
 import com.orange.signsatwork.SpringRestClient;
 import com.orange.signsatwork.biz.domain.AuthTokenInfo;
+import com.orange.signsatwork.biz.domain.MediaType;
 import com.orange.signsatwork.biz.domain.Request;
 import com.orange.signsatwork.biz.domain.User;
 import com.orange.signsatwork.biz.persistence.service.MessageByLocaleService;
@@ -73,7 +74,7 @@ public class RequestRestController {
     User user = services.user().withUserName(principal.getName());
     if (services.sign().withName(requestCreationView.getRequestName()).list().isEmpty()) {
       if (services.request().withName(requestCreationView.getRequestName()).list().isEmpty()) {
-         request = services.request().create(user.id, requestCreationView.getRequestName(), requestCreationView.getRequestTextDescription());
+         request = services.request().create(user.id, requestCreationView.getRequestName(), requestCreationView.getRequestTextDescription(), MediaType.valueOf(requestCreationView.getMediaTypeBody()));
         log.info("createRequest: username = {} / request name = {}", user.username, requestCreationView.getRequestName(), requestCreationView.getRequestTextDescription());
         emails = services.user().findEmailForUserHaveSameCommunityAndCouldCreateSign(user.id);
         title = messageByLocaleService.getMessage("request_created_by_user_title", new Object[]{user.name()});

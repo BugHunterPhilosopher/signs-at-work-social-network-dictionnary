@@ -31,7 +31,8 @@ $formRequest.on('submit', function(event) {
     event.preventDefault();
     request = {
       requestName: $('#requestName').val(),
-      requestTextDescription: $('#requestTextDescription').val()
+      requestTextDescription: $('#requestTextDescription').val(),
+      mediaTypeBody: $('#mediaType').val()
     };
     $.ajax({
        url: $formRequest.attr('action'),
@@ -68,6 +69,7 @@ $new_request.on('hidden.bs.modal', function() {
         seeSignButton.style.visibility="hidden";
         $('#requestName').val("");
         $('#requestTextDescription').val("");
+        $('#mediaType').val("");
     }
 });
 
@@ -86,6 +88,7 @@ $formRequestDescription.on('submit', function(event) {
   console.log("submit uploadSelectedVideoFile");
   console.log("requestName "+ $('#requestName').val());
   console.log("requestTextDescription " + $('#requestTextDescription').val());
+  console.log("mediaType " + $('##mediaType').val());
   document.getElementById('requestInfoSubmit').disabled=true;
   //document.getElementById('submitButtonFileDailymotion').disabled = true;
   if (document.getElementById("InputFile").value) {
@@ -96,6 +99,7 @@ $formRequestDescription.on('submit', function(event) {
         var formdata = new FormData($form[0]);
         formdata.append('requestName', $('#requestName').val());
         formdata.append('requestTextDescription', $('#requestTextDescription').val());
+        formdata.append('mediaTypeBody', $('#mediaType').val());
         var data = (formdata !== null) ? formdata : $form.serialize();
 
         event.preventDefault();

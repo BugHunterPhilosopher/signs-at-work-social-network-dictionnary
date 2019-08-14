@@ -2,7 +2,7 @@ package com.orange.signsatwork.biz.domain;
 
 public enum MediaType {
 
-  LSF("L.S.F."), LPC("Lf.P.C.");
+  LSF("L.S.F."), LPC("Lf.P.C."), BOTH("Les deux médias"), UNIMPORTANT("Indifférent");
 
   private String type;
 

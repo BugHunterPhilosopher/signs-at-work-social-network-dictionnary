@@ -22,6 +22,7 @@ package com.orange.signsatwork.biz.persistence.service;
  * #L%
  */
 
+import com.orange.signsatwork.biz.domain.MediaType;
 import com.orange.signsatwork.biz.domain.Request;
 import com.orange.signsatwork.biz.domain.Requests;
 import com.orange.signsatwork.biz.persistence.model.SignDB;
@@ -53,9 +54,9 @@ public interface RequestService {
 
   Request rename(long requestId, String requestName, String requestTextDescription);
 
-  Request create(long userId, String requestName, String requestTextDescription);
+  Request create(long userId, String requestName, String requestTextDescription, MediaType mediaType);
 
-  Request create(long userId, String requestName, String requestTextDescription, String requestVideoDescription);
+  Request create(long userId, String requestName, String requestTextDescription, String requestVideoDescription, MediaType mediaType);
 
   Request priorise(long requestId);
 

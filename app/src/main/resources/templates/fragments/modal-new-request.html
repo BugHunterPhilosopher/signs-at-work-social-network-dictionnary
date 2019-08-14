@@ -41,7 +41,12 @@
                     <input th:field="*{requestName}" id="requestName" name="requestName" type="text" class="border form-control"
                            th:placeholder="#{sign.enter_name}" required=""/><br/>
                 </div>
-
+                <span class="container_H2" th:text="#{sign.media.type}"/><br/><br/>
+                &nbsp;<input id="lsf" th:value="LSF" type="radio" name="mediaType"/> = L.S.F. /&nbsp;
+                <input id="lpc" th:value="LPC" type="radio" name="mediaType"/> = Lf.P.C. /&nbsp;
+                <input id="both" th:value="BOTH" type="radio" name="mediaType"/> = Les deux médias /<br/>&nbsp;
+                <input id="unimportant" th:value="UNIMPORTANT" type="radio" name="mediaType"/> = Indifférent
+                <br/><br/>
                 <div class="modal-footer">
                     <button th:text="#{continue}" type="submit" class="btn btn-default" data-dismiss=""></button>
                 </div>

@@ -89,7 +89,7 @@ public class RequestController {
     RequestCreationView requestCreationView = new RequestCreationView();
     requestCreationView.setRequestName(request.name);
     model.addAttribute("requestCreationView", requestCreationView);
-
+    model.addAttribute("mediaType", request.mediaType.toString());
 
     return "my-request-detail";
   }
@@ -146,7 +146,7 @@ public class RequestController {
 
   @Secured("ROLE_USER")
   @RequestMapping(value = "/sec/request/search")
-  public String showSignsRequest(Model model, @ModelAttribute RequestCreationView requestCreationView, Principal principal) {
+  public String showSignsRequest(@RequestParam("mediaType") String mediaType, Model model, @ModelAttribute RequestCreationView requestCreationView, Principal principal) {
     String name = requestCreationView.getRequestName();
     model.addAttribute("backUrl", "/sec/request");
     model.addAttribute("title", messageByLocaleService.getMessage("sign.modal.request"));
@@ -180,6 +180,7 @@ public class RequestController {
         model.addAttribute("isRequestAlreadyExist", true);
         model.addAttribute("requestMatche", requestViewData);
       } else {
+        requestViewData.mediaType = MediaType.valueOf(mediaType);
         requestsWithNoAssociateSignWithSameName.add(requestViewData);
       }
     }
@@ -197,15 +198,17 @@ public class RequestController {
         model.addAttribute("isRequestWithAssociateSignAlreadyExist", true);
         model.addAttribute("requestWithAssociateSignMatche", requestViewData);
       } else {
+        requestViewData.mediaType = MediaType.valueOf(mediaType);
         requestsWithAssociateSignWithSameName.add(requestViewData);
       }
     }
 
     model.addAttribute("requestsWithAssociateSignWithSameName", requestsWithAssociateSignWithSameName);
 
-
+    requestCreationView.setMediaTypeBody(mediaType);
     model.addAttribute("requestCreationView", requestCreationView);
     model.addAttribute("requestView", new RequestView());
+    model.addAttribute("mediaType", mediaType);
 
     return "signs-request";
   }

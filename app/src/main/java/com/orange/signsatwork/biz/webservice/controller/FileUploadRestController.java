@@ -27,6 +27,7 @@ import com.orange.signsatwork.DailymotionToken;
 import com.orange.signsatwork.SpringRestClient;
 import com.orange.signsatwork.biz.domain.AuthTokenInfo;
 import com.orange.signsatwork.biz.domain.FileUploadDailymotion;
+import com.orange.signsatwork.biz.domain.MediaType;
 import com.orange.signsatwork.biz.domain.Request;
 import com.orange.signsatwork.biz.domain.Sign;
 import com.orange.signsatwork.biz.domain.UrlFileUploadDailymotion;
@@ -50,7 +51,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.LinkedMultiValueMap;
@@ -204,7 +204,7 @@ public class FileUploadRestController {
       RestTemplate restTemplate = springRestClient.buildRestTemplate();
 
       HttpHeaders headers = new HttpHeaders();
-      headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+      headers.setContentType(org.springframework.http.MediaType.MULTIPART_FORM_DATA);
 
       HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(parts, headers);
 
@@ -225,7 +225,7 @@ public class FileUploadRestController {
 
       RestTemplate restTemplate1 = springRestClient.buildRestTemplate();
       HttpHeaders headers1 = new HttpHeaders();
-      headers1.setContentType(MediaType.MULTIPART_FORM_DATA);
+      headers1.setContentType(org.springframework.http.MediaType.MULTIPART_FORM_DATA);
       headers1.set("Authorization", "Bearer " + authTokenInfo.getAccess_token());
 
       HttpEntity<MultiValueMap<String, Object>> requestEntity1 = new HttpEntity<>(body, headers1);
@@ -334,7 +334,7 @@ public class FileUploadRestController {
         RestTemplate restTemplate = springRestClient.buildRestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.setContentType(org.springframework.http.MediaType.MULTIPART_FORM_DATA);
 
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(parts, headers);
@@ -357,9 +357,9 @@ public class FileUploadRestController {
 
         RestTemplate restTemplate1 = springRestClient.buildRestTemplate();
         HttpHeaders headers1 = new HttpHeaders();
-        headers1.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers1.setContentType(org.springframework.http.MediaType.MULTIPART_FORM_DATA);
         headers1.set("Authorization", "Bearer " + authTokenInfo.getAccess_token());
-        headers1.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        headers1.setAccept(Arrays.asList(org.springframework.http.MediaType.APPLICATION_JSON));
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity1 = new HttpEntity<MultiValueMap<String, Object>>(body, headers1);
         ResponseEntity<VideoDailyMotion> response1 = restTemplate1.exchange("https://api.dailymotion.com/videos",
@@ -499,7 +499,7 @@ public class FileUploadRestController {
         RestTemplate restTemplate = springRestClient.buildRestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.setContentType(org.springframework.http.MediaType.MULTIPART_FORM_DATA);
 
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(parts, headers);
@@ -523,9 +523,9 @@ public class FileUploadRestController {
 
         RestTemplate restTemplate1 = springRestClient.buildRestTemplate();
         HttpHeaders headers1 = new HttpHeaders();
-        headers1.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers1.setContentType(org.springframework.http.MediaType.MULTIPART_FORM_DATA);
         headers1.set("Authorization", "Bearer " + authTokenInfo.getAccess_token());
-        headers1.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        headers1.setAccept(Arrays.asList(org.springframework.http.MediaType.APPLICATION_JSON));
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity1 = new HttpEntity<MultiValueMap<String, Object>>(body, headers1);
         ResponseEntity<VideoDailyMotion> response1 = restTemplate1.exchange("https://api.dailymotion.com/videos",
@@ -649,7 +649,7 @@ public class FileUploadRestController {
       RestTemplate restTemplate = springRestClient.buildRestTemplate();
 
       HttpHeaders headers = new HttpHeaders();
-      headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+      headers.setContentType(org.springframework.http.MediaType.MULTIPART_FORM_DATA);
 
 
       HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(parts, headers);
@@ -673,9 +673,9 @@ public class FileUploadRestController {
 
       RestTemplate restTemplate1 = springRestClient.buildRestTemplate();
       HttpHeaders headers1 = new HttpHeaders();
-      headers1.setContentType(MediaType.MULTIPART_FORM_DATA);
+      headers1.setContentType(org.springframework.http.MediaType.MULTIPART_FORM_DATA);
       headers1.set("Authorization", "Bearer " + authTokenInfo.getAccess_token());
-      headers1.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+      headers1.setAccept(Arrays.asList(org.springframework.http.MediaType.APPLICATION_JSON));
 
       HttpEntity<MultiValueMap<String, Object>> requestEntity1 = new HttpEntity<MultiValueMap<String, Object>>(body, headers1);
       ResponseEntity<VideoDailyMotion> response1 = restTemplate1.exchange("https://api.dailymotion.com/videos",
@@ -794,7 +794,7 @@ public class FileUploadRestController {
         RestTemplate restTemplate = springRestClient.buildRestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.setContentType(org.springframework.http.MediaType.MULTIPART_FORM_DATA);
 
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(parts, headers);
@@ -814,9 +814,9 @@ public class FileUploadRestController {
 
         RestTemplate restTemplate1 = springRestClient.buildRestTemplate();
         HttpHeaders headers1 = new HttpHeaders();
-        headers1.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers1.setContentType(org.springframework.http.MediaType.MULTIPART_FORM_DATA);
         headers1.set("Authorization", "Bearer " + authTokenInfo.getAccess_token());
-        headers1.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        headers1.setAccept(Arrays.asList(org.springframework.http.MediaType.APPLICATION_JSON));
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity1 = new HttpEntity<MultiValueMap<String, Object>>(body, headers1);
         ResponseEntity<VideoDailyMotion> response1 = restTemplate1.exchange("https://api.dailymotion.com/videos",
@@ -857,7 +857,7 @@ public class FileUploadRestController {
           } else {
             if (services.sign().withName(requestCreationView.getRequestName()).list().isEmpty()) {
               if (services.request().withName(requestCreationView.getRequestName()).list().isEmpty()) {
-                request = services.request().create(user.id, requestCreationView.getRequestName(), requestCreationView.getRequestTextDescription(), videoDailyMotion.embed_url);
+                request = services.request().create(user.id, requestCreationView.getRequestName(), requestCreationView.getRequestTextDescription(), videoDailyMotion.embed_url, MediaType.valueOf(requestCreationView.getMediaTypeBody()));
                 log.info("createRequest: username = {} / request name = {}", user.username, requestCreationView.getRequestName(), requestCreationView.getRequestTextDescription());
                 emails = services.user().findEmailForUserHaveSameCommunityAndCouldCreateSign(user.id);
                 title = messageByLocaleService.getMessage("request_created_by_user_title", new Object[]{user.name()});
@@ -975,7 +975,7 @@ public class FileUploadRestController {
       RestTemplate restTemplate = springRestClient.buildRestTemplate();
 
       HttpHeaders headers = new HttpHeaders();
-      headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+      headers.setContentType(org.springframework.http.MediaType.MULTIPART_FORM_DATA);
 
 
       HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(parts, headers);
@@ -995,9 +995,9 @@ public class FileUploadRestController {
 
       RestTemplate restTemplate1 = springRestClient.buildRestTemplate();
       HttpHeaders headers1 = new HttpHeaders();
-      headers1.setContentType(MediaType.MULTIPART_FORM_DATA);
+      headers1.setContentType(org.springframework.http.MediaType.MULTIPART_FORM_DATA);
       headers1.set("Authorization", "Bearer " + authTokenInfo.getAccess_token());
-      headers1.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+      headers1.setAccept(Arrays.asList(org.springframework.http.MediaType.APPLICATION_JSON));
 
       HttpEntity<MultiValueMap<String, Object>> requestEntity1 = new HttpEntity<MultiValueMap<String, Object>>(body, headers1);
       ResponseEntity<VideoDailyMotion> response1 = restTemplate1.exchange("https://api.dailymotion.com/videos",
@@ -1039,7 +1039,7 @@ public class FileUploadRestController {
         } else {
           if (services.sign().withName(videoFile.requestNameRecording).list().isEmpty()) {
             if (services.request().withName(videoFile.requestNameRecording).list().isEmpty()) {
-              request = services.request().create(user.id, videoFile.requestNameRecording, videoFile.requestTextDescriptionRecording, videoDailyMotion.embed_url);
+              request = services.request().create(user.id, videoFile.requestNameRecording, videoFile.requestTextDescriptionRecording, videoDailyMotion.embed_url, videoFile.requestMediaType);
               log.info("createRequest: username = {} / request name = {}", user.username, videoFile.requestNameRecording, videoFile.requestTextDescriptionRecording);
               emails = services.user().findEmailForUserHaveSameCommunityAndCouldCreateSign(user.id);
               title = messageByLocaleService.getMessage("request_created_by_user_title", new Object[]{user.name()});
@@ -1154,7 +1154,7 @@ public class FileUploadRestController {
       RestTemplate restTemplate = springRestClient.buildRestTemplate();
 
       HttpHeaders headers = new HttpHeaders();
-      headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+      headers.setContentType(org.springframework.http.MediaType.MULTIPART_FORM_DATA);
 
 
       HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(parts, headers);
@@ -1174,9 +1174,9 @@ public class FileUploadRestController {
 
       RestTemplate restTemplate1 = springRestClient.buildRestTemplate();
       HttpHeaders headers1 = new HttpHeaders();
-      headers1.setContentType(MediaType.MULTIPART_FORM_DATA);
+      headers1.setContentType(org.springframework.http.MediaType.MULTIPART_FORM_DATA);
       headers1.set("Authorization", "Bearer " + authTokenInfo.getAccess_token());
-      headers1.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+      headers1.setAccept(Arrays.asList(org.springframework.http.MediaType.APPLICATION_JSON));
 
       HttpEntity<MultiValueMap<String, Object>> requestEntity1 = new HttpEntity<MultiValueMap<String, Object>>(body, headers1);
       ResponseEntity<VideoDailyMotion> response1 = restTemplate1.exchange("https://api.dailymotion.com/videos",
@@ -1255,7 +1255,7 @@ public class FileUploadRestController {
         RestTemplate restTemplate = springRestClient.buildRestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.setContentType(org.springframework.http.MediaType.MULTIPART_FORM_DATA);
 
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(parts, headers);
@@ -1275,9 +1275,9 @@ public class FileUploadRestController {
 
         RestTemplate restTemplate1 = springRestClient.buildRestTemplate();
         HttpHeaders headers1 = new HttpHeaders();
-        headers1.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers1.setContentType(org.springframework.http.MediaType.MULTIPART_FORM_DATA);
         headers1.set("Authorization", "Bearer " + authTokenInfo.getAccess_token());
-        headers1.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        headers1.setAccept(Arrays.asList(org.springframework.http.MediaType.APPLICATION_JSON));
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity1 = new HttpEntity<MultiValueMap<String, Object>>(body, headers1);
         ResponseEntity<VideoDailyMotion> response1 = restTemplate1.exchange("https://api.dailymotion.com/videos",

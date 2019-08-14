@@ -137,7 +137,7 @@ public class FileUploadRestController {
     log.info("VideoFile name"+videoFile.name);
     String videoUrl = null;
     String file = storageProperties.getLocation() + videoFile.name;
-    String fileOutput = file.replace(".webm", ".mp4");
+//    String fileOutput = file.replace(".webm", ".mp4");
 
     log.info("taille fichier "+videoFile.contents.length());
     log.info("taille max "+parseSize(environment.getProperty("spring.http.multipart.max-file-size")));
@@ -160,7 +160,7 @@ public class FileUploadRestController {
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
       return messageByLocaleService.getMessage("errorUploadFile");
     }
-
+/*
     try {
       String cmd;
 
@@ -174,12 +174,12 @@ public class FileUploadRestController {
       log.error("error!", errorEncondingFile);
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
       return messageByLocaleService.getMessage("errorEncondingFile");
-    }
+    }*/
 
     String dailymotionId;
     String pictureUri = null;
     User user = services.user().withUserName(principal.getName());
-    File fileMp4 = new File("");
+    File fileWebm = new File("");
 
     try {
       // Youtube
@@ -196,8 +196,8 @@ public class FileUploadRestController {
 
       UrlFileUploadDailymotion urlfileUploadDailymotion = services.sign().getUrlFileUpload();
 
-      fileMp4 = new File(fileOutput);
-      Resource resource = new FileSystemResource(fileMp4.getAbsolutePath());
+      fileWebm = new File(file);
+      Resource resource = new FileSystemResource(fileWebm.getAbsolutePath());
       MultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
       parts.add("file", resource);
 
@@ -275,7 +275,7 @@ public class FileUploadRestController {
     } else if (signId.isPresent() && !(videoId.isPresent())) {
       sign = services.sign().addNewVideo(user.id, signId.getAsLong(), videoUrl, pictureUri, com.orange.signsatwork.biz.domain.MediaType.valueOf(mediaType));
     } else {
-      sign = services.sign().create(user.id, videoFile.signNameRecording, videoUrl == null ? fileMp4.getName() : videoUrl, pictureUri , mediaType);
+      sign = services.sign().create(user.id, videoFile.signNameRecording, videoUrl == null ? fileWebm.getName() : videoUrl, pictureUri , mediaType);
       log.info("handleFileUpload : username = {} / sign name = {} / video url = {}", user.username, videoFile.signNameRecording, videoUrl);
     }
 

@@ -40,7 +40,7 @@ if(!webrtcUtils.extractVersion) {
 }
 
 if (typeof window === 'object') {
-  if (window.HTMLMediaElement &&
+  /*if (window.HTMLMediaElement &&
     !('srcObject' in window.HTMLMediaElement.prototype)) {
     // Shim the srcObject property, once, when HTMLMediaElement is found.
     Object.defineProperty(window.HTMLMediaElement.prototype, 'srcObject', {
@@ -50,17 +50,11 @@ if (typeof window === 'object') {
         return 'mozSrcObject' in this ? this.mozSrcObject : this._srcObject;
       },
       set: function(stream) {
-        if ('mozSrcObject' in this) {
-          this.mozSrcObject = stream;
-        } else {
-          // Use _srcObject as a private property for this shim
-          this._srcObject = stream;
           // TODO: revokeObjectUrl(this.src) when !stream to release resources?
-          this.src = stream ? URL.createObjectURL(stream) : null;
-        }
+          this.srcObject = stream ? stream : null;
       }
     });
-  }
+  }*/
   // Proxy existing globals
   getUserMedia = window.navigator && window.navigator.getUserMedia;
 }

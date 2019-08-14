@@ -129,7 +129,7 @@ function RecordRTC(mediaStream, config) {
             }
 
             if (callback) {
-                var url = URL.createObjectURL(blob);
+                var url = blob;
                 callback(url);
             }
 
@@ -213,11 +213,11 @@ function RecordRTC(mediaStream, config) {
         }
 
         function processInWebWorker(_function) {
-            var blob = URL.createObjectURL(new Blob([_function.toString(),
+            var blob = new Blob([_function.toString(),
                 'this.onmessage =  function (e) {' + _function.name + '(e.data);}'
             ], {
                 type: 'application/javascript'
-            }));
+            });
 
             var worker = new Worker(blob);
             URL.revokeObjectURL(blob);
@@ -388,7 +388,7 @@ function RecordRTC(mediaStream, config) {
                 return console.warn(WARNING);
             }
 
-            return URL.createObjectURL(mediaRecorder.blob);
+            return mediaRecorder.blob;
         },
 
         /**
@@ -1122,11 +1122,11 @@ function MRecordRTC(mediaStream) {
         }
 
         function processInWebWorker(_function) {
-            var blob = URL.createObjectURL(new Blob([_function.toString(),
+            var blob = new Blob([_function.toString(),
                 'this.onmessage =  function (e) {' + _function.name + '(e.data);}'
             ], {
                 type: 'application/javascript'
-            }));
+            });
 
             var worker = new Worker(blob);
             var url;
@@ -2161,11 +2161,11 @@ function StereoAudioRecorder(mediaStream, config) {
     }
 
     function processInWebWorker(_function) {
-        var workerURL = URL.createObjectURL(new Blob([_function.toString(),
+        var workerURL = new Blob([_function.toString(),
             ';this.onmessage =  function (e) {' + _function.name + '(e.data);}'
         ], {
             type: 'application/javascript'
-        }));
+        });
 
         var worker = new Worker(workerURL);
         worker.workerURL = workerURL;
@@ -2821,17 +2821,7 @@ function WhammyRecorder(mediaStream, config) {
             }
         } else {
             video = document.createElement('video');
-
-            if (typeof video.srcObject !== 'undefined') {
-                video.srcObject = mediaStream;
-            } else {
-              try {
-                video.srcObject = mediaStream;
-              } catch (error) {
-                video.src = window.URL.createObjectURL(mediaStream);
-              }
-            }
-
+            video.srcObject = mediaStream;
             video.onloadedmetadata = function() { // "onloadedmetadata" may NOT work in FF?
                 if (config.initCallback) {
                     config.initCallback();
@@ -3171,11 +3161,11 @@ var Whammy = (function() {
     };
 
     function processInWebWorker(_function) {
-        var blob = URL.createObjectURL(new Blob([_function.toString(),
+        var blob = new Blob([_function.toString(),
             'this.onmessage =  function (e) {' + _function.name + '(e.data);}'
         ], {
             type: 'application/javascript'
-        }));
+        });
 
         var worker = new Worker(blob);
         URL.revokeObjectURL(blob);
@@ -3957,13 +3947,7 @@ function GifRecorder(mediaStream, config) {
         var video = document.createElement('video');
         video.muted = true;
         video.autoplay = true;
-
-          try {
-            this.srcObject = mediaStream;
-          } catch (error) {
-            this.src = window.URL.createObjectURL(mediaStream);
-          }
-
+        this.srcObject = mediaStream;
         video.play();
     }
 

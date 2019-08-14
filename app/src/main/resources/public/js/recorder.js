@@ -117,11 +117,7 @@ stopRecording.onclick = function() {
 
       // dirty workaround for: "firefox seems unable to playback"
       //videoElement.src = URL.createObjectURL(audioVideoRecorder.getBlob());
-      try {
         videoElement.srcObject = audioVideoRecorder.getBlob();
-      } catch (error) {
-        videoElement.src = window.URL.createObjectURL(audioVideoRecorder.getBlob());
-      }
     };
     audioVideoRecorder.getDataURL(function(audioVideoDataURL) {
       var video = {
@@ -144,11 +140,7 @@ function captureUserMedia00(callback) {
     audio: false,
     video: true
   }, function(stream) {
-    try {
       videoElement.srcObject = stream;
-    } catch (error) {
-      videoElement.src = window.URL.createObjectURL(stream);
-    }
 
     videoElement.muted = true;
     videoElement.controls = true;

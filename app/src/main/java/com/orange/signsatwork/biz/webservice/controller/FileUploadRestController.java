@@ -164,7 +164,7 @@ public class FileUploadRestController {
     try {
       String cmd;
 
-      cmd = String.format("mencoder %s -vf scale=640:-1 -ovc x264 -o %s", file, fileOutput);
+      cmd = String.format("mencoder %s -vf scale=640:-1 -ovc xvid -xvidencopts pass=1 -o %s", file, fileOutput);
 
       String cmdFilterLog = "/tmp/mencoder.log";
       NativeInterface.launch(cmd, null, cmdFilterLog);

@@ -90,7 +90,8 @@ public class VideoDB {
   @JsonBackReference
   private List<FavoriteDB> favorites;
 
-  @Column
+  @Enumerated(EnumType.ORDINAL)
+  @Column(name="media_type")
   @NotNull
   private MediaType mediaType = MediaType.LSF;
 

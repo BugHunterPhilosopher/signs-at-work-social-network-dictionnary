@@ -62,7 +62,8 @@ public class RequestDB {
     @JoinColumn(name = "sign_id")
     private SignDB sign;
 
-    @Column
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name="media_type")
     @NotNull
     private MediaType mediaType = MediaType.LSF;
 

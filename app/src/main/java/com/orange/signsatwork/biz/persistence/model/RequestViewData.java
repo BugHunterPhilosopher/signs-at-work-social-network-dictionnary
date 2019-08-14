@@ -41,7 +41,7 @@ public class RequestViewData {
     urlForAccessToRequestDetail = toString(queryResultItem[1]);
     signId = toLong(queryResultItem[2]);
     signName = toString(queryResultItem[3]);
-    mediaType = (MediaType)queryResultItem[4];
+    mediaType = MediaType.values()[(int)queryResultItem[4]];
   }
 
   private String toString(Object o) {

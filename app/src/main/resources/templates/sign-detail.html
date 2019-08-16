@@ -66,7 +66,9 @@
           <div th:if="${not #strings.startsWith(videoView.url, 'http') and not #strings.endsWith(videoView.url, 'png') and not #strings.endsWith(videoView.url, 'gif')}">
             <video controls="controls" muted="muted">
               <source th:src="@{/files/} + ${videoView.url}"
-                      type="video/mp4"></source>
+                      type="video/mp4"/>
+              <source th:src="@{/files/} + ${videoView.url}"
+                      type="video/webm"/>
 
               Sorry, your browser doesn't support embedded videos.
             </video>

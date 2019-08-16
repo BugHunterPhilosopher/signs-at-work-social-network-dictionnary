@@ -88,7 +88,7 @@ $formRequestDescription.on('submit', function(event) {
   console.log("submit uploadSelectedVideoFile");
   console.log("requestName "+ $('#requestName').val());
   console.log("requestTextDescription " + $('#requestTextDescription').val());
-  console.log("mediaType " + $('##mediaType').val());
+  console.log("mediaType " + $('#mediaType').val());
   document.getElementById('requestInfoSubmit').disabled=true;
   //document.getElementById('submitButtonFileDailymotion').disabled = true;
   if (document.getElementById("InputFile").value) {

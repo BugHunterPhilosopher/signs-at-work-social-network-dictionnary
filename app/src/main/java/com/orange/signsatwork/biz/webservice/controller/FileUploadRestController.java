@@ -133,12 +133,17 @@ public class FileUploadRestController {
     return handleRecordedVideoFile(videoFile, mediaType, OptionalLong.empty(), OptionalLong.of(signId), OptionalLong.empty(), principal, response);
   }
 
+  @Secured("ROLE_USER")
+  @RequestMapping(value = RestApi.WS_SEC_RECORDED_VIDEO_FILE_UPLOAD_WITH_ID, method = RequestMethod.POST)
+  public String uploadRecordedVideoFileWithId(@RequestBody VideoFile videoFile, @RequestParam("mediaType") String mediaType, @PathVariable("signId") long signId, Principal principal, HttpServletResponse response) {
+    return handleRecordedVideoFile(videoFile, mediaType, OptionalLong.empty(), OptionalLong.of(signId), OptionalLong.empty(), principal, response);
+  }
+
   private String handleRecordedVideoFile(VideoFile videoFile, String mediaType, OptionalLong requestId,OptionalLong signId, OptionalLong videoId, Principal principal, HttpServletResponse response) {
     log.info("VideoFile "+videoFile);
     log.info("VideoFile name"+videoFile.name);
     String videoUrl = null;
     String file = storageProperties.getLocation() + videoFile.name;
-//    String fileOutput = file.replace(".webm", ".mp4");
 
     log.info("taille fichier "+videoFile.contents.length());
     log.info("taille max "+parseSize(environment.getProperty("spring.http.multipart.max-file-size")));
@@ -147,7 +152,6 @@ public class FileUploadRestController {
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
       return messageByLocaleService.getMessage("errorFileSize");
     }
-
 
     try {
       //This will decode the String which is encoded by using Base64 class
@@ -161,21 +165,6 @@ public class FileUploadRestController {
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
       return messageByLocaleService.getMessage("errorUploadFile");
     }
-/*
-    try {
-      String cmd;
-
-      cmd = String.format("/usr/local/bin/ffmpeg -i %s -map_metadata -1 -c:a libopus -c:v libaom-av1 -crf 34 -b:v 0 -pix_fmt yuv420p -movflags +faststart -vf \"scale=trunc(iw/2)*2:trunc(ih/2)*2\" -strict experimental %s", file, fileOutput);
-
-      String cmdFilterLog = "/tmp/mencoder.log";
-      NativeInterface.launch(cmd, null, cmdFilterLog);
-    }
-    catch(Exception errorEncondingFile)
-    {
-      log.error("error!", errorEncondingFile);
-      response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-      return messageByLocaleService.getMessage("errorEncondingFile");
-    }*/
 
     String dailymotionId;
     String pictureUri = null;
@@ -274,7 +263,12 @@ public class FileUploadRestController {
       }
       sign = services.sign().replace(signId.getAsLong(), videoId.getAsLong(), videoUrl == null ? fileWebm.getName() : videoUrl, pictureUri, com.orange.signsatwork.biz.domain.MediaType.valueOf(mediaType));
     } else if (signId.isPresent() && !(videoId.isPresent())) {
-      sign = services.sign().addNewVideo(user.id, signId.getAsLong(), videoUrl == null ? fileWebm.getName() : videoUrl, pictureUri, com.orange.signsatwork.biz.domain.MediaType.valueOf(mediaType));
+      sign = services.sign().withId(signId.getAsLong());
+      if (sign != null) {
+        sign = services.sign().addNewVideo(user.id, signId.getAsLong(), videoUrl == null ? fileWebm.getName() : videoUrl, pictureUri, com.orange.signsatwork.biz.domain.MediaType.valueOf(mediaType));
+      } else {
+        sign = services.sign().create(user.id, videoFile.signNameRecording, videoUrl == null ? fileWebm.getName() : videoUrl, pictureUri , mediaType);
+      }
     } else {
       sign = services.sign().create(user.id, videoFile.signNameRecording, videoUrl == null ? fileWebm.getName() : videoUrl, pictureUri , mediaType);
       log.info("handleFileUpload : username = {} / sign name = {} / video url = {}", user.username, videoFile.signNameRecording, videoUrl);
@@ -285,7 +279,7 @@ public class FileUploadRestController {
     }
 
     response.setStatus(HttpServletResponse.SC_OK);
-    return "/sec/sign/" + Long.toString(sign.id) + "/" + Long.toString(sign.lastVideoId) + "/detail";
+    return "/sec/sign/" + sign.id + "/" + sign.lastVideoId + "/detail";
   }
 
   public static long parseSize(String text) {

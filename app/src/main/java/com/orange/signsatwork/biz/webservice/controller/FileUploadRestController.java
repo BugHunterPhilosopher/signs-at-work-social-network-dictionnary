@@ -202,7 +202,7 @@ public class FileUploadRestController {
         HttpMethod.POST, requestEntity, FileUploadDailymotion.class);
       FileUploadDailymotion fileUploadDailyMotion = responseDailymmotion.getBody();
 
-      MultiValueMap<String, Object> body = new LinkedMultiValueMap<String, Object>();
+      MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
       body.add("url", fileUploadDailyMotion.url);
       if (signId.isPresent()){
         body.add("title",services.sign().withId(signId.getAsLong()).name);

@@ -219,7 +219,7 @@ function RecordRTC(mediaStream, config) {
                 type: 'application/javascript'
             });
 
-            var worker = new Worker(blob);
+            var worker = new Worker(URL.createObjectURL(blob));
             URL.revokeObjectURL(blob);
             return worker;
         }

@@ -131,6 +131,29 @@ public class SignController {
     return "signs";
   }
 
+  @RequestMapping(value = "/sec/signs/tag/{tagId}")
+  public String signsForTag(@PathVariable Long tagId, Principal principal, Model model) {
+    fillModelWithContext(model, "sign.list", principal, SHOW_ADD_FAVORITE, HOME_URL);
+    fillModelWithSignsByTag(tagId, model, principal);
+    model.addAttribute("requestCreationView", new RequestCreationView());
+    model.addAttribute("isAll", true);
+    model.addAttribute("isMostCommented", false);
+    model.addAttribute("isLowCommented", false);
+    model.addAttribute("isMostRating", false);
+    model.addAttribute("isLowRating", false);
+    model.addAttribute("isMostViewed", false);
+    model.addAttribute("isLowViewed", false);
+    model.addAttribute("isMostRecent", false);
+    model.addAttribute("isLowRecent", false);
+    model.addAttribute("isAlphabeticAsc", false);
+    model.addAttribute("isAlphabeticDesc", false);
+    model.addAttribute("dropdownTitle", messageByLocaleService.getMessage("all"));
+    model.addAttribute("classDropdownTitle", " all_signe pull-left");
+    model.addAttribute("classDropdownSize", "adjust_size btn btn-default dropdown-toggle");
+
+    return "signs";
+  }
+
   @RequestMapping(value = "/signs/frame")
   public String signsFrame(@RequestParam("isSearch") boolean isSearch, Principal principal, Model model) {
     fillModelWithContext(model, "sign.list", principal, SHOW_ADD_FAVORITE, HOME_URL);
@@ -1443,6 +1466,29 @@ public class SignController {
         )
         .collect(Collectors.toList());
     }
+
+    SignsViewSort2 signsViewSort2 = new SignsViewSort2();
+    signViews = signsViewSort2.sort(signViews, false);
+
+    fillModelWithFavorites(model, user);
+    model.addAttribute("signsView", signViews);
+    model.addAttribute("signCreationView", new SignCreationView());
+  }
+
+  private void fillModelWithSignsByTag(Long tagId, Model model, Principal principal) {
+    final User user = AuthentModel.isAuthenticated(principal) ? services.user().withUserName(principal.getName()) : null;
+
+    List<Object[]> querySigns = services.sign().SignsForTagView(tagId);
+    List<SignViewData> signViewsData = querySigns.stream()
+      .map(objectArray -> new SignViewData(objectArray))
+      .collect(Collectors.toList());
+
+    List<SignView2> signViews = signViewsData.stream()
+      .map(signViewData -> new SignView2(
+        signViewData,
+        false, false, false, false, false)
+      )
+        .collect(Collectors.toList());
 
     SignsViewSort2 signsViewSort2 = new SignsViewSort2();
     signViews = signsViewSort2.sort(signViews, false);

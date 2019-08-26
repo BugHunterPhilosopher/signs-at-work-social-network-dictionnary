@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -31,8 +30,7 @@ public class TagController {
     model.addAttribute("backUrl", HOME_URL);
     AuthentModel.addAuthenticatedModel(model, AuthentModel.isAuthenticated(principal));
 
-    List<String> allTags = tags.stream().map(TagDB::getName).collect(Collectors.toList());
-    model.addAttribute("tags", allTags);
+    model.addAttribute("tags", tags);
 
     return "tags-list";
   }

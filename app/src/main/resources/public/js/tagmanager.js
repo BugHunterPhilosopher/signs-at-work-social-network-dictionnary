@@ -152,12 +152,12 @@
         escaped = $("<span/>").text(tag).html();
 
         html = '<span class="' + privateMethods.tagClasses.call($self) + '" id="' + newTagId + '">';
-        html += '<span>' + escaped + '</span>';
+        html += '<span><a href="/sec/signs/tag/' + tag + '?search=false" style="color: #4866f7;">' + tag + '</a></span>';
         html += '<a href="#" class="tm-tag-remove" id="' + newTagRemoveId + '" TagIdToRemove="' + tagId + '">';
         html += opts.tagCloseIcon + '</a></span> ';
         $el = $(html);
 
-        
+
         var typeAheadMess = $self.parents('.twitter-typeahead')[0] !== undefined;
         if (opts.tagsContainer !== null) {
           $(opts.tagsContainer).append($el);

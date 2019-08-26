@@ -62,7 +62,7 @@ public interface SignService {
 
   List<Object[]> SignsForSignsView();
 
-  List<Object[]> SignsForTagView(long tagId);
+  List<Object[]> SignsForTagView(String tagName);
 
   List<Object[]> SignsAndRequestsAlphabeticalOrderAscSignsView(long userId);
 

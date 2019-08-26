@@ -150,7 +150,7 @@
                         <div class="pull-left definition_signe"></div>
                         <h2 class="container_H2" th:text="#{video.tags}"/><br/>
                         <div class="pull-left">
-                          <span th:text="${tags}"/>
+                          <span th:utext="${tags}"/>
                         </div>
                       </li>
                     </div>
@@ -246,7 +246,7 @@
 <script type="text/javascript" src="../public/js/new-video.js" th:src="@{/js/new-video.js}"></script>
 <script th:inline="javascript">
   var signId = /*[[${signId}]]*/ '';
-  var tags = /*[[${tags}]]*/ '';
+  var tags = /*[[${unformattedTags}]]*/ '';
 
   jQuery(function() {
     $.ajaxSetup({

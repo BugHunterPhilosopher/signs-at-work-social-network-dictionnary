@@ -36,7 +36,7 @@
           <tbody>
             <tr th:each="tag : ${tags}">
               <td>
-                <a th:href="@{/sec/signs/tag} + '/' + ${tag.id} + '?search=false'">
+                <a th:href="@{/sec/signs/tag} + '/' + ${tag.name} + '?search=false'">
                   <div class="pull-left definition_text_blue"></div>
                   <h4 class="container_H2 text_hyphenation" th:text="${tag.name}"/>
                 </a>

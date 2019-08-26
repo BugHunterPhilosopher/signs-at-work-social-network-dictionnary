@@ -159,8 +159,8 @@ public class SignServiceImpl implements SignService {
   }
 
   @Override
-  public List<Object[]> SignsForTagView(long tagId) {
-    return signRepository.findSignsForTagView(tagId);
+  public List<Object[]> SignsForTagView(String tagName) {
+    return signRepository.findSignsForTagView(tagName);
   }
 
   @Override

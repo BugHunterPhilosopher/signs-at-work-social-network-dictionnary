@@ -38,8 +38,8 @@ public interface SignRepository extends CrudRepository<SignDB, Long> {
     @Query(value="from VideoDB a inner join a.sign b WHERE a.id = b.lastVideoId order by b.createDate desc")
     List<Object[]> findSignsForSignsView();
 
-    @Query(value="from VideoDB a inner join a.sign b inner join b.tags t WHERE a.id = b.lastVideoId AND t.id = :tagId order by b.createDate desc")
-    List<Object[]> findSignsForTagView(@Param("tagId") long tagId);
+    @Query(value="from VideoDB a inner join a.sign b inner join b.tags t WHERE a.id = b.lastVideoId AND t.name = :tagName order by b.createDate desc")
+    List<Object[]> findSignsForTagView(@Param("tagName") String tagName);
 
     @Query(value="select b.id, b.name, b.create_date, b.last_video_id, a.url, a.picture_uri, b.nb_video from videos a inner join signs b on a.id = b.last_video_id and length(b.name) != 0 union select 0, name, request_date, id, \"/sec/my-request-detail/\", \"/img/my_request.png\", 0 from requests where sign_id is null and user_id= :userId and length(name) != 0 union select 0, name, request_date, id, \"/sec/other-request-detail/\", \"/img/request.jpg\", 0 from requests where sign_id is null and user_id != :userId and length(name) != 0 order by name asc", nativeQuery = true)
     List<Object[]> findSignsAndRequestsAlphabeticalOrderAscForSignsView(@Param("userId") long userId);

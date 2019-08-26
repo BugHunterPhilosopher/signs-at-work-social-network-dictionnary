@@ -131,10 +131,10 @@ public class SignController {
     return "signs";
   }
 
-  @RequestMapping(value = "/sec/signs/tag/{tagId}")
-  public String signsForTag(@PathVariable Long tagId, Principal principal, Model model) {
+  @RequestMapping(value = "/sec/signs/tag/{tagName}")
+  public String signsForTag(@PathVariable String tagName, Principal principal, Model model) {
     fillModelWithContext(model, "sign.list", principal, SHOW_ADD_FAVORITE, HOME_URL);
-    fillModelWithSignsByTag(tagId, model, principal);
+    fillModelWithSignsByTag(tagName, model, principal);
     model.addAttribute("requestCreationView", new RequestCreationView());
     model.addAttribute("isAll", true);
     model.addAttribute("isMostCommented", false);
@@ -1145,7 +1145,9 @@ public class SignController {
     signDB.setId(signId);
     Set<TagDB> tags = signDB.getTags();
     model.addAttribute("tags", null == tags ? "" :
-      objectSetToCommaSeparatedString(tags.stream().map(TagDB::getName)));
+      objectSetToFormattedClickableLinks(tags.stream().map(TagDB::getName)));
+    model.addAttribute("unformattedTags", null == tags ? "" :
+      objectSetToUnformattedTags(tags.stream().map(TagDB::getName)));
 
     /* Relations */
     setRelationsForLinks(model, signDB);
@@ -1184,8 +1186,12 @@ public class SignController {
       signDbSetToLinkString(related.stream()));
   }
 
-  private String objectSetToCommaSeparatedString(Stream<String> stringStream) {
+  private String objectSetToUnformattedTags(Stream<String> stringStream) {
     return stringStream.collect(Collectors.joining(", "));
+  }
+
+  private String objectSetToFormattedClickableLinks(Stream<String> stringStream) {
+    return stringStream.map(name -> "<a href=\"/sec/signs/tag/"+ name +"?search=false\" style=\"color: #4866f7;\">"+ name +"</a>").collect(Collectors.joining(", "));
   }
 
   private String signDbSetToLinkString(Stream<SignDB> stringStream) {
@@ -1475,10 +1481,10 @@ public class SignController {
     model.addAttribute("signCreationView", new SignCreationView());
   }
 
-  private void fillModelWithSignsByTag(Long tagId, Model model, Principal principal) {
+  private void fillModelWithSignsByTag(String tagName, Model model, Principal principal) {
     final User user = AuthentModel.isAuthenticated(principal) ? services.user().withUserName(principal.getName()) : null;
 
-    List<Object[]> querySigns = services.sign().SignsForTagView(tagId);
+    List<Object[]> querySigns = services.sign().SignsForTagView(tagName);
     List<SignViewData> signViewsData = querySigns.stream()
       .map(objectArray -> new SignViewData(objectArray))
       .collect(Collectors.toList());

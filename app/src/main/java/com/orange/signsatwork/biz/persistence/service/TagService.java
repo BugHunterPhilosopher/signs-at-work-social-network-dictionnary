@@ -25,6 +25,7 @@ package com.orange.signsatwork.biz.persistence.service;
 import com.orange.signsatwork.biz.persistence.model.SignDB;
 import com.orange.signsatwork.biz.persistence.model.TagDB;
 
+import java.util.List;
 import java.util.Set;
 
 public interface TagService {
@@ -38,6 +39,8 @@ public interface TagService {
   TagDB save(TagDB tag);
 
   Set<TagDB> all();
+
+  List<TagDB> allOrderedByName();
 
   void delete(TagDB tag);
 

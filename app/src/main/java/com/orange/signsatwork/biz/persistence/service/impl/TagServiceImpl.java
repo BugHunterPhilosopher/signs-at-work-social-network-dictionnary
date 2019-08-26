@@ -28,10 +28,13 @@ import com.orange.signsatwork.biz.persistence.repository.TagRepository;
 import com.orange.signsatwork.biz.persistence.service.TagService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Slf4j
@@ -73,6 +76,11 @@ public class TagServiceImpl implements TagService {
   @Override
   public Set<TagDB> all() {
     return new HashSet<>(tagRepository.findAll());
+  }
+
+  @Override
+  public List<TagDB> allOrderedByName() {
+    return new ArrayList<>(tagRepository.findAll(new Sort("name")));
   }
 
   @Override

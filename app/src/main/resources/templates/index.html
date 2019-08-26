@@ -76,6 +76,19 @@
                     </a>
                 </li>
               </div>
+              <div sec:authorize="hasRole('USER') or hasRole('ADMIN')">
+                <li th:if="${isAuthenticated}" class="clear aside_bckg_li">
+                  <a th:href="@{/sec/tags}">
+                    <div>
+                    <div class="pull-left require_black"></div>
+                    <h2  class="text_hyphenation container_H2" th:text="#{tags.list}"></h2>
+                      <div>
+                        <div class="pull-right chevron_right"></div>
+                      </div>
+                    </div>
+                    </a>
+                </li>
+              </div>
               <div sec:authorize="hasRole('ADMIN')">
                 <li th:if="${isAuthenticated}" class="clear aside_bckg_li">
                   <a th:href="@{/sec/admin}">

@@ -203,16 +203,16 @@ public class SignController {
       .map(objectArray -> new SignViewData(objectArray))
       .collect(Collectors.toList());
 
-    List<Long> signWithCommentList = Arrays.asList(services.sign().mostCommented());
+    /*List<Long> signWithCommentList = Arrays.asList(services.sign().mostCommented());
 
     List<Long> signWithView = Arrays.asList(services.sign().mostViewed());
 
-    List<Long> signWithPositiveRate = Arrays.asList(services.sign().mostRating());
+    List<Long> signWithPositiveRate = Arrays.asList(services.sign().mostRating());*/
 
     List<Long> signInFavorite = Arrays.asList(services.sign().SignsBellowToFavoriteByUser(user.id));
 
     List<SignView2> signViews = signViewsData.stream()
-      .map(signViewData -> buildSignView(signViewData, signWithCommentList, signWithView, signWithPositiveRate, signInFavorite, user))
+      .map(signViewData -> buildSignView(signViewData, /*signWithCommentList, signWithView, signWithPositiveRate*/null, null, null, signInFavorite, user))
       .collect(Collectors.toList());
 
 
@@ -261,16 +261,16 @@ public class SignController {
       .map(objectArray -> new SignViewData(objectArray))
       .collect(Collectors.toList());
 
-    List<Long> signWithCommentList = Arrays.asList(services.sign().mostCommented());
+    /*List<Long> signWithCommentList = Arrays.asList(services.sign().mostCommented());
 
     List<Long> signWithView = Arrays.asList(services.sign().mostViewed());
 
-    List<Long> signWithPositiveRate = Arrays.asList(services.sign().mostRating());
+    List<Long> signWithPositiveRate = Arrays.asList(services.sign().mostRating());*/
 
     List<Long> signInFavorite = Arrays.asList(services.sign().SignsBellowToFavoriteByUser(user.id));
 
     List<SignView2> signViews = signViewsData.stream()
-      .map(signViewData -> buildSignView(signViewData, signWithCommentList, signWithView, signWithPositiveRate, signInFavorite, user))
+      .map(signViewData -> buildSignView(signViewData, /*signWithCommentList, signWithView, signWithPositiveRate*/null, null, null, signInFavorite, user))
       .collect(Collectors.toList());
 
 

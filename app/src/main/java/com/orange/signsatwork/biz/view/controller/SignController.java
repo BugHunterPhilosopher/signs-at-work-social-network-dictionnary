@@ -1446,11 +1446,11 @@ public class SignController {
       .map(objectArray -> new SignViewData(objectArray))
       .collect(Collectors.toList());
 
-    List<Long> signWithCommentList = Arrays.asList(services.sign().mostCommented());
+    /*List<Long> signWithCommentList = Arrays.asList(services.sign().mostCommented());
 
     List<Long> signWithView = Arrays.asList(services.sign().mostViewed());
 
-    List<Long> signWithPositiveRate = Arrays.asList(services.sign().mostRating());
+    List<Long> signWithPositiveRate = Arrays.asList(services.sign().mostRating());*/
 
     List<SignView2> signViews;
     List<Long> signInFavorite = null;
@@ -1458,16 +1458,16 @@ public class SignController {
       signInFavorite = Arrays.asList(services.sign().SignsBellowToFavoriteByUser(user.id));
       List<Long> finalSignInFavorite = signInFavorite;
       signViews = signViewsData.stream()
-        .map(signViewData -> buildSignView(signViewData, signWithCommentList, signWithView, signWithPositiveRate, finalSignInFavorite, user))
+        .map(signViewData -> buildSignView(signViewData, /*signWithCommentList, signWithView, signWithPositiveRate*/ null, null, null, finalSignInFavorite, user))
         .collect(Collectors.toList());
     } else {
       signViews = signViewsData.stream()
         .map(signViewData -> new SignView2(
           signViewData,
-          signWithCommentList.contains(signViewData.id),
+          false, /*signWithCommentList.contains(signViewData.id)*/
           SignView2.createdAfterLastDeconnection(signViewData.createDate, user == null ? null : user.lastDeconnectionDate),
-          signWithView.contains(signViewData.id),
-          signWithPositiveRate.contains(signViewData.id),
+          false, /*signWithView.contains(signViewData.id)*/
+          false, /*signWithPositiveRate.contains(signViewData.id)*/
           false)
         )
         .collect(Collectors.toList());
@@ -1507,10 +1507,10 @@ public class SignController {
   private SignView2 buildSignView(SignViewData signViewData, List<Long> signWithCommentList, List<Long> signWithView, List<Long> signWithPositiveRate, List<Long> signInFavorite, User user) {
     return new SignView2(
       signViewData,
-      signWithCommentList.contains(signViewData.id),
+      signWithCommentList == null ? false : signWithCommentList.contains(signViewData.id),
       SignView2.createdAfterLastDeconnection(signViewData.createDate, user == null ? null : user.lastDeconnectionDate),
-      signWithView.contains(signViewData.id),
-      signWithPositiveRate.contains(signViewData.id),
+      signWithView == null ? false : signWithView.contains(signViewData.id),
+      signWithPositiveRate == null ? false : signWithPositiveRate.contains(signViewData.id),
       signInFavorite.contains(signViewData.id));
   }
 

@@ -10,12 +10,12 @@ package com.orange.signsatwork.biz.view.model;
  * it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 2 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-2.0.html>.
@@ -48,9 +48,11 @@ public class VideoView2 implements ComparableVideo {
   private boolean videoHasView;
   private boolean videoHasPositiveRate;
   private boolean signBelowToFavorite;
+  private String mediaType;
 
   public VideoView2(VideoViewData videoViewData, boolean videoHasComment, boolean createdAfterLastDeconnection, boolean videoHasView, boolean videoHasPositiveRate, boolean signBelowToFavorite) {
     signId = videoViewData.signId;
+    mediaType = videoViewData.mediaType.toString();
     signName = videoViewData.signName;
     if (videoViewData.nbVideo > 1) {
       videoName = videoViewData.signName + " (" + videoViewData.idForName + ")";

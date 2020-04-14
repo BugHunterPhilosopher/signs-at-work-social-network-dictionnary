@@ -540,11 +540,12 @@ input[type=search].form-control,input[type=search].form-control:focus{
   background-color: blue;
   margin-left: 93px;
   position: absolute;
-  width: 10px;
+  width: 15px;
   border-radius: 10px;
   font-size: 9px;
-  top: 4px;
+  top: 2px;
   color:white;
+  padding-top: 4px;
 }
 
 .sign-view-hidden {

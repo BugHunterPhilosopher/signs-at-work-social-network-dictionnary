@@ -50,7 +50,7 @@
             </span>
             <a th:href="@{/sign/} + ${videoView.signId} + '/' + ${videoView.videoId}" th:text="${videoView.videoName}" type="text/html"/></div>
             <a th:href="@{/sign/} + ${videoView.signId} + '/' + ${videoView.videoId}" >
-            <div class="container_tooltip_in_image">
+            <div th:if="${videoView.videoHasComment or videoView.videoHasPositiveRate or videoView.videoHasView}" class="container_tooltip_in_image">
             <div th:if="${videoView.videoHasComment}" class="tooltip_comment"></div>
             <div th:if="${!videoView.videoHasComment}" style="visibility: hidden" class="tooltip_comment"></div>
               <div th:if="${videoView.videoHasPositiveRate}" class="tooltip_positif"></div>

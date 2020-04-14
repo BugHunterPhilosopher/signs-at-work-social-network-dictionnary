@@ -44,18 +44,18 @@
           <div th:if="${videoView.signBelowToFavorite}" class="tooltip_favorite"></div>
           <div th:if="${!videoView.signBelowToFavorite}" style="visibility: hidden" class="tooltip_favorite"></div>
           <div id="labelVideo" class="text_hyphenation">
-            <span class="logos" data-th-attr="data-media-type=${videoView.mediaType}">
+            <span class="videosLogos" data-th-attr="data-media-type=${videoView.mediaType}">
               <img class="logolsf" src="/img/lsf.jpg" title="L.S.F."/>
               <img class="logolpc" src="/img/lpc.jpg" title="Lf.P.C."/>
             </span>
             <a th:href="@{/sign/} + ${videoView.signId} + '/' + ${videoView.videoId}" th:text="${videoView.videoName}" type="text/html"/></div>
             <a th:href="@{/sign/} + ${videoView.signId} + '/' + ${videoView.videoId}" >
             <div th:if="${videoView.videoHasComment or videoView.videoHasPositiveRate or videoView.videoHasView}" class="container_tooltip_in_image">
-            <div th:if="${videoView.videoHasComment}" class="tooltip_comment"></div>
+            <div th:if="${videoView.videoHasComment}" class="tooltip_comment" th:attr="title=#{tooltip_variant_comment}"></div>
             <div th:if="${!videoView.videoHasComment}" style="visibility: hidden" class="tooltip_comment"></div>
-              <div th:if="${videoView.videoHasPositiveRate}" class="tooltip_positif"></div>
+              <div th:if="${videoView.videoHasPositiveRate}" class="tooltip_positif" th:attr="title=#{tooltip_variant_rate}"></div>
               <div th:if="${!videoView.videoHasPositiveRate}" style="visibility: hidden" class="tooltip_positif"></div>
-            <div th:if="${videoView.videoHasView}" class="tooltip_eye"></div>
+            <div th:if="${videoView.videoHasView}" class="tooltip_eye" th:attr="title=#{tooltip_variant_view}"></div>
             <div th:if="${!videoView.videoHasView}" style="visibility: hidden" class="tooltip_eye"></div>
             </div>
             <img th:attr="data-src=${videoView.pictureUri}"/>

@@ -168,14 +168,6 @@
                 <img class="logolsf" src="/img/lsf.jpg" title="L.S.F."/>
                 <img class="logolpc" src="/img/lpc.jpg" title="Lf.P.C."/>
               </span>
-              <div th:if="${signView.videoHasView or signView.videoHasPositiveRate or signView.videoHasComment}" class="container_tooltip_in_image">
-                <div th:if="${signView.videoHasView}" class="tooltip_eye"></div>
-                <div th:if="${!signView.videoHasView}" style="visibility: hidden" class="tooltip_eye"></div>
-                <div th:if="${signView.videoHasPositiveRate}" class="tooltip_positif"></div>
-                <div th:if="${!signView.videoHasPositiveRate}" style="visibility: hidden" class="tooltip_positif"></div>
-                <div th:if="${signView.videoHasComment}" class="tooltip_comment"></div>
-                <div th:if="${!signView.videoHasComment}" style="visibility: hidden" class="tooltip_comment"></div>
-              </div>
               <div th:if="${signView.pictureUri != null and not #strings.startsWith(signView.pictureUri, 'http:')}">
                 <img th:src="@{/files/} + ${signView.pictureUri}"/>
               </div>

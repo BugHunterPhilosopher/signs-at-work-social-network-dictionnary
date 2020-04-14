@@ -923,11 +923,18 @@
   }
 
   .tooltip_comment {
-    background-position: right 0px top 4px;
+    /*background-position: -1980px center;
+    !*background-position: right 0px top 4px;*!
     background-size: auto 50px;
     height: 72px;
-    width: 83px;
-    right: 150px;
+    width: 83px;*/
+
+    float: left;
+    background-repeat: no-repeat;
+    background-size: auto 40px;
+    height: 40px;
+    width: 40px;
+    margin-top: -12px;
   }
 
   .tooltip_eye {

@@ -211,7 +211,7 @@
 })($);
 
 var refreshLogos = function() {
-  $('span.logos').each(function () {
+  $('span.videosLogos').each(function () {
     if ($(this).data("media-type").indexOf("L.S.F.") == -1) {
       $(this).find("img.logolsf").hide();
     } else {

@@ -250,7 +250,7 @@
   }
 
   .tooltip_comment {
-    background-position: right 0px top 0px;
+    background-position: -750px center !important;
     background-size: auto 25px;
     height: 42px;
     width: 40px;

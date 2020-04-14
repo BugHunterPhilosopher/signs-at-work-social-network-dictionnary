@@ -499,23 +499,37 @@ input[type=search].form-control,input[type=search].form-control:focus{
 
 .tooltip_comment {
   background-image: url("/img/new_sprite_picto_400X400.png");
+  background-position: -1218px center;
   background-repeat: no-repeat;
   position: absolute;
-  bottom: 7px;
+  bottom: 0px;
+  left: 0px;
 }
 
 .tooltip_eye {
   background-image: url("/img/new_sprite_picto_400X400.png");
+  background-position: -1343px center;
   background-repeat: no-repeat;
+  background-size: auto 40px;
+  height: 40px;
+  width: 40px;
+  margin-top: -12px;
   position: absolute;
-  bottom: 7px;
+  bottom: 0px;
+  left: 86px;
 }
 
 .tooltip_positif {
   background-image: url("/img/new_sprite_picto_400X400.png");
+  background-position: -1300px center;
   background-repeat: no-repeat;
+  background-size: auto 40px;
+  height: 40px;
+  width: 40px;
+  margin-top: -12px;
   position: absolute;
-  bottom: 7px;
+  bottom: 0px;
+  left: 43px;
 }
 
 .tooltip_positif_in_frame {
@@ -1212,8 +1226,19 @@ input[type=file] {
 }
 
 .container_tooltip_in_image {
+  height: 40px;
+  width: 130px;
+  border-radius: 15px;
+  background-color: #4866F7;
+  box-shadow: 0 4px 6px 0 rgba(0,0,0,0.2);
+  position: absolute;
+  bottom: 27px;
+  margin-left: 29px;
+}
+
+.container_tooltip_sign_in_image {
   height: 30px;
-  width: 90px;
+  width: 46px;
   border-radius: 15px;
   background-color: #4866F7;
   box-shadow: 0 4px 6px 0 rgba(0,0,0,0.2);

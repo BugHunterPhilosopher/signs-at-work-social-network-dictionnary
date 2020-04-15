@@ -22,6 +22,7 @@ package com.orange.signsatwork.biz.view.model;
  * #L%
  */
 
+import com.orange.signsatwork.biz.domain.MediaType;
 import com.orange.signsatwork.biz.persistence.model.VideoViewData;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -48,11 +49,13 @@ public class VideoView2 implements ComparableVideo {
   private boolean videoHasView;
   private boolean videoHasPositiveRate;
   private boolean signBelowToFavorite;
-  private String mediaType;
+  private MediaType mediaType;
+  private String mediaTypes;
 
   public VideoView2(VideoViewData videoViewData, boolean videoHasComment, boolean createdAfterLastDeconnection, boolean videoHasView, boolean videoHasPositiveRate, boolean signBelowToFavorite) {
     signId = videoViewData.signId;
-    mediaType = videoViewData.mediaType.toString();
+    mediaType = videoViewData.mediaType;
+    mediaTypes = videoViewData.mediaTypes;
     signName = videoViewData.signName;
     if (videoViewData.nbVideo > 1) {
       videoName = videoViewData.signName + " (" + videoViewData.idForName + ")";

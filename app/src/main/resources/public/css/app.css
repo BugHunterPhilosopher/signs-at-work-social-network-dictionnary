@@ -1990,6 +1990,12 @@ span.logos {
   margin-top: -4%;
   margin-left: 72%;
 }
+span.favorite-logos {
+  display: block;
+  position: absolute;
+  margin-top: -59%;
+  margin-left: 67%;
+}
 span.videosLogos {
   display: block;
   position: absolute;

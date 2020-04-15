@@ -63,7 +63,7 @@ a, a:hover, a:focus {
 }
 
 #sidebar.active {
-    left: 42px;
+    left: 8px;
 }
 
 #dismiss {

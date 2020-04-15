@@ -304,3 +304,20 @@ function initWithFirstVideos() {
   main();
 
 })($);
+
+var refreshLogos = function() {
+  $('div.videosLogos').each(function () {
+    if ($(this).data("media-types").indexOf("L.S.F.") == -1) {
+      $(this).find("img.logolsf").hide();
+    } else {
+      $(this).find("img.logolsf").attr('src', '/img/lsf.jpg')
+    }
+    if ($(this).data("media-types").indexOf("Lf.P.C.") == -1) {
+      $(this).find("img.logolpc").hide();
+    } else {
+      $(this).find("img.logolpc").attr('src', '/img/lpc.jpg')
+    }
+  });
+}
+
+$(refreshLogos());

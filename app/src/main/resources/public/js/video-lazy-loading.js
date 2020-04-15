@@ -111,6 +111,40 @@
     } else {
       //console.log("search show");
     }
+
+    refreshLogos();
+  }
+
+  var resetSearch = function() {
+      displayedSignsCount = 0;
+      $('#search-criteria1').val('');
+
+      if (modeSearch === "false") {
+        initWithFirstSigns();
+      } else {
+        $(nb).hide();
+      }
+  }
+
+  function getMediaTypesInSearchField() {
+    var lpc = $('.my-button-lpc').hasClass('my-button-lpc-active') ? 'Lf.P.C.' : '';
+    var lsf = $('.my-button-lsf').hasClass('my-button-lsf-active') ? 'L.S.F.' : '';
+    var mediaTypesToSearch = [];
+    if (lpc != '') {
+      mediaTypesToSearch.push(lpc);
+    }
+    if (lsf != '') {
+      mediaTypesToSearch.push(lsf);
+    }
+    return mediaTypesToSearch;
+  }
+
+  function matchesSearchCondition(mediaTypesInSign, mediaTypesInSearchField) {
+    return (conditionsState == 'and' && mediaTypesInSign != '' && arraysEqual(mediaTypesInSearchField, mediaTypesInSign.split(','))) ||
+      (conditionsState == 'or' && mediaTypesInSign != '' && (mediaTypesInSign.indexOf(',') != -1) && mediaTypesInSearchField.some(r => mediaTypesInSign.split(',').includes(r))) ||
+      (conditionsState == 'or' && mediaTypesInSign != '' && (mediaTypesInSign.indexOf(',') == -1) && mediaTypesInSearchField.includes(mediaTypesInSign)) ||
+      (conditionsState == 'none' && mediaTypesInSign != '' && (mediaTypesInSign.indexOf(',') == -1) && mediaTypesInSearchField == mediaTypesInSign) ||
+      (conditionsState == 'none' && mediaTypesInSign != '' && (mediaTypesInSign.indexOf(',') != -1) && mediaTypesInSign.split(',').some(r => mediaTypesInSearchField.includes(r)));
   }
 
   function search(event) {
@@ -149,6 +183,8 @@
         });
       }
     }
+
+    refreshLogos();
   }
 
   function scrollBarVisible() {

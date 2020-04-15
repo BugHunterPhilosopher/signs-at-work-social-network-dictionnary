@@ -958,7 +958,8 @@
     background-size: auto 50px;
     height: 50px;
     width: 83px;
-    right: 0px;
+    right: 48px;
+    bottom: -19px;
   }
 
   .tooltip_variante {

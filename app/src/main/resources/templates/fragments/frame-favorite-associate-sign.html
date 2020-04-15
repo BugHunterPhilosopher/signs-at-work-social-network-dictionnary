@@ -22,52 +22,85 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <link rel="icon" href="favicon.ico" />
+  <meta charset="utf-8"/>
+  <link rel="icon" href="favicon.ico"/>
 </head>
 <body>
 
 <div th:fragment="div">
-  <div id="myform" >
-    <input type='button' class="pull-rigth" id='reset' value='X' >
+  <div id="myform">
+    <input type='button' class="pull-rigth" id='reset' value='X'>
     <div id="container-input">
-      <input th:if="${not #lists.isEmpty(videosView)}" type="search" id="search-criteria" th:placeholder="#{search}" class="border form-control"/>
-      <input th:if="${#lists.isEmpty(videosView)}" type="search" id="search-criteria" th:placeholder="#{search}" class="border form-control search-hidden"/>
+      <input th:if="${not #lists.isEmpty(videosView)}" type="search" id="search-criteria" th:placeholder="#{search}"
+             class="border form-control"/>
+      <input th:if="${#lists.isEmpty(videosView)}" type="search" id="search-criteria" th:placeholder="#{search}"
+             class="border form-control search-hidden"/>
     </div>
-  </input>
+    </input>
   </div>
 
-    <form id="associateForm" th:if="${not #lists.isEmpty(videosView)}"
-          class="row container_thumbnail"
-          th:action="@{/sec/favorite/{favoriteid}/add/videos(favoriteid=${favoriteProfileView.favorite.id})}"
-          th:object="${favoriteProfileView}"
-          method="post">
-        <div class="form-group">
-          <div id="videos-container">
-            <label th:id="${videoView.signName}" class="video-view-hidden text-center col-lg-4 col-md-4 col-xs-6 col-sm-4" th:each="videoView : ${videosView}"
-                     th:for="${#ids.next('favoriteVideosIds')}">
-              <input type="checkbox" th:field="*{favoriteVideosIds}" th:value="${videoView.videoId}"/>
-              <span th:if="${videoView.nbVideo == 1}" class="text_hyphenation" th:text="${videoView.signName}"></span>
-              <span th:if="${videoView.nbVideo > 1}" class="text_hyphenation" th:text="${videoView.signName} + ' (' + ${videoView.idForName} +')'"></span>
-              <img  th:attr="data-src=${videoView.pictureUri}"/>
-             </label>
-          </div>
-        </div>
-    </form>
-    <div id="sign-not-available" style="display: none">
-      <h2 th:text="#{sign.not_available}"></h2>
-    </div>
+  <form id="associateForm" th:if="${not #lists.isEmpty(videosView)}"
+        class="row container_thumbnail"
+        th:action="@{/sec/favorite/{favoriteid}/add/videos(favoriteid=${favoriteProfileView.favorite.id})}"
+        th:object="${favoriteProfileView}"
+        method="post">
+    <div class="form-group">
+      <div id="videos-container">
+        <label th:id="${videoView.signName}" class="video-view-hidden text-center col-lg-4 col-md-4 col-xs-6 col-sm-4"
+               th:each="videoView : ${videosView}"
+               th:for="${#ids.next('favoriteVideosIds')}">
+          <input type="checkbox" th:field="*{favoriteVideosIds}" th:value="${videoView.videoId}"/>
+          <span th:if="${videoView.nbVideo == 1}" class="text_hyphenation" th:text="${videoView.signName}"></span>
+          <span th:if="${videoView.nbVideo > 1}" class="text_hyphenation"
+                th:text="${videoView.signName} + ' (' + ${videoView.idForName} +')'"></span>
 
-    <div th:if="${#lists.isEmpty(videosView)}">
-        <h2 th:text="#{sign.not_available}"></h2>
+          <div class="col-lg-12 col-xl-12 videosLogos"
+               data-th-attr="data-tags=${videoView.tags},data-media-types=${videoView.mediaTypes}">
+            <a th:if="${videoView.signId != 0}" th:href="@{/sign/} + ${videoView.signId}">
+              <div th:if="${videoView.pictureUri != null and not #strings.startsWith(videoView.pictureUri, 'http:')}">
+                <img th:src="@{/files/} + ${videoView.pictureUri}"/>
+              </div>
+              <div th:if="${videoView.pictureUri != null and #strings.startsWith(videoView.pictureUri, 'http:')}">
+                <img th:src="${videoView.pictureUri}"/>
+              </div>
+              <div th:if="${videoView.pictureUri == null}">
+                <img src="/img/video_thumbnail.png"/>
+              </div>
+            </a>
+            <a th:if="${videoView.signId == 0}" th:href="@{${videoView.url} + ${videoView.lastVideoId}}">
+              <img th:src="@{/files/} + ${videoView.pictureUri}"/>
+            </a>
+            <!--<div class="col-lg-12 col-xl-12" >
+              <div id="labelSigne" class="text_hyphenation">
+                <div th:if="${videoView.nbVideo >1}" class="tooltip_variante" th:text="${videoView.nbVideo}"></div>
+              </div>
+            </div>-->
+            <span class="favorite-logos">
+                <img class="logolsf" src="/img/lsf.jpg" title="L.S.F."/>
+                <img class="logolpc" src="/img/lpc.jpg" title="Lf.P.C."/>
+              </span>
+          </div>
+
+        </label>
+      </div>
     </div>
+  </form>
+  <div id="sign-not-available" style="display: none">
+    <h2 th:text="#{sign.not_available}"></h2>
+  </div>
+
+  <div th:if="${#lists.isEmpty(videosView)}">
+    <h2 th:text="#{sign.not_available}"></h2>
+  </div>
 </div>
 
-<div  id="validate_favorite_modif" class="modal" role="dialog">
+<div id="validate_favorite_modif" class="modal" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" th:onclick="'javascript:onContinueFavorite(\'' + ${backUrl} + '\')'" data-dismiss="">x</button>
+        <button type="button" class="close" th:onclick="'javascript:onContinueFavorite(\'' + ${backUrl} + '\')'"
+                data-dismiss="">x
+        </button>
         <div class="pull-left">
           <div class="add_favorite_signe_white pull-left"></div>
           <h4 class="pull-right" th:text="#{favorite.add}"/>
@@ -76,9 +109,9 @@
       <div class="modal-body text-center">
         <h4 th:text="#{favorite.confirm_sign_add_to_list(${'&laquo;'+title+'&raquo;'})}"/>
       </div>
-     <!-- <div class="modal-footer">
-        <button id="button-top" type="submit" class="btn btn-default" th:onclick="'javascript:onAssociateFavoriteRequest('+ ${favoriteProfileView.favorite.id} +')' " th:text="#{save}"></button><br/>
-      </div>-->
+      <!-- <div class="modal-footer">
+         <button id="button-top" type="submit" class="btn btn-default" th:onclick="'javascript:onAssociateFavoriteRequest('+ ${favoriteProfileView.favorite.id} +')' " th:text="#{save}"></button><br/>
+       </div>-->
       <div class="modal-footer">
         <div class="check_blue pull-right"></div>
       </div>

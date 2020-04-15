@@ -25,6 +25,7 @@ package com.orange.signsatwork.biz.view.controller;
 import com.orange.signsatwork.biz.domain.Favorite;
 import com.orange.signsatwork.biz.domain.User;
 import com.orange.signsatwork.biz.persistence.model.SignViewData;
+import com.orange.signsatwork.biz.persistence.model.VideoView2Data;
 import com.orange.signsatwork.biz.persistence.model.VideoViewData;
 import com.orange.signsatwork.biz.persistence.service.MessageByLocaleService;
 import com.orange.signsatwork.biz.persistence.service.Services;
@@ -93,7 +94,7 @@ public class FavoriteController {
 
     List<Object[]> queryVideos = services.video().VideosForFavoriteView(favoriteId);
     List<VideoViewData> videoViewsData = queryVideos.stream()
-      .map(objectArray -> new VideoViewData(objectArray))
+      .map(objectArray -> new VideoView2Data(objectArray))
       .collect(Collectors.toList());
 
     List<Long> videoWithCommentList = Arrays.asList(services.favorite().NbCommentForAllVideoByFavorite(favoriteId));
@@ -197,8 +198,6 @@ public class FavoriteController {
     List<VideoViewData> sortedVideos = new ArrayList<>();
     sortedVideos.addAll(videoInFavorite);
     sortedVideos.addAll(videoViewsData);
-
-
 
     model.addAttribute("videosView", sortedVideos);
 

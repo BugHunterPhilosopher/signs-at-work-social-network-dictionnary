@@ -24,12 +24,13 @@ package com.orange.signsatwork.biz.view.controller;
 
 import com.orange.signsatwork.biz.domain.Favorite;
 import com.orange.signsatwork.biz.domain.User;
-import com.orange.signsatwork.biz.persistence.model.SignViewData;
-import com.orange.signsatwork.biz.persistence.model.VideoView2Data;
 import com.orange.signsatwork.biz.persistence.model.VideoViewData;
 import com.orange.signsatwork.biz.persistence.service.MessageByLocaleService;
 import com.orange.signsatwork.biz.persistence.service.Services;
-import com.orange.signsatwork.biz.view.model.*;
+import com.orange.signsatwork.biz.view.model.FavoriteCreationView;
+import com.orange.signsatwork.biz.view.model.FavoriteProfileView;
+import com.orange.signsatwork.biz.view.model.VideoView2;
+import com.orange.signsatwork.biz.view.model.VideosViewSort;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -94,7 +95,7 @@ public class FavoriteController {
 
     List<Object[]> queryVideos = services.video().VideosForFavoriteView(favoriteId);
     List<VideoViewData> videoViewsData = queryVideos.stream()
-      .map(objectArray -> new VideoView2Data(objectArray))
+      .map(objectArray -> new VideoViewData(objectArray))
       .collect(Collectors.toList());
 
     List<Long> videoWithCommentList = Arrays.asList(services.favorite().NbCommentForAllVideoByFavorite(favoriteId));

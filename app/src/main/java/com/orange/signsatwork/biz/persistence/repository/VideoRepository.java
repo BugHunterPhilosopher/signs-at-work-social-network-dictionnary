@@ -52,7 +52,7 @@ public interface VideoRepository extends CrudRepository<VideoDB, Long> {
     @Query("select distinct s FROM VideoDB s inner join s.favorites favorite where favorite = :favoriteDB")
     List<VideoDB> findByFavorite(@Param("favoriteDB") FavoriteDB favoriteDB);
 
-    @Query(value="select a.sign_id, b.name, a.create_date, a.id, a.url, a.picture_uri, a.nb_view, a.average_rate, a.nb_comment, a.id_for_name, b.nb_video from videos a inner join signs b inner join favorites_videos c on a.sign_id = b.id and c.videos_id = a.id and c.favorites_id = :favoriteId order by b.create_date desc", nativeQuery = true)
+    @Query(value="from VideoDB a inner join a.sign b inner join a.favorites c WHERE a.id = b.id and c.id = :favoriteId order by b.createDate desc")
     List<Object[]> findVideosForFavoriteView(@Param("favoriteId") long favoriteId);
 
     @Query(value="select a.videos_id from favorites_videos a inner join favorites b on a.favorites_id = b.id and b.user_id = :userId", nativeQuery = true)

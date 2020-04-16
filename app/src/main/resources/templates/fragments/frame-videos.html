@@ -58,7 +58,16 @@
             <div th:if="${videoView.videoHasView}" class="tooltip_eye" th:attr="title=#{tooltip_variant_view}"></div>
             <div th:if="${!videoView.videoHasView}" style="visibility: hidden" class="tooltip_eye"></div>
             </div>
-            <img th:attr="data-src=${videoView.pictureUri}"/>
+            <div th:if="${videoView.pictureUri != null and not #strings.startsWith(videoView.pictureUri, 'http')}">
+              <img th:src="@{/files/} + ${videoView.pictureUri}"/>
+            </div>
+            <div th:if="${videoView.pictureUri != null and #strings.startsWith(videoView.pictureUri, 'http')}">
+              <img th:src="${videoView.pictureUri}"/>
+            </div>
+            <div th:if="${videoView.pictureUri == null
+              or #strings.endsWith(videoView.pictureUri, '.mp4') or #strings.endsWith(videoView.pictureUri, '.MP4')}">
+              <img src="/img/video_thumbnail.png"/>
+            </div>
           </a>
           </div>
       </div>

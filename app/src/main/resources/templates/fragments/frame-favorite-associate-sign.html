@@ -57,13 +57,16 @@
           <div class="col-lg-12 col-xl-12 videosLogos"
                data-th-attr="data-tags=${videoView.tags},data-media-types=${videoView.mediaTypes}">
             <a th:if="${videoView.signId != 0}" th:href="@{/sign/} + ${videoView.signId}">
-              <div th:if="${videoView.pictureUri != null and not #strings.startsWith(videoView.pictureUri, 'http:')}">
+              <div th:if="${videoView.pictureUri != null and not #strings.startsWith(videoView.pictureUri, 'http')
+                  and not #strings.endsWith(videoView.pictureUri, '.mp4') and not #strings.endsWith(videoView.pictureUri, '.MP4')}">
                 <img th:src="@{/files/} + ${videoView.pictureUri}"/>
               </div>
-              <div th:if="${videoView.pictureUri != null and #strings.startsWith(videoView.pictureUri, 'http:')}">
+              <div th:if="${videoView.pictureUri != null and #strings.startsWith(videoView.pictureUri, 'http')
+                  and not #strings.endsWith(videoView.pictureUri, '.mp4') and not #strings.endsWith(videoView.pictureUri, '.MP4')}">
                 <img th:src="${videoView.pictureUri}"/>
               </div>
-              <div th:if="${videoView.pictureUri == null}">
+              <div th:if="${videoView.pictureUri == null
+                  or #strings.endsWith(videoView.pictureUri, '.mp4') or #strings.endsWith(videoView.pictureUri, '.MP4')}">
                 <img src="/img/video_thumbnail.png"/>
               </div>
             </a>

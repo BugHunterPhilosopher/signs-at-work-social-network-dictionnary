@@ -188,8 +188,26 @@ $.fn.extend({
     videoView.style.opacity = "0";
     videoView.className = videoView.className.replace(VIDEO_HIDDEN_CLASS, '');
     var img = videoView.getElementsByTagName('img')[0];
-    var thumbnailUrl = img.dataset.src;
-    img.src = thumbnailUrl;
+
+    if (typeof img != 'undefined') {
+      if ((typeof img.src == 'undefined') || (img.src.endsWith("null") || (img.src.endsWith(".mp4")))) {
+        if (typeof img.dataset.src == 'undefined') {
+          img.src = '/img/video_thumbnail.png';
+        } else {
+          var thumbnailUrl = img.dataset.src;
+          if (thumbnailUrl.indexOf('/files/') != -1) {
+            img.src = thumbnailUrl;
+          } else if (!thumbnailUrl.startsWith('https:')) {
+            img.src = '/files/' + thumbnailUrl;
+          }
+        }
+      } else if ((typeof img.src != 'undefined') && (img.src.endsWith('.gif') || img.src.endsWith('.png'))) {
+        // Nothing special to do here
+      } else if ((typeof img.src != 'undefined') && (img.src.indexOf('/files/') != -1)) {
+        img.src = img.src.substring(img.src.indexOf("/files/") + 7); // 7 = (length of "/files/")
+      }
+    }
+
     $(videoView).fadeTo(REVEAL_DURATION_MS, 1);
   }
 
@@ -216,6 +234,7 @@ $.fn.extend({
       }
     }
 
+    refreshLogos();
   }
 
   function search(event) {
@@ -256,6 +275,8 @@ $.fn.extend({
       displayedVideosCount = 0;
       initWithFirstVideos();
     }
+
+    refreshLogos();
   }
 
   function scrollBarVisible() {

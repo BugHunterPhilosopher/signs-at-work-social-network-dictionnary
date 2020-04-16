@@ -61,7 +61,7 @@ public class VideoViewData {
     createDate = toDate(((VideoDB) queryResultItem[0]).getCreateDate());
     videoId = toLong(((VideoDB) queryResultItem[0]).getId());
     url = toString(((VideoDB) queryResultItem[0]).getUrl());
-    pictureUri = toString(((VideoDB) queryResultItem[0]).getPictureUri());
+    pictureUri = toString(((SignDB) queryResultItem[1]).getUrl());
     nbView = toLong(((VideoDB) queryResultItem[0]).getNbView());
     averageRate = toLong(((VideoDB) queryResultItem[0]).getAverageRate());
     nbComment = toLong(((VideoDB) queryResultItem[0]).getNbComment());

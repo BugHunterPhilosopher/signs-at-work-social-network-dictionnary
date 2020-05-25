@@ -37,6 +37,7 @@ import java.util.Date;
 public class SignView2 implements ComparableSign {
   private long id;
   private String name;
+  private String name_for_id;
   private Date createDate;
   private long lastVideoId;
   private String url;
@@ -56,6 +57,7 @@ public class SignView2 implements ComparableSign {
     tags = signViewData.tags;
     mediaTypes = signViewData.mediaTypes;
     name = signViewData.name;
+    name_for_id = (signViewData.name.equals("content") ? "Content" : signViewData.name);
     createDate = signViewData.createDate;
     lastVideoId = signViewData.lastVideoId;
     url = signViewData.url;
